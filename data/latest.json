@@ -1,1 +1,100 @@
-{}
+{
+  "strategy_name": "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
+  "subtitle": "QQQ signal, prior data only. Trades execute at today's open in TQQQ or QLD.",
+  "last_updated": "2026-04-07 20:07:34 EDT",
+  "latest_trading_day": "2026-04-07",
+  "market_signal": "BUY / INVESTED",
+  "signal_is_buy": true,
+  "overview_cards": [
+    {
+      "label": "QQQ Open",
+      "value": "$585.63"
+    },
+    {
+      "label": "TQQQ Open",
+      "value": "$43.51"
+    },
+    {
+      "label": "QLD Open",
+      "value": "$62.72"
+    },
+    {
+      "label": "Latest Trading Day",
+      "value": "2026-04-07"
+    }
+  ],
+  "indicators": [
+    {
+      "key": "sslp20_2",
+      "label": "SSLP20_2",
+      "display_value": "-0.40%",
+      "raw_value": -0.004013546084764785,
+      "rule": "< -0.008",
+      "passed": false,
+      "description": "20-day SMA versus its value 2 trading days earlier (prior data only)."
+    },
+    {
+      "key": "mom150",
+      "label": "MOM150",
+      "display_value": "2.11%",
+      "raw_value": 0.02111092896209721,
+      "rule": "> -0.01",
+      "passed": true,
+      "description": "QQQ Open[t-1] / QQQ Open[t-151] - 1."
+    },
+    {
+      "key": "rv5",
+      "label": "RV5",
+      "display_value": "1.71%",
+      "raw_value": 0.017123631301933333,
+      "rule": "< 0.03",
+      "passed": true,
+      "description": "Standard deviation of prior 5 QQQ open-to-open returns."
+    },
+    {
+      "key": "rv7",
+      "label": "RV7",
+      "display_value": "1.75%",
+      "raw_value": 0.017515006117868537,
+      "rule": "< 0.03",
+      "passed": true,
+      "description": "Standard deviation of prior 7 QQQ open-to-open returns."
+    },
+    {
+      "key": "sr63_126",
+      "label": "SR63_126",
+      "display_value": "0.9930",
+      "raw_value": 0.9930449578876328,
+      "rule": "< 1.05",
+      "passed": true,
+      "description": "63-day prior SMA divided by 126-day prior SMA."
+    }
+  ],
+  "formula_definitions": [
+    "SMA20[t] = average of QQQ Opens from t-1 to t-20.",
+    "SSLP20_2[t] = (SMA20[t] / SMA20[t-2]) - 1.",
+    "MOM150[t] = (QQQ Open[t-1] / QQQ Open[t-151]) - 1.",
+    "RV5[t] = standard deviation of prior 5 QQQ open-to-open returns.",
+    "RV7[t] = standard deviation of prior 7 QQQ open-to-open returns.",
+    "SR63_126[t] = prior 63-day SMA / prior 126-day SMA."
+  ],
+  "plain_english": [
+    "Stay invested when either the 20-day SMA has dropped enough over the last 2 trading days or 150-day momentum is better than -1%.",
+    "Also require short-term open-to-open volatility to stay low.",
+    "Also require the 63-day trend not to be too stretched above the 126-day trend."
+  ],
+  "stats": {
+    "TQQQ": {
+      "cagr": "51.87%",
+      "max_drawdown": "-46.98%",
+      "trades": 129,
+      "window": "2010-02-11 to 2026-04-06"
+    },
+    "QLD": {
+      "cagr": "28.26%",
+      "max_drawdown": "-53.04%",
+      "trades": 165,
+      "window": "2006-06-21 to 2026-04-06"
+    }
+  }
+}
