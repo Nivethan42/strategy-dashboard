@@ -1,7 +1,7 @@
 {
   "strategy_name": "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
   "subtitle": "QQQ signal, prior data only. Trades execute at today's open in TQQQ or QLD.",
-  "last_updated": "2026-04-08 10:54:36 EDT",
+  "last_updated": "2026-04-08 18:59:50 EDT",
   "latest_trading_day": "2026-04-08",
   "market_signal": "BUY / INVESTED",
   "signal_is_buy": true,
