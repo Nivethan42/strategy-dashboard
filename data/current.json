@@ -1,29 +1,29 @@
 {
   "siteTitle": "Dual Strategy Dashboard",
-  "lastUpdated": "2026-04-08 21:44:04 EDT",
-  "latestTradingDay": "2025-08-20",
-  "latestSuccessfulRefresh": "2026-04-08 21:09:05 EDT",
+  "lastUpdated": "2026-04-08 22:32:44 EDT",
+  "latestTradingDay": "2026-04-08",
+  "latestSuccessfulRefresh": "2026-04-08 22:32:44 EDT",
   "strategies": [
     {
       "id": "tqqq",
       "displayName": "TQQQ Strategy",
       "sourceTicker": "QQQ",
       "tradedTicker": "TQQQ",
-      "currentSignal": "N/A",
-      "signalIsBuy": false,
-      "currentActionText": "Live feed unavailable; showing reference strategy definition.",
-      "signalChangeSummary": "No data",
-      "streakType": "N/A",
-      "streakLength": 0,
+      "currentSignal": "BUY",
+      "signalIsBuy": true,
+      "currentActionText": "Buy TQQQ at today's open",
+      "signalChangeSummary": "No signal change today",
+      "streakType": "BUY",
+      "streakLength": 4,
       "latestOpen": {
-        "source": "N/A",
-        "traded": "N/A"
+        "source": "$608.71",
+        "traded": "$48.65"
       },
       "backtest": {
-        "cagr": "59.31%",
-        "maxDrawdown": "-47.88%",
-        "tradeCount": 61,
-        "window": "2010-03-10 to 2025-08-20"
+        "cagr": "52.91%",
+        "maxDrawdown": "-46.98%",
+        "tradeCount": 65,
+        "window": "2010-02-11 to 2026-04-07"
       }
     },
     {
@@ -31,21 +31,21 @@
       "displayName": "SPXL Strategy",
       "sourceTicker": "SPY",
       "tradedTicker": "SPXL",
-      "currentSignal": "N/A",
+      "currentSignal": "CASH",
       "signalIsBuy": false,
-      "currentActionText": "Live feed unavailable; showing reference strategy definition.",
-      "signalChangeSummary": "No data",
-      "streakType": "N/A",
-      "streakLength": 0,
+      "currentActionText": "Hold cash / no long position",
+      "signalChangeSummary": "No signal change today",
+      "streakType": "CASH",
+      "streakLength": 22,
       "latestOpen": {
-        "source": "N/A",
-        "traded": "N/A"
+        "source": "$676.39",
+        "traded": "$207.23"
       },
       "backtest": {
-        "cagr": "40.10%",
-        "maxDrawdown": "-40.48%",
-        "tradeCount": 56,
-        "window": "2008-11-05 to 2025-08-18"
+        "cagr": "31.61%",
+        "maxDrawdown": "-41.51%",
+        "tradeCount": 67,
+        "window": "2008-11-05 to 2026-04-07"
       }
     }
   ]
