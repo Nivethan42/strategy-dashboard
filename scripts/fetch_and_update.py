@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 from datetime import datetime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -18,6 +19,14 @@ STRATEGY_DIR.mkdir(parents=True, exist_ok=True)
 
 TIMEZONE = ZoneInfo("America/New_York")
 MAX_REFRESH_LOG_ROWS = 400
+PROXY_ENV_VARS = (
+    "HTTP_PROXY",
+    "HTTPS_PROXY",
+    "ALL_PROXY",
+    "http_proxy",
+    "https_proxy",
+    "all_proxy",
+)
 
 
 def now_ny() -> datetime:
@@ -44,8 +53,75 @@ def clean_date_index(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def configure_yfinance_network() -> None:
+    # Some runners inject proxy env vars that break yfinance's curl transport
+    # with "CONNECT tunnel failed, response 403". Ensure yfinance calls Yahoo
+    # directly from this refresh job.
+    for key in PROXY_ENV_VARS:
+        os.environ.pop(key, None)
+    yf.config.network.proxy = None
+    yf.config.network.retries = 3
+
+
+def fetch_history(
+    ticker: str,
+    *,
+    period: str | None = None,
+    start: str | None = None,
+    interval: str = "1d",
+    auto_adjust: bool = False,
+    actions: bool = False,
+    prepost: bool = False,
+    attempts: int = 3,
+    pause_seconds: float = 1.0,
+) -> pd.DataFrame:
+    last_error: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            history = yf.Ticker(ticker).history(
+                period=period,
+                start=start,
+                interval=interval,
+                auto_adjust=auto_adjust,
+                actions=actions,
+                prepost=prepost,
+            )
+            if not history.empty:
+                return history
+        except Exception as exc:
+            last_error = exc
+
+        try:
+            download = yf.download(
+                tickers=ticker,
+                period=period,
+                start=start,
+                interval=interval,
+                auto_adjust=auto_adjust,
+                actions=actions,
+                prepost=prepost,
+                progress=False,
+                threads=False,
+            )
+            if isinstance(download, pd.DataFrame) and not download.empty:
+                if isinstance(download.columns, pd.MultiIndex):
+                    download = download.droplevel(-1, axis=1)
+                return download
+        except Exception as exc:
+            last_error = exc
+
+        if attempt < attempts:
+            time.sleep(pause_seconds * attempt)
+
+    if last_error:
+        raise RuntimeError(f"Unable to fetch yfinance history for {ticker}: {last_error}") from last_error
+    raise RuntimeError(f"No data returned for {ticker} after {attempts} attempts")
+
+
 def get_daily_opens(ticker: str) -> pd.Series:
-    daily = yf.Ticker(ticker).history(
+    # This strategy intentionally uses daily official open prices only.
+    daily = fetch_history(
+        ticker,
         start="2000-01-01",
         interval="1d",
         auto_adjust=False,
@@ -57,36 +133,6 @@ def get_daily_opens(ticker: str) -> pd.Series:
 
     daily = clean_date_index(daily)[["Open"]].dropna()
     series = daily["Open"].astype(float).rename(ticker)
-
-    # Try to capture today's official open from intraday data if available.
-    try:
-        intraday = yf.Ticker(ticker).history(
-            period="5d",
-            interval="1m",
-            auto_adjust=False,
-            actions=False,
-            prepost=True,
-        )
-
-        if not intraday.empty:
-            try:
-                if getattr(intraday.index, "tz", None) is None:
-                    intraday.index = intraday.index.tz_localize(TIMEZONE)
-                else:
-                    intraday.index = intraday.index.tz_convert(TIMEZONE)
-            except Exception:
-                pass
-
-            today_ny = now_ny().date()
-            intraday_today = intraday[intraday.index.date == today_ny]
-
-            if not intraday_today.empty:
-                regular_open_bar = intraday_today.between_time("09:30", "09:30")
-                if not regular_open_bar.empty and pd.notna(regular_open_bar.iloc[0]["Open"]):
-                    series.loc[pd.Timestamp(today_ny)] = float(regular_open_bar.iloc[0]["Open"])
-                    series = series.sort_index()
-    except Exception:
-        pass
 
     return series
 
@@ -734,6 +780,7 @@ def main() -> None:
     row_counts: dict[str, int] = {}
 
     try:
+        configure_yfinance_network()
         warnings: list[str] = []
 
         tqqq_existing = load_existing_strategy_payload(STRATEGY_DIR / "tqqq.json", "tqqq")
