@@ -51,7 +51,7 @@
         <div class="panel-head between">
           <div>
             <h2>Selected Strategy Chart</h2>
-            <p>Source open and strategy equity.</p>
+            <p>Strategy cumulative return versus buy-and-hold cumulative return.</p>
           </div>
           <div class="toolbar">
             <select id="overview-strategy"></select>
@@ -88,8 +88,13 @@
         <div id="compare-cards" class="compare-grid compare-large"></div>
       </section>
       <section class="panel">
-        <div class="panel-head"><h2>Equity Comparison</h2></div>
-        <div class="chart-wrap"><canvas id="compare-chart"></canvas></div>
+        <div class="panel-head"><h2>ETF Price + Buy & Hold Cumulative Return</h2></div>
+        <div class="compare-charts-grid">
+          <article class="mini-chart-card"><h3>TQQQ</h3><div class="chart-wrap mini"><canvas id="compare-chart-tqqq"></canvas></div></article>
+          <article class="mini-chart-card"><h3>SPXL</h3><div class="chart-wrap mini"><canvas id="compare-chart-spxl"></canvas></div></article>
+          <article class="mini-chart-card"><h3>QQQ</h3><div class="chart-wrap mini"><canvas id="compare-chart-qqq"></canvas></div></article>
+          <article class="mini-chart-card"><h3>SPY</h3><div class="chart-wrap mini"><canvas id="compare-chart-spy"></canvas></div></article>
+        </div>
       </section>
     </section>
 

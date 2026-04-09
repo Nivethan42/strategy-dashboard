@@ -1,5 +1,5 @@
 let overviewChart;
-let compareChart;
+let compareCharts = [];
 
 const state = {
   current: null,
@@ -113,10 +113,20 @@ function pickRange(history, range) {
   return history;
 }
 
+function cumulativeReturn(values) {
+  if (!values.length) return [];
+  const base = values[0];
+  if (!base) return values.map(() => 0);
+  return values.map((v) => ((v / base) - 1) * 100);
+}
+
 function renderOverviewChart(strategyId) {
   const strategy = state.strategies[strategyId];
   if (!strategy) return;
   const rows = pickRange(strategy.chart.history, state.activeRange);
+
+  const strategyReturns = cumulativeReturn(rows.map((r) => r.equity));
+  const buyHoldReturns = cumulativeReturn(rows.map((r) => r.tradedOpen));
 
   if (overviewChart) overviewChart.destroy();
   overviewChart = new Chart(byId("overview-chart").getContext("2d"), {
@@ -124,11 +134,16 @@ function renderOverviewChart(strategyId) {
     data: {
       labels: rows.map((r) => r.date),
       datasets: [
-        { label: strategy.chart.sourceLabel, data: rows.map((r) => r.sourceOpen), yAxisID: "y", borderWidth: 2, tension: 0.15 },
-        { label: "Strategy Equity", data: rows.map((r) => r.equity), yAxisID: "y1", borderWidth: 2, tension: 0.15 },
+        { label: `${strategy.tradedTicker} Strategy Cumulative Return (%)`, data: strategyReturns, borderWidth: 2, tension: 0.15 },
+        { label: `${strategy.tradedTicker} Buy & Hold Cumulative Return (%)`, data: buyHoldReturns, borderWidth: 2, tension: 0.15 },
       ],
     },
-    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false } },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      scales: { y: { ticks: { callback: (value) => `${value}%` } } },
+    },
   });
 }
 
@@ -147,19 +162,66 @@ function renderCompareSection() {
     ], "card compare-card"));
   });
 
-  const tqqq = state.strategies.tqqq?.chart?.history || [];
-  const spxl = state.strategies.spxl?.chart?.history || [];
-  if (compareChart) compareChart.destroy();
-  compareChart = new Chart(byId("compare-chart").getContext("2d"), {
-    type: "line",
-    data: {
-      labels: tqqq.map((r) => r.date),
-      datasets: [
-        { label: "TQQQ Strategy Equity", data: tqqq.map((r) => r.equity), borderWidth: 2, tension: 0.1 },
-        { label: "SPXL Strategy Equity", data: spxl.map((r) => r.equity), borderWidth: 2, tension: 0.1 },
-      ],
+  compareCharts.forEach((chart) => chart.destroy());
+  compareCharts = [];
+
+  const tqqqHistory = pickRange(state.strategies.tqqq?.chart?.history || [], state.activeRange);
+  const spxlHistory = pickRange(state.strategies.spxl?.chart?.history || [], state.activeRange);
+
+  const chartConfigs = [
+    {
+      canvasId: "compare-chart-tqqq",
+      title: "TQQQ",
+      prices: tqqqHistory.map((r) => r.tradedOpen),
+      labels: tqqqHistory.map((r) => r.date),
     },
-    options: { responsive: true, maintainAspectRatio: false },
+    {
+      canvasId: "compare-chart-spxl",
+      title: "SPXL",
+      prices: spxlHistory.map((r) => r.tradedOpen),
+      labels: spxlHistory.map((r) => r.date),
+    },
+    {
+      canvasId: "compare-chart-qqq",
+      title: "QQQ",
+      prices: tqqqHistory.map((r) => r.sourceOpen),
+      labels: tqqqHistory.map((r) => r.date),
+    },
+    {
+      canvasId: "compare-chart-spy",
+      title: "SPY",
+      prices: spxlHistory.map((r) => r.sourceOpen),
+      labels: spxlHistory.map((r) => r.date),
+    },
+  ];
+
+  chartConfigs.forEach(({ canvasId, title, prices, labels }) => {
+    const canvas = byId(canvasId);
+    if (!canvas || !labels.length) return;
+    compareCharts.push(new Chart(canvas.getContext("2d"), {
+      type: "line",
+      data: {
+        labels,
+        datasets: [
+          { label: `${title} Price`, data: prices, borderWidth: 2, tension: 0.1 },
+          { label: `${title} Buy & Hold Cumulative Return (%)`, data: cumulativeReturn(prices), borderWidth: 2, tension: 0.1, yAxisID: "y1" },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        scales: {
+          y: { title: { display: true, text: "Price" } },
+          y1: {
+            position: "right",
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: "Cumulative Return" },
+            ticks: { callback: (value) => `${value}%` },
+          },
+        },
+      },
+    }));
   });
 }
 
@@ -184,7 +246,16 @@ function renderUpdates() {
     ${metricRow("Source", latestOk?.source)}
     ${metricRow("Commit", latestOk?.commit)}`;
 
-  byId("refresh-log").innerHTML = [...state.refreshLog].reverse().slice(0, 80).map((r) => {
+  const reversedLog = [...state.refreshLog].reverse();
+  const latestDate = reversedLog.length ? new Date(reversedLog[0].timestamp) : null;
+  const fiveDayLog = latestDate
+    ? reversedLog.filter((entry) => {
+      const diffMs = latestDate.getTime() - new Date(entry.timestamp).getTime();
+      return diffMs >= 0 && diffMs < 5 * 24 * 60 * 60 * 1000;
+    })
+    : [];
+
+  byId("refresh-log").innerHTML = fiveDayLog.map((r) => {
     const cls = r.status === "OK" ? "ok" : r.status === "WARN" ? "warn" : "fail";
     return `<article class="log-item"><div class="kv"><strong>${esc(r.timestamp)}</strong><span class="badge ${cls}">${esc(r.status)}</span></div><p>${esc(r.type)} • ${esc(r.note)}</p><p>Latest day: ${esc(r.latestTradingDay)} • Commit: ${esc(r.commit)}</p></article>`;
   }).join("");
