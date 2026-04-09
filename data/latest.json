@@ -4,17 +4,17 @@
   "sourceTicker": "QQQ",
   "tradedTicker": "TQQQ",
   "subtitle": "QQQ signal, prior-data only, trade TQQQ at today's open.",
-  "latestTradingDay": "2026-04-08",
-  "lastUpdated": "2026-04-09 08:01:32 EDT",
+  "latestTradingDay": "2026-04-09",
+  "lastUpdated": "2026-04-09 10:08:19 EDT",
   "currentSignal": "BUY",
   "signalIsBuy": true,
   "currentActionText": "Buy TQQQ at today's open",
   "signalChangeSummary": "No signal change today",
   "streakType": "BUY",
-  "streakLength": 4,
+  "streakLength": 5,
   "latestOpen": {
-    "source": "$608.71",
-    "traded": "$48.64"
+    "source": "$606.04",
+    "traded": "$48.01"
   },
   "formula": {
     "buy": [
@@ -45,8 +45,8 @@
     {
       "key": "sslp20_2",
       "label": "SSLP20_2",
-      "displayValue": "-0.19%",
-      "rawValue": -0.001920533973854277,
+      "displayValue": "-0.06%",
+      "rawValue": -0.0006497052732580277,
       "rule": "< -0.008",
       "passed": false,
       "description": "20-day SMA / same SMA from 2 trading days earlier - 1."
@@ -54,8 +54,8 @@
     {
       "key": "mom150",
       "label": "MOM150",
-      "displayValue": "1.91%",
-      "rawValue": 0.01910702331297509,
+      "displayValue": "8.44%",
+      "rawValue": 0.0844453592849368,
       "rule": "> -0.01",
       "passed": true,
       "description": "QQQ Open[t-1] / QQQ Open[t-151] - 1."
@@ -63,8 +63,8 @@
     {
       "key": "rv5",
       "label": "RV5",
-      "displayValue": "1.66%",
-      "rawValue": 0.016559343570980097,
+      "displayValue": "1.95%",
+      "rawValue": 0.019539615516998305,
       "rule": "< 0.03",
       "passed": true,
       "description": "Std dev of prior 5 open-to-open returns."
@@ -72,8 +72,8 @@
     {
       "key": "rv7",
       "label": "RV7",
-      "displayValue": "1.70%",
-      "rawValue": 0.01699519719493908,
+      "displayValue": "1.91%",
+      "rawValue": 0.019087673326442647,
       "rule": "< 0.03",
       "passed": true,
       "description": "Std dev of prior 7 open-to-open returns."
@@ -81,36 +81,23 @@
     {
       "key": "sr63_126",
       "label": "SR63_126",
-      "displayValue": "0.9924",
-      "rawValue": 0.9924385329107459,
+      "displayValue": "0.9922",
+      "rawValue": 0.9921615835733134,
       "rule": "< 1.05",
       "passed": true,
       "description": "63-day prior SMA / 126-day prior SMA."
     }
   ],
   "backtest": {
-    "cagr": "52.91%",
+    "cagr": "52.78%",
     "maxDrawdown": "-46.98%",
     "tradeCount": 65,
-    "window": "2010-02-11 to 2026-04-07"
+    "window": "2010-02-11 to 2026-04-08"
   },
   "chart": {
     "sourceLabel": "QQQ Open",
     "tradedLabel": "TQQQ Open",
     "history": [
-      {
-        "date": "2024-08-05",
-        "sourceOpen": 424.71,
-        "tradedOpen": 24.665,
-        "signal": 1,
-        "signalText": "BUY",
-        "equity": 768.901176,
-        "sslp20_2": -0.00573,
-        "mom150": 0.097189,
-        "rv5": 0.019835,
-        "rv7": 0.01779,
-        "sr63_126": 1.036046
-      },
       {
         "date": "2024-08-06",
         "sourceOpen": 437.23,
@@ -5551,29 +5538,29 @@
         "tradedOpen": 48.64,
         "signal": 1,
         "signalText": "BUY",
-        "equity": null,
+        "equity": 940.067954,
         "sslp20_2": -0.001921,
         "mom150": 0.019107,
         "rv5": 0.016559,
         "rv7": 0.016995,
         "sr63_126": 0.992439
+      },
+      {
+        "date": "2026-04-09",
+        "sourceOpen": 606.04,
+        "tradedOpen": 48.015,
+        "signal": 1,
+        "signalText": "BUY",
+        "equity": null,
+        "sslp20_2": -0.00065,
+        "mom150": 0.084445,
+        "rv5": 0.01954,
+        "rv7": 0.019088,
+        "sr63_126": 0.992162
       }
     ]
   },
   "signalHistory": [
-    {
-      "date": "2024-08-05",
-      "sourceOpen": 424.71,
-      "tradedOpen": 24.665,
-      "signal": 1,
-      "signalText": "BUY",
-      "equity": 768.901176,
-      "sslp20_2": -0.00573,
-      "mom150": 0.097189,
-      "rv5": 0.019835,
-      "rv7": 0.01779,
-      "sr63_126": 1.036046
-    },
     {
       "date": "2024-08-06",
       "sourceOpen": 437.23,
@@ -11014,12 +11001,25 @@
       "tradedOpen": 48.64,
       "signal": 1,
       "signalText": "BUY",
-      "equity": null,
+      "equity": 940.067954,
       "sslp20_2": -0.001921,
       "mom150": 0.019107,
       "rv5": 0.016559,
       "rv7": 0.016995,
       "sr63_126": 0.992439
+    },
+    {
+      "date": "2026-04-09",
+      "sourceOpen": 606.04,
+      "tradedOpen": 48.015,
+      "signal": 1,
+      "signalText": "BUY",
+      "equity": null,
+      "sslp20_2": -0.00065,
+      "mom150": 0.084445,
+      "rv5": 0.01954,
+      "rv7": 0.019088,
+      "sr63_126": 0.992162
     }
   ]
 }
