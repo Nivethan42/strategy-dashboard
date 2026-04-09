@@ -1,8 +1,8 @@
 {
   "siteTitle": "Dual Strategy Dashboard",
-  "lastUpdated": "2026-04-09 15:22:57 EDT",
+  "lastUpdated": "2026-04-09 17:01:03 EDT",
   "latestTradingDay": "2026-04-09",
-  "latestSuccessfulRefresh": "2026-04-09 15:22:57 EDT",
+  "latestSuccessfulRefresh": "2026-04-09 17:01:03 EDT",
   "strategies": [
     {
       "id": "tqqq",
@@ -16,7 +16,7 @@
       "streakType": "BUY",
       "streakLength": 5,
       "latestOpen": {
-        "source": "$606.04",
+        "source": "$605.93",
         "traded": "$48.01"
       },
       "backtest": {
