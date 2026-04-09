@@ -18,5 +18,35 @@
     "note": "TQQQ strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; SPXL strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.",
     "commit": "local",
     "source": "yFinance"
+  },
+  {
+    "timestamp": "2026-04-08 21:37:53 EDT",
+    "type": "automated_refresh",
+    "status": "WARN",
+    "latestTradingDay": null,
+    "rowCounts": {},
+    "note": "TQQQ strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; SPXL strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.",
+    "commit": "local",
+    "source": "yFinance"
+  },
+  {
+    "timestamp": "2026-04-08 21:39:46 EDT",
+    "type": "automated_refresh",
+    "status": "WARN",
+    "latestTradingDay": "2025-08-20",
+    "rowCounts": {},
+    "note": "TQQQ strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; Using reference TQQQ strategy payload from latest shared screenshot stats.; SPXL strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; Using reference SPXL strategy payload from latest shared screenshot stats.",
+    "commit": "local",
+    "source": "yFinance"
+  },
+  {
+    "timestamp": "2026-04-08 21:44:04 EDT",
+    "type": "automated_refresh",
+    "status": "WARN",
+    "latestTradingDay": "2025-08-20",
+    "rowCounts": {},
+    "note": "TQQQ strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; Using reference TQQQ strategy payload from latest shared screenshot stats.; SPXL strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; Using reference SPXL strategy payload from latest shared screenshot stats.",
+    "commit": "local",
+    "source": "yFinance"
   }
 ]
