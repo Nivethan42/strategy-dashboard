@@ -5,7 +5,7 @@
   "tradedTicker": "TQQQ",
   "subtitle": "QQQ signal, prior-data only, trade TQQQ at today's open.",
   "latestTradingDay": "2026-04-08",
-  "lastUpdated": "2026-04-09 02:47:15 EDT",
+  "lastUpdated": "2026-04-09 04:25:22 EDT",
   "currentSignal": "BUY",
   "signalIsBuy": true,
   "currentActionText": "Buy TQQQ at today's open",
@@ -14,7 +14,7 @@
   "streakLength": 4,
   "latestOpen": {
     "source": "$608.71",
-    "traded": "$48.65"
+    "traded": "$48.64"
   },
   "formula": {
     "buy": [
@@ -5538,7 +5538,7 @@
         "tradedOpen": 43.45,
         "signal": 1,
         "signalText": "BUY",
-        "equity": 952.402512,
+        "equity": 952.304598,
         "sslp20_2": -0.004014,
         "mom150": 0.021111,
         "rv5": 0.017124,
@@ -5548,7 +5548,7 @@
       {
         "date": "2026-04-08",
         "sourceOpen": 608.71,
-        "tradedOpen": 48.645,
+        "tradedOpen": 48.64,
         "signal": 1,
         "signalText": "BUY",
         "equity": null,
@@ -11001,7 +11001,7 @@
       "tradedOpen": 43.45,
       "signal": 1,
       "signalText": "BUY",
-      "equity": 952.402512,
+      "equity": 952.304598,
       "sslp20_2": -0.004014,
       "mom150": 0.021111,
       "rv5": 0.017124,
@@ -11011,7 +11011,7 @@
     {
       "date": "2026-04-08",
       "sourceOpen": 608.71,
-      "tradedOpen": 48.645,
+      "tradedOpen": 48.64,
       "signal": 1,
       "signalText": "BUY",
       "equity": null,
