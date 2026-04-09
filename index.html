@@ -3,100 +3,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Strategy Dashboard</title>
+  <title>Dual Strategy Dashboard</title>
   <link rel="stylesheet" href="./style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
   <div class="container">
-    <header class="hero">
-      <p class="eyebrow">Strategy Dashboard</p>
-      <h1 id="strategy-name">Loading...</h1>
-      <p id="subtitle" class="subtitle"></p>
-      <div class="hero-meta">
-        <span id="latest-day">Latest trading day: --</span>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">GitHub Pages Dashboard</p>
+        <h1>Dual Strategy Dashboard</h1>
+      </div>
+      <div class="meta">
+        <span id="latest-day">Latest day: --</span>
         <span id="last-updated">Last updated: --</span>
       </div>
     </header>
 
-    <section class="status-section">
-      <div id="signal-pill" class="signal-pill neutral">Loading...</div>
-    </section>
+    <nav class="tabs" id="tabs">
+      <button class="tab is-active" data-tab="overview">Overview</button>
+      <button class="tab" data-tab="compare">Compare</button>
+      <button class="tab" data-tab="updates">Update History</button>
+      <button class="tab" data-tab="methodology">Methodology</button>
+    </nav>
 
-    <section id="overview-cards" class="overview-grid"></section>
+    <section class="view is-active" data-view="overview">
+      <section class="hero" id="hero"></section>
 
-    <section class="two-col">
-      <div class="panel">
+      <section class="panel">
         <div class="panel-head">
-          <h2>Indicators</h2>
-          <p>Live values based on prior-data-only logic</p>
+          <h2>Strategy Snapshot</h2>
+          <p>Current signal, action, latest open, and streak at a glance.</p>
         </div>
-        <div id="indicator-cards" class="indicator-grid"></div>
-      </div>
+        <div id="summary-grid" class="summary-grid"></div>
+      </section>
 
-      <div class="panel">
+      <section class="panel">
         <div class="panel-head">
-          <h2>Backtest Stats</h2>
-          <p>Using the same signal on leveraged ETF open-to-open returns</p>
+          <h2>Quick Compare</h2>
+          <p>Current signal and core backtest metrics.</p>
         </div>
-        <div id="stats-grid" class="stats-grid"></div>
-      </div>
-    </section>
+        <div id="quick-compare" class="compare-grid"></div>
+      </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>Price & Signal History</h2>
-        <p>QQQ open with BUY/CASH signal history</p>
-      </div>
-      <div class="chart-wrap">
-        <canvas id="priceChart"></canvas>
-      </div>
-    </section>
-
-    <section class="two-col">
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Formula Definitions</h2>
+      <section class="panel">
+        <div class="panel-head between">
+          <div>
+            <h2>Selected Strategy Chart</h2>
+            <p>Source open and strategy equity.</p>
+          </div>
+          <div class="toolbar">
+            <select id="overview-strategy"></select>
+            <div class="range-toggle" id="range-toggle">
+              <button data-range="1Y">1Y</button>
+              <button data-range="3Y">3Y</button>
+              <button data-range="FULL" class="is-active">Full</button>
+            </div>
+          </div>
         </div>
-        <ul id="formula-list" class="clean-list"></ul>
-      </div>
+        <div class="chart-wrap"><canvas id="overview-chart"></canvas></div>
+      </section>
 
-      <div class="panel">
-        <div class="panel-head">
-          <h2>Plain-English Interpretation</h2>
+      <section class="panel">
+        <div class="panel-head between">
+          <div>
+            <h2>Recent Signal History</h2>
+            <p>Most recent rows first.</p>
+          </div>
+          <select id="history-strategy"></select>
         </div>
-        <ul id="english-list" class="clean-list"></ul>
-      </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr id="history-head"></tr></thead>
+            <tbody id="history-body"></tbody>
+          </table>
+        </div>
+      </section>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2>Signal History (Past Year)</h2>
-        <p>Most recent rows first • Scroll inside this section to view more rows</p>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Signal</th>
-              <th>QQQ Open</th>
-              <th>SSLP20_2</th>
-              <th>MOM150</th>
-              <th>RV5</th>
-              <th>RV7</th>
-              <th>SR63_126</th>
-            </tr>
-          </thead>
-          <tbody id="history-body"></tbody>
-        </table>
-      </div>
+    <section class="view" data-view="compare">
+      <section class="panel">
+        <div class="panel-head"><h2>TQQQ vs SPXL</h2></div>
+        <div id="compare-cards" class="compare-grid compare-large"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>Equity Comparison</h2></div>
+        <div class="chart-wrap"><canvas id="compare-chart"></canvas></div>
+      </section>
     </section>
 
-    <footer class="footer">
-      <p>Built on GitHub Pages + GitHub Actions + Python + yfinance.</p>
-    </footer>
+    <section class="view" data-view="updates">
+      <section class="panel" id="refresh-highlight"></section>
+      <section class="panel">
+        <div class="panel-head"><h2>Automated Refresh Log</h2></div>
+        <div id="refresh-log" class="timeline"></div>
+      </section>
+      <section class="panel">
+        <div class="panel-head"><h2>Manual Site Changelog</h2></div>
+        <div id="changelog" class="timeline"></div>
+      </section>
+    </section>
+
+    <section class="view" data-view="methodology">
+      <div id="methodology-content" class="method-grid"></div>
+    </section>
+
+    <footer class="footer">Built with static HTML/CSS/JS + Python + yFinance + GitHub Actions.</footer>
   </div>
 </body>
 </html>

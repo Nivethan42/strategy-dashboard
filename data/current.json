@@ -1,0 +1,52 @@
+{
+  "siteTitle": "Dual Strategy Dashboard",
+  "lastUpdated": "2026-04-08 21:09:05 EDT",
+  "latestTradingDay": null,
+  "latestSuccessfulRefresh": "2026-04-08 21:09:05 EDT",
+  "strategies": [
+    {
+      "id": "tqqq",
+      "displayName": "TQQQ Strategy",
+      "sourceTicker": "QQQ",
+      "tradedTicker": "TQQQ",
+      "currentSignal": "N/A",
+      "signalIsBuy": false,
+      "currentActionText": "No data available",
+      "signalChangeSummary": "No data",
+      "streakType": "N/A",
+      "streakLength": 0,
+      "latestOpen": {
+        "source": "N/A",
+        "traded": "N/A"
+      },
+      "backtest": {
+        "cagr": "N/A",
+        "maxDrawdown": "N/A",
+        "tradeCount": 0,
+        "window": "N/A"
+      }
+    },
+    {
+      "id": "spxl",
+      "displayName": "SPXL Strategy",
+      "sourceTicker": "SPY",
+      "tradedTicker": "SPXL",
+      "currentSignal": "N/A",
+      "signalIsBuy": false,
+      "currentActionText": "No data available",
+      "signalChangeSummary": "No data",
+      "streakType": "N/A",
+      "streakLength": 0,
+      "latestOpen": {
+        "source": "N/A",
+        "traded": "N/A"
+      },
+      "backtest": {
+        "cagr": "N/A",
+        "maxDrawdown": "N/A",
+        "tradeCount": 0,
+        "window": "N/A"
+      }
+    }
+  ]
+}

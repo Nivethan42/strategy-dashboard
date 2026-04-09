@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2026-04-08 21:08:35 EDT",
+    "type": "automated_refresh",
+    "status": "FAIL",
+    "latestTradingDay": null,
+    "rowCounts": {},
+    "note": "Refresh failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.",
+    "commit": "local",
+    "source": "yFinance"
+  },
+  {
+    "timestamp": "2026-04-08 21:09:05 EDT",
+    "type": "automated_refresh",
+    "status": "WARN",
+    "latestTradingDay": null,
+    "rowCounts": {},
+    "note": "TQQQ strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.; SPXL strategy update failed: Failed to perform, curl: (56) CONNECT tunnel failed, response 403. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.",
+    "commit": "local",
+    "source": "yFinance"
+  }
+]
