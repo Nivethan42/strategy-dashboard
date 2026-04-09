@@ -79,7 +79,7 @@ function renderTable(history) {
   const body = byId("history-body");
   body.innerHTML = "";
 
-  const recent = [...history].slice(-40).reverse();
+  const recent = [...history].slice(-252).reverse();
 
   recent.forEach((row) => {
     const tr = document.createElement("tr");
