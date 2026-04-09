@@ -4,11 +4,11 @@
   "sourceTicker": "SPY",
   "tradedTicker": "SPXL",
   "subtitle": "SPY signal, prior-data only, trade SPXL at today's open.",
-  "latestTradingDay": null,
-  "lastUpdated": "2026-04-08 21:09:05 EDT",
+  "latestTradingDay": "2025-08-18",
+  "lastUpdated": "2026-04-08 21:44:05 EDT",
   "currentSignal": "N/A",
   "signalIsBuy": false,
-  "currentActionText": "No data available",
+  "currentActionText": "Live feed unavailable; showing reference strategy definition.",
   "signalChangeSummary": "No data",
   "streakType": "N/A",
   "streakLength": 0,
@@ -17,19 +17,34 @@
     "traded": "N/A"
   },
   "formula": {
-    "buy": [],
-    "sell": [],
-    "definitions": []
+    "buy": [
+      "Buy when at least 3 of the 6 trend checks pass AND VR20/100 < 1.4.",
+      "Checks: MOM90>0, MOM100>0, ABVMA100=true, SLP5_1>0, SLP20_1>0, SLP20_3>0."
+    ],
+    "sell": [
+      "Sell when score falls to 1 or 0, OR VR20/100 >= 1.4."
+    ],
+    "definitions": [
+      "MOM90 = (SPY Open[t-1] / SPY Open[t-91]) - 1",
+      "MOM100 = (SPY Open[t-1] / SPY Open[t-101]) - 1",
+      "ABVMA100 = SPY Open[t-1] > average of SPY Opens[t-1] through [t-100]",
+      "SLP5_1 = (SMA5[t-1] / SMA5[t-2]) - 1",
+      "SLP20_1 = (SMA20[t-1] / SMA20[t-2]) - 1",
+      "SLP20_3 = (SMA20[t-1] / SMA20[t-4]) - 1",
+      "VR20/100 = stdev(open-to-open returns over prior 20 days) / stdev(open-to-open returns over prior 100 days)"
+    ]
   },
   "plainEnglish": [
-    "No data available yet."
+    "Buy SPXL when trend breadth is strong (3+ of 6 checks true) and volatility regime is calm (VR20/100 < 1.4).",
+    "Sell SPXL when breadth weakens to 1 or 0 checks, or volatility regime spikes (VR20/100 >= 1.4).",
+    "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in SPXL."
   ],
   "indicators": [],
   "backtest": {
-    "cagr": "N/A",
-    "maxDrawdown": "N/A",
-    "tradeCount": 0,
-    "window": "N/A"
+    "cagr": "40.10%",
+    "maxDrawdown": "-40.48%",
+    "tradeCount": 56,
+    "window": "2008-11-05 to 2025-08-18"
   },
   "chart": {
     "sourceLabel": "SPY Open",

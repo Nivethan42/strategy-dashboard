@@ -4,11 +4,11 @@
   "sourceTicker": "QQQ",
   "tradedTicker": "TQQQ",
   "subtitle": "QQQ signal, prior-data only, trade TQQQ at today's open.",
-  "latestTradingDay": null,
-  "lastUpdated": "2026-04-08 21:09:05 EDT",
+  "latestTradingDay": "2025-08-20",
+  "lastUpdated": "2026-04-08 21:44:05 EDT",
   "currentSignal": "N/A",
   "signalIsBuy": false,
-  "currentActionText": "No data available",
+  "currentActionText": "Live feed unavailable; showing reference strategy definition.",
   "signalChangeSummary": "No data",
   "streakType": "N/A",
   "streakLength": 0,
@@ -17,19 +17,36 @@
     "traded": "N/A"
   },
   "formula": {
-    "buy": [],
-    "sell": [],
-    "definitions": []
+    "buy": [
+      "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
+      "Equivalent to screenshot rule where RV7 < 0.03 and RV7 < 0.035 both appear: stricter RV7 < 0.03 governs."
+    ],
+    "sell": [
+      "Sell / go CASH when both trigger conditions fail (SSLP20_2 >= -0.008 AND MOM150 <= -0.01), or RV5 >= 0.03, or RV7 >= 0.03, or SR63_126 >= 1.05."
+    ],
+    "definitions": [
+      "SMA20[t] = average of QQQ Opens from t-1..t-20",
+      "SSLP20_2[t] = (SMA20[t] / SMA20[t-2]) - 1",
+      "MOM150[t] = (QQQ Open[t-1] / QQQ Open[t-151]) - 1",
+      "RV5[t] = stdev of prior 5 open-to-open returns",
+      "RV7[t] = stdev of prior 7 open-to-open returns",
+      "SMA63[t] = average QQQ Opens from t-1..t-63",
+      "SMA126[t] = average QQQ Opens from t-1..t-126",
+      "SR63_126[t] = SMA63[t] / SMA126[t]"
+    ]
   },
   "plainEnglish": [
-    "No data available yet."
+    "Stay invested when either the 20-day slope has dropped enough over the last 2 days OR 150-day momentum remains better than -1%.",
+    "Short-term open-to-open volatility must stay low (RV5 and RV7 caps).",
+    "The 63-day trend must not be too stretched above the 126-day trend.",
+    "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in TQQQ."
   ],
   "indicators": [],
   "backtest": {
-    "cagr": "N/A",
-    "maxDrawdown": "N/A",
-    "tradeCount": 0,
-    "window": "N/A"
+    "cagr": "59.31%",
+    "maxDrawdown": "-47.88%",
+    "tradeCount": 61,
+    "window": "2010-03-10 to 2025-08-20"
   },
   "chart": {
     "sourceLabel": "QQQ Open",

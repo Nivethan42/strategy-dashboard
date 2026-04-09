@@ -3,8 +3,11 @@ name: Update strategy data
 on:
   workflow_dispatch:
   schedule:
-    - cron: "37,42,47,52 9 * * 1-5"
-    - cron: "10 18 * * 1-5"
+    # Hourly refresh on weekdays.
+    - cron: "10 * * * 1-5"
+    # Additional 5-minute refreshes from 9:20am to 10:00am EDT (13:20 to 14:00 UTC during DST).
+    - cron: "20,25,30,35,40,45,50,55 13 * * 1-5"
+    - cron: "0 14 * * 1-5"
 
 permissions:
   contents: write
@@ -26,6 +29,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run update script
+        continue-on-error: true
         env:
           GITHUB_SHA: ${{ github.sha }}
         run: python scripts/fetch_and_update.py

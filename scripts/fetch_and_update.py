@@ -288,21 +288,27 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
         "formula": {
             "buy": [
                 "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
+                "Equivalent to screenshot rule where RV7 < 0.03 and RV7 < 0.035 both appear: stricter RV7 < 0.03 governs.",
             ],
-            "sell": ["Sell / go CASH when any required condition fails."],
+            "sell": [
+                "Sell / go CASH when both trigger conditions fail (SSLP20_2 >= -0.008 AND MOM150 <= -0.01), or RV5 >= 0.03, or RV7 >= 0.03, or SR63_126 >= 1.05.",
+            ],
             "definitions": [
                 "SMA20[t] = average of QQQ Opens from t-1..t-20",
                 "SSLP20_2[t] = (SMA20[t] / SMA20[t-2]) - 1",
                 "MOM150[t] = (QQQ Open[t-1] / QQQ Open[t-151]) - 1",
                 "RV5[t] = stdev of prior 5 open-to-open returns",
                 "RV7[t] = stdev of prior 7 open-to-open returns",
-                "SR63_126[t] = SMA63[t] / SMA126[t] (prior-data)",
+                "SMA63[t] = average QQQ Opens from t-1..t-63",
+                "SMA126[t] = average QQQ Opens from t-1..t-126",
+                "SR63_126[t] = SMA63[t] / SMA126[t]",
             ],
         },
         "plainEnglish": [
-            "Stay invested when medium-term trend/momentum is supportive and short-term volatility remains contained.",
-            "All indicators use prior data (t-1 and earlier).",
-            "Trades are modeled open-to-open in TQQQ.",
+            "Stay invested when either the 20-day slope has dropped enough over the last 2 days OR 150-day momentum remains better than -1%.",
+            "Short-term open-to-open volatility must stay low (RV5 and RV7 caps).",
+            "The 63-day trend must not be too stretched above the 126-day trend.",
+            "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in TQQQ.",
         ],
         "indicators": indicators,
         "backtest": {
@@ -502,24 +508,26 @@ def spxl_strategy(spy_open: pd.Series, spxl_open: pd.Series) -> dict:
         },
         "formula": {
             "buy": [
-                "Buy when score >= 3 of 6 checks AND VR20/100 < 1.4.",
-                "Checks: MOM90>0, MOM100>0, ABVMA100, SLP5_1>0, SLP20_1>0, SLP20_3>0.",
+                "Buy when at least 3 of the 6 trend checks pass AND VR20/100 < 1.4.",
+                "Checks: MOM90>0, MOM100>0, ABVMA100=true, SLP5_1>0, SLP20_1>0, SLP20_3>0.",
             ],
-            "sell": ["Sell when score <= 1 OR VR20/100 >= 1.4."],
+            "sell": [
+                "Sell when score falls to 1 or 0, OR VR20/100 >= 1.4.",
+            ],
             "definitions": [
-                "MOM90 = SPY Open[t-1] / SPY Open[t-91] - 1",
-                "MOM100 = SPY Open[t-1] / SPY Open[t-101] - 1",
-                "ABVMA100 = SPY Open[t-1] > avg(SPY Open t-1..t-100)",
-                "SLP5_1 = SMA5[t-1] / SMA5[t-2] - 1",
-                "SLP20_1 = SMA20[t-1] / SMA20[t-2] - 1",
-                "SLP20_3 = SMA20[t-1] / SMA20[t-4] - 1",
-                "VR20/100 = stdev(prior 20 open-to-open returns) / stdev(prior 100)",
+                "MOM90 = (SPY Open[t-1] / SPY Open[t-91]) - 1",
+                "MOM100 = (SPY Open[t-1] / SPY Open[t-101]) - 1",
+                "ABVMA100 = SPY Open[t-1] > average of SPY Opens[t-1] through [t-100]",
+                "SLP5_1 = (SMA5[t-1] / SMA5[t-2]) - 1",
+                "SLP20_1 = (SMA20[t-1] / SMA20[t-2]) - 1",
+                "SLP20_3 = (SMA20[t-1] / SMA20[t-4]) - 1",
+                "VR20/100 = stdev(open-to-open returns over prior 20 days) / stdev(open-to-open returns over prior 100 days)",
             ],
         },
         "plainEnglish": [
-            "Buy when enough trend checks are positive and short-term volatility is not elevated.",
-            "Exit when trend breadth collapses or volatility regime rises.",
-            "All indicators use prior data (t-1 and earlier).",
+            "Buy SPXL when trend breadth is strong (3+ of 6 checks true) and volatility regime is calm (VR20/100 < 1.4).",
+            "Sell SPXL when breadth weakens to 1 or 0 checks, or volatility regime spikes (VR20/100 >= 1.4).",
+            "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in SPXL.",
         ],
         "indicators": indicators,
         "backtest": {
@@ -607,6 +615,116 @@ def empty_strategy_payload(
     }
 
 
+
+
+def reference_tqqq_payload() -> dict:
+    payload = empty_strategy_payload(
+        "tqqq",
+        "TQQQ Strategy",
+        "QQQ",
+        "TQQQ",
+        "QQQ signal, prior-data only, trade TQQQ at today's open.",
+    )
+    payload["latestTradingDay"] = "2025-08-20"
+    payload["currentActionText"] = "Live feed unavailable; showing reference strategy definition."
+    payload["formula"] = {
+        "buy": [
+            "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
+            "Equivalent to screenshot rule where RV7 < 0.03 and RV7 < 0.035 both appear: stricter RV7 < 0.03 governs.",
+        ],
+        "sell": [
+            "Sell / go CASH when both trigger conditions fail (SSLP20_2 >= -0.008 AND MOM150 <= -0.01), or RV5 >= 0.03, or RV7 >= 0.03, or SR63_126 >= 1.05.",
+        ],
+        "definitions": [
+            "SMA20[t] = average of QQQ Opens from t-1..t-20",
+            "SSLP20_2[t] = (SMA20[t] / SMA20[t-2]) - 1",
+            "MOM150[t] = (QQQ Open[t-1] / QQQ Open[t-151]) - 1",
+            "RV5[t] = stdev of prior 5 open-to-open returns",
+            "RV7[t] = stdev of prior 7 open-to-open returns",
+            "SMA63[t] = average QQQ Opens from t-1..t-63",
+            "SMA126[t] = average QQQ Opens from t-1..t-126",
+            "SR63_126[t] = SMA63[t] / SMA126[t]",
+        ],
+    }
+    payload["plainEnglish"] = [
+        "Stay invested when either the 20-day slope has dropped enough over the last 2 days OR 150-day momentum remains better than -1%.",
+        "Short-term open-to-open volatility must stay low (RV5 and RV7 caps).",
+        "The 63-day trend must not be too stretched above the 126-day trend.",
+        "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in TQQQ.",
+    ]
+    payload["backtest"] = {
+        "cagr": "59.31%",
+        "maxDrawdown": "-47.88%",
+        "tradeCount": 61,
+        "window": "2010-03-10 to 2025-08-20",
+    }
+    return payload
+
+
+def reference_spxl_payload() -> dict:
+    payload = empty_strategy_payload(
+        "spxl",
+        "SPXL Strategy",
+        "SPY",
+        "SPXL",
+        "SPY signal, prior-data only, trade SPXL at today's open.",
+    )
+    payload["latestTradingDay"] = "2025-08-18"
+    payload["currentActionText"] = "Live feed unavailable; showing reference strategy definition."
+    payload["formula"] = {
+        "buy": [
+            "Buy when at least 3 of the 6 trend checks pass AND VR20/100 < 1.4.",
+            "Checks: MOM90>0, MOM100>0, ABVMA100=true, SLP5_1>0, SLP20_1>0, SLP20_3>0.",
+        ],
+        "sell": [
+            "Sell when score falls to 1 or 0, OR VR20/100 >= 1.4.",
+        ],
+        "definitions": [
+            "MOM90 = (SPY Open[t-1] / SPY Open[t-91]) - 1",
+            "MOM100 = (SPY Open[t-1] / SPY Open[t-101]) - 1",
+            "ABVMA100 = SPY Open[t-1] > average of SPY Opens[t-1] through [t-100]",
+            "SLP5_1 = (SMA5[t-1] / SMA5[t-2]) - 1",
+            "SLP20_1 = (SMA20[t-1] / SMA20[t-2]) - 1",
+            "SLP20_3 = (SMA20[t-1] / SMA20[t-4]) - 1",
+            "VR20/100 = stdev(open-to-open returns over prior 20 days) / stdev(open-to-open returns over prior 100 days)",
+        ],
+    }
+    payload["plainEnglish"] = [
+        "Buy SPXL when trend breadth is strong (3+ of 6 checks true) and volatility regime is calm (VR20/100 < 1.4).",
+        "Sell SPXL when breadth weakens to 1 or 0 checks, or volatility regime spikes (VR20/100 >= 1.4).",
+        "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in SPXL.",
+    ]
+    payload["backtest"] = {
+        "cagr": "40.10%",
+        "maxDrawdown": "-40.48%",
+        "tradeCount": 56,
+        "window": "2008-11-05 to 2025-08-18",
+    }
+    return payload
+
+
+def load_existing_strategy_payload(path: Path, strategy_id: str) -> dict | None:
+    if not path.exists():
+        return None
+
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+    if not isinstance(payload, dict):
+        return None
+
+    if payload.get("id") != strategy_id:
+        return None
+
+    has_history = bool(payload.get("signalHistory"))
+    has_live_signal = payload.get("currentSignal") not in {None, "", "N/A"}
+    if not (has_history or has_live_signal):
+        return None
+
+    return payload
+
 def main() -> None:
     run_ts = now_ny().strftime("%Y-%m-%d %H:%M:%S %Z")
     commit = os.getenv("GITHUB_SHA") or os.getenv("COMMIT_SHA") or "local"
@@ -618,6 +736,7 @@ def main() -> None:
     try:
         warnings: list[str] = []
 
+        tqqq_existing = load_existing_strategy_payload(STRATEGY_DIR / "tqqq.json", "tqqq")
         try:
             qqq = get_daily_opens("QQQ")
             tqqq = get_daily_opens("TQQQ")
@@ -626,14 +745,14 @@ def main() -> None:
             tqqq_payload = tqqq_strategy(qqq, tqqq)
         except Exception as exc:
             warnings.append(f"TQQQ strategy update failed: {exc}")
-            tqqq_payload = empty_strategy_payload(
-                "tqqq",
-                "TQQQ Strategy",
-                "QQQ",
-                "TQQQ",
-                "QQQ signal, prior-data only, trade TQQQ at today's open.",
-            )
+            if tqqq_existing:
+                tqqq_payload = tqqq_existing
+                warnings.append("Kept previous successful TQQQ payload.")
+            else:
+                tqqq_payload = reference_tqqq_payload()
+                warnings.append("Using reference TQQQ strategy payload from latest shared screenshot stats.")
 
+        spxl_existing = load_existing_strategy_payload(STRATEGY_DIR / "spxl.json", "spxl")
         try:
             spy = get_daily_opens("SPY")
             spxl = get_daily_opens("SPXL")
@@ -642,13 +761,20 @@ def main() -> None:
             spxl_payload = spxl_strategy(spy, spxl)
         except Exception as exc:
             warnings.append(f"SPXL strategy update failed: {exc}")
-            spxl_payload = empty_strategy_payload(
-                "spxl",
-                "SPXL Strategy",
-                "SPY",
-                "SPXL",
-                "SPY signal, prior-data only, trade SPXL at today's open.",
-            )
+            if spxl_existing:
+                spxl_payload = spxl_existing
+                warnings.append("Kept previous successful SPXL payload.")
+            else:
+                spxl_payload = reference_spxl_payload()
+                warnings.append("Using reference SPXL strategy payload from latest shared screenshot stats.")
+
+        latest_successful_refresh = run_ts if not warnings else None
+        if warnings and (DATA_DIR / "current.json").exists():
+            try:
+                prev_current = json.loads((DATA_DIR / "current.json").read_text(encoding="utf-8"))
+                latest_successful_refresh = prev_current.get("latestSuccessfulRefresh")
+            except Exception:
+                latest_successful_refresh = None
 
         current = {
             "siteTitle": "Dual Strategy Dashboard",
@@ -656,7 +782,7 @@ def main() -> None:
             "latestTradingDay": max(
                 [x for x in [tqqq_payload["latestTradingDay"], spxl_payload["latestTradingDay"]] if x] or [None]
             ),
-            "latestSuccessfulRefresh": run_ts,
+            "latestSuccessfulRefresh": latest_successful_refresh,
             "strategies": [
                 {
                     "id": tqqq_payload["id"],
@@ -702,9 +828,74 @@ def main() -> None:
             status = "WARN"
             note = "; ".join(warnings)
     except Exception as exc:
-        status = "FAIL"
-        note = f"Refresh failed: {exc}"
-        raise
+        # Keep the job non-fatal: salvage existing payloads (or reference payloads)
+        # and still write dashboard files/logs.
+        status = "WARN"
+        note = f"Refresh recovered from fatal error: {exc}"
+        try:
+            tqqq_payload = load_existing_strategy_payload(STRATEGY_DIR / "tqqq.json", "tqqq") or reference_tqqq_payload()
+            spxl_payload = load_existing_strategy_payload(STRATEGY_DIR / "spxl.json", "spxl") or reference_spxl_payload()
+
+            latest_successful_refresh = None
+            if (DATA_DIR / "current.json").exists():
+                try:
+                    prev_current = json.loads((DATA_DIR / "current.json").read_text(encoding="utf-8"))
+                    latest_successful_refresh = prev_current.get("latestSuccessfulRefresh")
+                except Exception:
+                    latest_successful_refresh = None
+
+            current = {
+                "siteTitle": "Dual Strategy Dashboard",
+                "lastUpdated": run_ts,
+                "latestTradingDay": max(
+                    [x for x in [tqqq_payload.get("latestTradingDay"), spxl_payload.get("latestTradingDay")] if x]
+                    or [None]
+                ),
+                "latestSuccessfulRefresh": latest_successful_refresh,
+                "strategies": [
+                    {
+                        "id": tqqq_payload["id"],
+                        "displayName": tqqq_payload["displayName"],
+                        "sourceTicker": tqqq_payload["sourceTicker"],
+                        "tradedTicker": tqqq_payload["tradedTicker"],
+                        "currentSignal": tqqq_payload["currentSignal"],
+                        "signalIsBuy": tqqq_payload["signalIsBuy"],
+                        "currentActionText": tqqq_payload["currentActionText"],
+                        "signalChangeSummary": tqqq_payload["signalChangeSummary"],
+                        "streakType": tqqq_payload["streakType"],
+                        "streakLength": tqqq_payload["streakLength"],
+                        "latestOpen": tqqq_payload["latestOpen"],
+                        "backtest": tqqq_payload["backtest"],
+                    },
+                    {
+                        "id": spxl_payload["id"],
+                        "displayName": spxl_payload["displayName"],
+                        "sourceTicker": spxl_payload["sourceTicker"],
+                        "tradedTicker": spxl_payload["tradedTicker"],
+                        "currentSignal": spxl_payload["currentSignal"],
+                        "signalIsBuy": spxl_payload["signalIsBuy"],
+                        "currentActionText": spxl_payload["currentActionText"],
+                        "signalChangeSummary": spxl_payload["signalChangeSummary"],
+                        "streakType": spxl_payload["streakType"],
+                        "streakLength": spxl_payload["streakLength"],
+                        "latestOpen": spxl_payload["latestOpen"],
+                        "backtest": spxl_payload["backtest"],
+                    },
+                ],
+            }
+
+            (DATA_DIR / "current.json").write_text(json.dumps(current, indent=2), encoding="utf-8")
+            (STRATEGY_DIR / "tqqq.json").write_text(json.dumps(tqqq_payload, indent=2), encoding="utf-8")
+            (STRATEGY_DIR / "spxl.json").write_text(json.dumps(spxl_payload, indent=2), encoding="utf-8")
+            (DATA_DIR / "latest.json").write_text(json.dumps(tqqq_payload, indent=2), encoding="utf-8")
+            (DATA_DIR / "history.json").write_text(
+                json.dumps(tqqq_payload.get("signalHistory", []), indent=2),
+                encoding="utf-8",
+            )
+            ensure_changelog()
+            note = f"{note}; wrote fallback payloads."
+        except Exception as salvage_exc:
+            note = f"{note}; salvage write failed: {salvage_exc}"
     finally:
         latest_day = None
         if (DATA_DIR / "current.json").exists():
@@ -715,18 +906,21 @@ def main() -> None:
             except Exception:
                 latest_day = None
 
-        append_refresh_log(
-            {
-                "timestamp": run_ts,
-                "type": "automated_refresh",
-                "status": status,
-                "latestTradingDay": latest_day,
-                "rowCounts": row_counts,
-                "note": note,
-                "commit": commit,
-                "source": "yFinance",
-            }
-        )
+        try:
+            append_refresh_log(
+                {
+                    "timestamp": run_ts,
+                    "type": "automated_refresh",
+                    "status": status,
+                    "latestTradingDay": latest_day,
+                    "rowCounts": row_counts,
+                    "note": note,
+                    "commit": commit,
+                    "source": "yFinance",
+                }
+            )
+        except Exception as log_exc:
+            print(f"Refresh log write failed: {log_exc}")
 
     print("Wrote strategy files, current.json, and refresh_log.json")
 
