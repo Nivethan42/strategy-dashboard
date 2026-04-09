@@ -11,6 +11,16 @@ const state = {
 
 const byId = (id) => document.getElementById(id);
 const fmt = (value, fallback = "N/A") => (value === null || value === undefined || value === "" ? fallback : String(value));
+const esc = (value, fallback = "N/A") => fmt(value, fallback)
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&#39;");
+
+function metricRow(label, value) {
+  return `<div class="kv"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`;
+}
 
 function tabInit() {
   byId("tabs").addEventListener("click", (e) => {
@@ -34,15 +44,15 @@ function buildHero() {
 
   byId("hero").innerHTML = `
     <div class="hero-main">
-      <h2>${fmt(best.displayName)}: ${fmt(best.currentSignal)}</h2>
-      <p>${fmt(best.currentActionText)}</p>
-      <p>${fmt(best.signalChangeSummary)} • ${fmt(best.streakType)} streak: ${fmt(best.streakLength)} day(s)</p>
+      <h2>${esc(best.displayName)}: ${esc(best.currentSignal)}</h2>
+      <p>${esc(best.currentActionText)}</p>
+      <p>${esc(best.signalChangeSummary)} • ${esc(best.streakType)} streak: ${esc(best.streakLength)} day(s)</p>
     </div>
     <div class="hero-signal">
       <div>Current signal focus</div>
-      <div class="signal-pill ${signalClass(best.currentSignal)}">${fmt(best.currentSignal)} / ${best.signalIsBuy ? "INVESTED" : "CASH"}</div>
-      <div class="kv"><span>Latest open (${fmt(best.sourceTicker)})</span><strong>${fmt(best.latestOpen.source)}</strong></div>
-      <div class="kv"><span>Latest open (${fmt(best.tradedTicker)})</span><strong>${fmt(best.latestOpen.traded)}</strong></div>
+      <div class="signal-pill ${signalClass(best.currentSignal)}">${esc(best.currentSignal)} / ${best.signalIsBuy ? "INVESTED" : "CASH"}</div>
+      ${metricRow(`Latest open (${fmt(best.sourceTicker)})`, best.latestOpen.source)}
+      ${metricRow(`Latest open (${fmt(best.tradedTicker)})`, best.latestOpen.traded)}
     </div>`;
 }
 
@@ -53,12 +63,12 @@ function buildSummary() {
     const card = document.createElement("article");
     card.className = "card";
     card.innerHTML = `
-      <h3>${fmt(s.displayName)}</h3>
-      <div class="kv"><span>Signal</span><strong>${fmt(s.currentSignal)}</strong></div>
-      <div class="kv"><span>Today</span><strong>${fmt(s.signalChangeSummary)}</strong></div>
-      <div class="kv"><span>Action</span><strong>${fmt(s.currentActionText)}</strong></div>
-      <div class="kv"><span>BUY/CASH streak</span><strong>${fmt(s.streakType)} ${fmt(s.streakLength)}d</strong></div>
-      <div class="kv"><span>${fmt(s.tradedTicker)} Open</span><strong>${fmt(s.latestOpen.traded)}</strong></div>
+      <h3>${esc(s.displayName)}</h3>
+      ${metricRow("Signal", s.currentSignal)}
+      ${metricRow("Today", s.signalChangeSummary)}
+      ${metricRow("Action", s.currentActionText)}
+      ${metricRow("BUY/CASH streak", `${fmt(s.streakType)} ${fmt(s.streakLength)}d`)}
+      ${metricRow(`${fmt(s.tradedTicker)} Open`, s.latestOpen.traded)}
       <div class="indicator-grid">${renderIndicatorsMini(state.strategies[s.id].indicators)}</div>
     `;
     container.appendChild(card);
@@ -67,7 +77,7 @@ function buildSummary() {
 
 function renderIndicatorsMini(indicators) {
   return indicators
-    .map((i) => `<div class="indicator-card"><div class="top"><strong>${fmt(i.label)}</strong><span class="badge ${i.passed ? "ok" : "fail"}">${i.passed ? "PASS" : "FAIL"}</span></div><div class="indicator-val">${fmt(i.displayValue)}</div><small>${fmt(i.rule)}</small></div>`)
+    .map((i) => `<div class="indicator-card"><div class="top"><strong>${esc(i.label)}</strong><span class="badge ${i.passed ? "ok" : "fail"}">${i.passed ? "PASS" : "FAIL"}</span></div><div class="indicator-val">${esc(i.displayValue)}</div><small>${esc(i.rule)}</small></div>`)
     .join("");
 }
 
@@ -75,17 +85,26 @@ function buildQuickCompare() {
   const container = byId("quick-compare");
   container.innerHTML = "";
   state.current.strategies.forEach((s) => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${fmt(s.displayName)}</h3>
-      <div class="kv"><span>Signal</span><strong>${fmt(s.currentSignal)}</strong></div>
-      <div class="kv"><span>CAGR</span><strong>${fmt(s.backtest.cagr)}</strong></div>
-      <div class="kv"><span>Max DD</span><strong>${fmt(s.backtest.maxDrawdown)}</strong></div>
-      <div class="kv"><span>Trades</span><strong>${fmt(s.backtest.tradeCount)}</strong></div>
-      <div class="kv"><span>Window</span><strong>${fmt(s.backtest.window)}</strong></div>`;
-    container.appendChild(card);
+    container.appendChild(strategyCard(s, [
+      { label: "Signal", value: s.currentSignal },
+      { label: "CAGR", value: s.backtest.cagr },
+      { label: "Max DD", value: s.backtest.maxDrawdown },
+      { label: "Trades", value: s.backtest.tradeCount },
+      { label: "Window", value: s.backtest.window },
+    ]));
   });
+}
+
+function strategyCard(strategy, metrics, className = "card") {
+  const card = document.createElement("article");
+  card.className = className;
+  card.innerHTML = `
+    <h3>${esc(strategy.displayName)}</h3>
+    <div class="metric-list">
+      ${metrics.map((m) => metricRow(m.label, m.value)).join("")}
+    </div>
+  `;
+  return card;
 }
 
 function pickRange(history, range) {
@@ -118,17 +137,14 @@ function renderCompareSection() {
   container.innerHTML = "";
 
   state.current.strategies.forEach((s) => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${fmt(s.displayName)}</h3>
-      <div class="kv"><span>Current signal</span><strong>${fmt(s.currentSignal)}</strong></div>
-      <div class="kv"><span>Latest open (${s.tradedTicker})</span><strong>${fmt(s.latestOpen.traded)}</strong></div>
-      <div class="kv"><span>Streak</span><strong>${fmt(s.streakType)} ${fmt(s.streakLength)}d</strong></div>
-      <div class="kv"><span>CAGR</span><strong>${fmt(s.backtest.cagr)}</strong></div>
-      <div class="kv"><span>Max drawdown</span><strong>${fmt(s.backtest.maxDrawdown)}</strong></div>
-      <div class="kv"><span>Trade count</span><strong>${fmt(s.backtest.tradeCount)}</strong></div>`;
-    container.appendChild(card);
+    container.appendChild(strategyCard(s, [
+      { label: "Current signal", value: s.currentSignal },
+      { label: `Latest open (${s.tradedTicker})`, value: s.latestOpen.traded },
+      { label: "Streak", value: `${fmt(s.streakType)} ${fmt(s.streakLength)}d` },
+      { label: "CAGR", value: s.backtest.cagr },
+      { label: "Max drawdown", value: s.backtest.maxDrawdown },
+      { label: "Trade count", value: s.backtest.tradeCount },
+    ], "card compare-card"));
   });
 
   const tqqq = state.strategies.tqqq?.chart?.history || [];
@@ -148,14 +164,14 @@ function renderCompareSection() {
 }
 
 function renderHistoryTable(strategyId) {
-  const rows = [...state.strategies[strategyId].signalHistory].reverse().slice(0, 180);
+  const rows = [...(state.strategies[strategyId].signalHistory || [])].reverse().slice(0, 180);
   const head = byId("history-head");
   const body = byId("history-body");
 
   const cols = Object.keys(rows[0] || { date: "", signalText: "", sourceOpen: "", tradedOpen: "" });
-  head.innerHTML = cols.map((c) => `<th>${c}</th>`).join("");
+  head.innerHTML = cols.map((c) => `<th>${esc(c)}</th>`).join("");
   body.innerHTML = rows
-    .map((r) => `<tr>${cols.map((c) => `<td>${fmt(r[c])}</td>`).join("")}</tr>`)
+    .map((r) => `<tr>${cols.map((c) => `<td>${esc(r[c])}</td>`).join("")}</tr>`)
     .join("");
 }
 
@@ -163,19 +179,19 @@ function renderUpdates() {
   const latestOk = [...state.refreshLog].reverse().find((r) => r.status === "OK");
   byId("refresh-highlight").innerHTML = `
     <div class="panel-head"><h2>Latest Successful Refresh</h2></div>
-    <div class="kv"><span>Timestamp</span><strong>${fmt(latestOk?.timestamp)}</strong></div>
-    <div class="kv"><span>Latest trading day</span><strong>${fmt(latestOk?.latestTradingDay)}</strong></div>
-    <div class="kv"><span>Source</span><strong>${fmt(latestOk?.source)}</strong></div>
-    <div class="kv"><span>Commit</span><strong>${fmt(latestOk?.commit)}</strong></div>`;
+    ${metricRow("Timestamp", latestOk?.timestamp)}
+    ${metricRow("Latest trading day", latestOk?.latestTradingDay)}
+    ${metricRow("Source", latestOk?.source)}
+    ${metricRow("Commit", latestOk?.commit)}`;
 
   byId("refresh-log").innerHTML = [...state.refreshLog].reverse().slice(0, 80).map((r) => {
     const cls = r.status === "OK" ? "ok" : r.status === "WARN" ? "warn" : "fail";
-    return `<article class="log-item"><div class="kv"><strong>${fmt(r.timestamp)}</strong><span class="badge ${cls}">${fmt(r.status)}</span></div><p>${fmt(r.type)} • ${fmt(r.note)}</p><p>Latest day: ${fmt(r.latestTradingDay)} • Commit: ${fmt(r.commit)}</p></article>`;
+    return `<article class="log-item"><div class="kv"><strong>${esc(r.timestamp)}</strong><span class="badge ${cls}">${esc(r.status)}</span></div><p>${esc(r.type)} • ${esc(r.note)}</p><p>Latest day: ${esc(r.latestTradingDay)} • Commit: ${esc(r.commit)}</p></article>`;
   }).join("");
 
   byId("changelog").innerHTML = [...state.changelog].reverse().map((r) => {
-    const details = (r.details || []).map((d) => `<li>${fmt(d)}</li>`).join("");
-    return `<article class="log-item"><div class="kv"><strong>v${fmt(r.version)}</strong><span>${fmt(r.date)}</span></div><p><strong>${fmt(r.title)}</strong></p><ul>${details}</ul><p>Commit: ${fmt(r.commit)}</p></article>`;
+    const details = (r.details || []).map((d) => `<li>${esc(d)}</li>`).join("");
+    return `<article class="log-item"><div class="kv"><strong>v${esc(r.version)}</strong><span>${esc(r.date)}</span></div><p><strong>${esc(r.title)}</strong></p><ul>${details}</ul><p>Commit: ${esc(r.commit)}</p></article>`;
   }).join("");
 }
 
@@ -187,19 +203,19 @@ function renderMethodology() {
     const block = document.createElement("section");
     block.className = "panel";
     block.innerHTML = `
-      <h2>${fmt(s.displayName)}</h2>
-      <p>${fmt(s.subtitle)}</p>
+      <h2>${esc(s.displayName)}</h2>
+      <p>${esc(s.subtitle)}</p>
       <details>
         <summary>Show formula</summary>
         <h4>Buy rule</h4>
-        <ul>${(s.formula.buy || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+        <ul>${(s.formula.buy || []).map((x) => `<li>${esc(x)}</li>`).join("") || "<li>No buy formula provided.</li>"}</ul>
         <h4>Sell rule</h4>
-        <ul>${(s.formula.sell || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+        <ul>${(s.formula.sell || []).map((x) => `<li>${esc(x)}</li>`).join("") || "<li>No sell formula provided.</li>"}</ul>
         <h4>Definitions</h4>
-        <ul>${(s.formula.definitions || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+        <ul>${(s.formula.definitions || []).map((x) => `<li>${esc(x)}</li>`).join("") || "<li>No definitions provided.</li>"}</ul>
       </details>
       <h4>Plain-English explanation</h4>
-      <ul>${(s.plainEnglish || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+      <ul>${(s.plainEnglish || []).map((x) => `<li>${esc(x)}</li>`).join("") || "<li>No explanation provided.</li>"}</ul>
       <h4>Backtest assumptions</h4>
       <ul>
         <li>Signal computed from prior data only (t-1 and earlier).</li>
