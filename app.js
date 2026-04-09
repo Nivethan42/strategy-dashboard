@@ -1,235 +1,280 @@
-let priceChart = null;
+let overviewChart;
+let compareChart;
 
-function byId(id) {
-  return document.getElementById(id);
+const state = {
+  current: null,
+  strategies: {},
+  refreshLog: [],
+  changelog: [],
+  activeRange: "FULL",
+};
+
+const byId = (id) => document.getElementById(id);
+const fmt = (value, fallback = "N/A") => (value === null || value === undefined || value === "" ? fallback : String(value));
+
+function tabInit() {
+  byId("tabs").addEventListener("click", (e) => {
+    const btn = e.target.closest(".tab");
+    if (!btn) return;
+    const tab = btn.dataset.tab;
+    document.querySelectorAll(".tab").forEach((x) => x.classList.remove("is-active"));
+    btn.classList.add("is-active");
+    document.querySelectorAll(".view").forEach((v) => v.classList.remove("is-active"));
+    document.querySelector(`[data-view="${tab}"]`).classList.add("is-active");
+  });
 }
 
-function safeText(value, fallback = "N/A") {
-  if (value === null || value === undefined || value === "") return fallback;
-  return String(value);
+function signalClass(signal) {
+  return signal === "BUY" ? "buy" : "cash";
 }
 
-function renderOverviewCards(cards) {
-  const container = byId("overview-cards");
+function buildHero() {
+  const strategies = state.current.strategies;
+  const best = strategies.find((s) => s.signalIsBuy) || strategies[0];
+
+  byId("hero").innerHTML = `
+    <div class="hero-main">
+      <h2>${fmt(best.displayName)}: ${fmt(best.currentSignal)}</h2>
+      <p>${fmt(best.currentActionText)}</p>
+      <p>${fmt(best.signalChangeSummary)} • ${fmt(best.streakType)} streak: ${fmt(best.streakLength)} day(s)</p>
+    </div>
+    <div class="hero-signal">
+      <div>Current signal focus</div>
+      <div class="signal-pill ${signalClass(best.currentSignal)}">${fmt(best.currentSignal)} / ${best.signalIsBuy ? "INVESTED" : "CASH"}</div>
+      <div class="kv"><span>Latest open (${fmt(best.sourceTicker)})</span><strong>${fmt(best.latestOpen.source)}</strong></div>
+      <div class="kv"><span>Latest open (${fmt(best.tradedTicker)})</span><strong>${fmt(best.latestOpen.traded)}</strong></div>
+    </div>`;
+}
+
+function buildSummary() {
+  const container = byId("summary-grid");
   container.innerHTML = "";
-
-  cards.forEach((card) => {
-    const div = document.createElement("div");
-    div.className = "overview-card";
-    div.innerHTML = `
-      <div class="overview-label">${safeText(card.label)}</div>
-      <div class="overview-value">${safeText(card.value)}</div>
+  state.current.strategies.forEach((s) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${fmt(s.displayName)}</h3>
+      <div class="kv"><span>Signal</span><strong>${fmt(s.currentSignal)}</strong></div>
+      <div class="kv"><span>Today</span><strong>${fmt(s.signalChangeSummary)}</strong></div>
+      <div class="kv"><span>Action</span><strong>${fmt(s.currentActionText)}</strong></div>
+      <div class="kv"><span>BUY/CASH streak</span><strong>${fmt(s.streakType)} ${fmt(s.streakLength)}d</strong></div>
+      <div class="kv"><span>${fmt(s.tradedTicker)} Open</span><strong>${fmt(s.latestOpen.traded)}</strong></div>
+      <div class="indicator-grid">${renderIndicatorsMini(state.strategies[s.id].indicators)}</div>
     `;
-    container.appendChild(div);
+    container.appendChild(card);
   });
 }
 
-function renderIndicators(indicators) {
-  const container = byId("indicator-cards");
+function renderIndicatorsMini(indicators) {
+  return indicators
+    .map((i) => `<div class="indicator-card"><div class="top"><strong>${fmt(i.label)}</strong><span class="badge ${i.passed ? "ok" : "fail"}">${i.passed ? "PASS" : "FAIL"}</span></div><div class="indicator-val">${fmt(i.displayValue)}</div><small>${fmt(i.rule)}</small></div>`)
+    .join("");
+}
+
+function buildQuickCompare() {
+  const container = byId("quick-compare");
   container.innerHTML = "";
-
-  indicators.forEach((item) => {
-    const div = document.createElement("div");
-    div.className = "indicator-card";
-    div.innerHTML = `
-      <div class="indicator-top">
-        <div class="indicator-name">${safeText(item.label)}</div>
-        <div class="badge ${item.passed ? "pass" : "fail"}">
-          ${item.passed ? "PASS" : "FAIL"}
-        </div>
-      </div>
-      <div class="indicator-value">${safeText(item.display_value)}</div>
-      <div class="indicator-rule">Rule: ${safeText(item.rule)}</div>
-      <div class="indicator-description">${safeText(item.description)}</div>
-    `;
-    container.appendChild(div);
+  state.current.strategies.forEach((s) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${fmt(s.displayName)}</h3>
+      <div class="kv"><span>Signal</span><strong>${fmt(s.currentSignal)}</strong></div>
+      <div class="kv"><span>CAGR</span><strong>${fmt(s.backtest.cagr)}</strong></div>
+      <div class="kv"><span>Max DD</span><strong>${fmt(s.backtest.maxDrawdown)}</strong></div>
+      <div class="kv"><span>Trades</span><strong>${fmt(s.backtest.tradeCount)}</strong></div>
+      <div class="kv"><span>Window</span><strong>${fmt(s.backtest.window)}</strong></div>`;
+    container.appendChild(card);
   });
 }
 
-function renderStats(stats) {
-  const container = byId("stats-grid");
-  container.innerHTML = "";
-
-  Object.entries(stats).forEach(([ticker, stat]) => {
-    const div = document.createElement("div");
-    div.className = "stat-card";
-    div.innerHTML = `
-      <div class="stat-label">${ticker} (Full Sample)</div>
-      <div class="stat-main">CAGR: ${safeText(stat.cagr)}</div>
-      <div class="indicator-rule">Max DD: ${safeText(stat.max_drawdown)}</div>
-      <div class="indicator-rule">Trades: ${safeText(stat.trades)}</div>
-      <div class="indicator-rule">Window: ${safeText(stat.window)}</div>
-    `;
-    container.appendChild(div);
-  });
+function pickRange(history, range) {
+  if (range === "1Y") return history.slice(-252);
+  if (range === "3Y") return history.slice(-756);
+  return history;
 }
 
-function renderList(elementId, items) {
-  const el = byId(elementId);
-  el.innerHTML = "";
+function renderOverviewChart(strategyId) {
+  const strategy = state.strategies[strategyId];
+  if (!strategy) return;
+  const rows = pickRange(strategy.chart.history, state.activeRange);
 
-  items.forEach((item) => {
-    const li = document.createElement("li");
-    li.textContent = item;
-    el.appendChild(li);
-  });
-}
-
-function renderTable(history) {
-  const body = byId("history-body");
-  body.innerHTML = "";
-
-  const recent = [...history].slice(-252).reverse();
-
-  recent.forEach((row) => {
-    const tr = document.createElement("tr");
-    const isBuy = Number(row.signal) === 1;
-
-    tr.innerHTML = `
-      <td>${safeText(row.date)}</td>
-      <td class="signal-cell ${isBuy ? "signal-buy" : "signal-cash"}">${safeText(row.signal_text)}</td>
-      <td>${row.qqq_open ?? "N/A"}</td>
-      <td>${row.sslp20_2 ?? "N/A"}</td>
-      <td>${row.mom150 ?? "N/A"}</td>
-      <td>${row.rv5 ?? "N/A"}</td>
-      <td>${row.rv7 ?? "N/A"}</td>
-      <td>${row.sr63_126 ?? "N/A"}</td>
-    `;
-    body.appendChild(tr);
-  });
-}
-
-function renderChart(history) {
-  const labels = history.map((row) => row.date);
-  const qqqOpens = history.map((row) => row.qqq_open);
-  const signalSeries = history.map((row) => row.signal);
-
-  const ctx = byId("priceChart").getContext("2d");
-
-  if (priceChart) {
-    priceChart.destroy();
-  }
-
-  priceChart = new Chart(ctx, {
+  if (overviewChart) overviewChart.destroy();
+  overviewChart = new Chart(byId("overview-chart").getContext("2d"), {
     type: "line",
     data: {
-      labels,
+      labels: rows.map((r) => r.date),
       datasets: [
-        {
-          label: "QQQ Open",
-          data: qqqOpens,
-          borderWidth: 2,
-          tension: 0.15,
-          yAxisID: "y"
-        },
-        {
-          label: "Signal (1=BUY, 0=CASH)",
-          data: signalSeries,
-          borderWidth: 2,
-          stepped: true,
-          yAxisID: "y1"
-        }
-      ]
+        { label: strategy.chart.sourceLabel, data: rows.map((r) => r.sourceOpen), yAxisID: "y", borderWidth: 2, tension: 0.15 },
+        { label: "Strategy Equity", data: rows.map((r) => r.equity), yAxisID: "y1", borderWidth: 2, tension: 0.15 },
+      ],
     },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      interaction: {
-        mode: "index",
-        intersect: false
-      },
-      plugins: {
-        legend: {
-          position: "top"
-        }
-      },
-      scales: {
-        y: {
-          position: "left",
-          title: {
-            display: true,
-            text: "QQQ Open"
-          }
-        },
-        y1: {
-          position: "right",
-          min: -0.05,
-          max: 1.05,
-          grid: {
-            drawOnChartArea: false
-          },
-          ticks: {
-            callback: function(value) {
-              if (value === 1) return "BUY";
-              if (value === 0) return "CASH";
-              return "";
-            }
-          },
-          title: {
-            display: true,
-            text: "Signal"
-          }
-        }
-      }
-    }
+    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: "index", intersect: false } },
   });
 }
 
-function renderHeader(latest) {
-  byId("strategy-name").textContent = safeText(latest.strategy_name);
-  byId("subtitle").textContent = safeText(latest.subtitle);
-  byId("latest-day").textContent = `Latest trading day: ${safeText(latest.latest_trading_day)}`;
-  byId("last-updated").textContent = `Last updated: ${safeText(latest.last_updated)}`;
+function renderCompareSection() {
+  const container = byId("compare-cards");
+  container.innerHTML = "";
 
-  const pill = byId("signal-pill");
-  pill.textContent = safeText(latest.market_signal);
+  state.current.strategies.forEach((s) => {
+    const card = document.createElement("article");
+    card.className = "card";
+    card.innerHTML = `
+      <h3>${fmt(s.displayName)}</h3>
+      <div class="kv"><span>Current signal</span><strong>${fmt(s.currentSignal)}</strong></div>
+      <div class="kv"><span>Latest open (${s.tradedTicker})</span><strong>${fmt(s.latestOpen.traded)}</strong></div>
+      <div class="kv"><span>Streak</span><strong>${fmt(s.streakType)} ${fmt(s.streakLength)}d</strong></div>
+      <div class="kv"><span>CAGR</span><strong>${fmt(s.backtest.cagr)}</strong></div>
+      <div class="kv"><span>Max drawdown</span><strong>${fmt(s.backtest.maxDrawdown)}</strong></div>
+      <div class="kv"><span>Trade count</span><strong>${fmt(s.backtest.tradeCount)}</strong></div>`;
+    container.appendChild(card);
+  });
 
-  pill.classList.remove("buy", "sell", "neutral");
-  if (latest.signal_is_buy === true) {
-    pill.classList.add("buy");
-  } else if (latest.signal_is_buy === false) {
-    pill.classList.add("sell");
-  } else {
-    pill.classList.add("neutral");
-  }
+  const tqqq = state.strategies.tqqq?.chart?.history || [];
+  const spxl = state.strategies.spxl?.chart?.history || [];
+  if (compareChart) compareChart.destroy();
+  compareChart = new Chart(byId("compare-chart").getContext("2d"), {
+    type: "line",
+    data: {
+      labels: tqqq.map((r) => r.date),
+      datasets: [
+        { label: "TQQQ Strategy Equity", data: tqqq.map((r) => r.equity), borderWidth: 2, tension: 0.1 },
+        { label: "SPXL Strategy Equity", data: spxl.map((r) => r.equity), borderWidth: 2, tension: 0.1 },
+      ],
+    },
+    options: { responsive: true, maintainAspectRatio: false },
+  });
 }
 
-async function loadDashboard() {
+function renderHistoryTable(strategyId) {
+  const rows = [...state.strategies[strategyId].signalHistory].reverse().slice(0, 180);
+  const head = byId("history-head");
+  const body = byId("history-body");
+
+  const cols = Object.keys(rows[0] || { date: "", signalText: "", sourceOpen: "", tradedOpen: "" });
+  head.innerHTML = cols.map((c) => `<th>${c}</th>`).join("");
+  body.innerHTML = rows
+    .map((r) => `<tr>${cols.map((c) => `<td>${fmt(r[c])}</td>`).join("")}</tr>`)
+    .join("");
+}
+
+function renderUpdates() {
+  const latestOk = [...state.refreshLog].reverse().find((r) => r.status === "OK");
+  byId("refresh-highlight").innerHTML = `
+    <div class="panel-head"><h2>Latest Successful Refresh</h2></div>
+    <div class="kv"><span>Timestamp</span><strong>${fmt(latestOk?.timestamp)}</strong></div>
+    <div class="kv"><span>Latest trading day</span><strong>${fmt(latestOk?.latestTradingDay)}</strong></div>
+    <div class="kv"><span>Source</span><strong>${fmt(latestOk?.source)}</strong></div>
+    <div class="kv"><span>Commit</span><strong>${fmt(latestOk?.commit)}</strong></div>`;
+
+  byId("refresh-log").innerHTML = [...state.refreshLog].reverse().slice(0, 80).map((r) => {
+    const cls = r.status === "OK" ? "ok" : r.status === "WARN" ? "warn" : "fail";
+    return `<article class="log-item"><div class="kv"><strong>${fmt(r.timestamp)}</strong><span class="badge ${cls}">${fmt(r.status)}</span></div><p>${fmt(r.type)} • ${fmt(r.note)}</p><p>Latest day: ${fmt(r.latestTradingDay)} • Commit: ${fmt(r.commit)}</p></article>`;
+  }).join("");
+
+  byId("changelog").innerHTML = [...state.changelog].reverse().map((r) => {
+    const details = (r.details || []).map((d) => `<li>${fmt(d)}</li>`).join("");
+    return `<article class="log-item"><div class="kv"><strong>v${fmt(r.version)}</strong><span>${fmt(r.date)}</span></div><p><strong>${fmt(r.title)}</strong></p><ul>${details}</ul><p>Commit: ${fmt(r.commit)}</p></article>`;
+  }).join("");
+}
+
+function renderMethodology() {
+  const container = byId("methodology-content");
+  container.innerHTML = "";
+
+  Object.values(state.strategies).forEach((s) => {
+    const block = document.createElement("section");
+    block.className = "panel";
+    block.innerHTML = `
+      <h2>${fmt(s.displayName)}</h2>
+      <p>${fmt(s.subtitle)}</p>
+      <details>
+        <summary>Show formula</summary>
+        <h4>Buy rule</h4>
+        <ul>${(s.formula.buy || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+        <h4>Sell rule</h4>
+        <ul>${(s.formula.sell || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+        <h4>Definitions</h4>
+        <ul>${(s.formula.definitions || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+      </details>
+      <h4>Plain-English explanation</h4>
+      <ul>${(s.plainEnglish || []).map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>
+      <h4>Backtest assumptions</h4>
+      <ul>
+        <li>Signal computed from prior data only (t-1 and earlier).</li>
+        <li>Trades modeled at today's open and held open-to-open.</li>
+        <li>No slippage/fees modeled in this static dashboard backtest.</li>
+      </ul>
+      <h4>Data assumptions</h4>
+      <ul><li>Daily and intraday opens sourced from yFinance.</li></ul>`;
+    container.appendChild(block);
+  });
+}
+
+function bindControls() {
+  const strategyIds = Object.keys(state.strategies);
+  const overviewSelect = byId("overview-strategy");
+  const historySelect = byId("history-strategy");
+
+  [overviewSelect, historySelect].forEach((sel) => {
+    sel.innerHTML = strategyIds.map((id) => `<option value="${id}">${state.strategies[id].displayName}</option>`).join("");
+  });
+
+  overviewSelect.addEventListener("change", () => renderOverviewChart(overviewSelect.value));
+  historySelect.addEventListener("change", () => renderHistoryTable(historySelect.value));
+  byId("range-toggle").addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    state.activeRange = btn.dataset.range;
+    byId("range-toggle").querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
+    btn.classList.add("is-active");
+    renderOverviewChart(overviewSelect.value);
+  });
+
+  renderOverviewChart(strategyIds[0]);
+  renderHistoryTable(strategyIds[0]);
+}
+
+async function loadData() {
+  const v = `?v=${Date.now()}`;
+  const [currentRes, tqqqRes, spxlRes, refreshRes, changeRes] = await Promise.all([
+    fetch(`./data/current.json${v}`),
+    fetch(`./data/strategies/tqqq.json${v}`),
+    fetch(`./data/strategies/spxl.json${v}`),
+    fetch(`./data/refresh_log.json${v}`),
+    fetch(`./data/changelog.json${v}`),
+  ]);
+
+  if (![currentRes, tqqqRes, spxlRes, refreshRes, changeRes].every((r) => r.ok)) {
+    throw new Error("Data files are not ready. Run the workflow once.");
+  }
+
+  state.current = await currentRes.json();
+  state.strategies.tqqq = await tqqqRes.json();
+  state.strategies.spxl = await spxlRes.json();
+  state.refreshLog = await refreshRes.json();
+  state.changelog = await changeRes.json();
+}
+
+async function init() {
   try {
-    const cacheBust = `?v=${Date.now()}`;
-    const [latestRes, historyRes] = await Promise.all([
-      fetch(`./data/latest.json${cacheBust}`),
-      fetch(`./data/history.json${cacheBust}`)
-    ]);
+    tabInit();
+    await loadData();
 
-    if (!latestRes.ok || !historyRes.ok) {
-      throw new Error("Could not load dashboard data.");
-    }
+    byId("latest-day").textContent = `Latest day: ${fmt(state.current.latestTradingDay)}`;
+    byId("last-updated").textContent = `Last updated: ${fmt(state.current.lastUpdated)}`;
 
-    const latest = await latestRes.json();
-    const history = await historyRes.json();
-
-    if (!latest || !history) {
-      throw new Error("Data files are empty.");
-    }
-
-    renderHeader(latest);
-    renderOverviewCards(latest.overview_cards || []);
-    renderIndicators(latest.indicators || []);
-    renderStats(latest.stats || {});
-    renderList("formula-list", latest.formula_definitions || []);
-    renderList("english-list", latest.plain_english || []);
-    renderTable(history || []);
-    renderChart(history || []);
-  } catch (error) {
-    byId("strategy-name").textContent = "Dashboard not ready yet";
-    byId("subtitle").textContent = "Run the GitHub Action once, then refresh this page.";
-    byId("signal-pill").textContent = "No data yet";
-    byId("signal-pill").classList.remove("buy", "sell");
-    byId("signal-pill").classList.add("neutral");
-    console.error(error);
+    buildHero();
+    buildSummary();
+    buildQuickCompare();
+    renderCompareSection();
+    renderUpdates();
+    renderMethodology();
+    bindControls();
+  } catch (err) {
+    byId("hero").innerHTML = `<div class="hero-main"><h2>Dashboard not ready</h2><p>${err.message}</p></div>`;
   }
 }
 
-loadDashboard();
-setInterval(loadDashboard, 5 * 60 * 1000);
+init();

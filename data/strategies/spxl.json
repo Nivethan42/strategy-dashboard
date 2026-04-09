@@ -1,9 +1,9 @@
 {
-  "id": "tqqq",
-  "displayName": "TQQQ Strategy",
-  "sourceTicker": "QQQ",
-  "tradedTicker": "TQQQ",
-  "subtitle": "QQQ signal, prior-data only, trade TQQQ at today's open.",
+  "id": "spxl",
+  "displayName": "SPXL Strategy",
+  "sourceTicker": "SPY",
+  "tradedTicker": "SPXL",
+  "subtitle": "SPY signal, prior-data only, trade SPXL at today's open.",
   "latestTradingDay": null,
   "lastUpdated": "2026-04-08 21:09:05 EDT",
   "currentSignal": "N/A",
@@ -32,8 +32,8 @@
     "window": "N/A"
   },
   "chart": {
-    "sourceLabel": "QQQ Open",
-    "tradedLabel": "TQQQ Open",
+    "sourceLabel": "SPY Open",
+    "tradedLabel": "SPXL Open",
     "history": []
   },
   "signalHistory": []

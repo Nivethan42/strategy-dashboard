@@ -1,0 +1,13 @@
+[
+  {
+    "version": "2.0.0",
+    "date": "2026-04-08",
+    "title": "Dual-strategy dashboard launch",
+    "details": [
+      "Added reusable strategy data model for TQQQ and SPXL.",
+      "Added Overview / Compare / Update History / Methodology views.",
+      "Added refresh_log.json and changelog.json rendering."
+    ],
+    "commit": "local"
+  }
+]
