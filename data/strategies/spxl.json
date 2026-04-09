@@ -5,7 +5,7 @@
   "tradedTicker": "SPXL",
   "subtitle": "SPY signal, prior-data only, trade SPXL at today's open.",
   "latestTradingDay": "2026-04-09",
-  "lastUpdated": "2026-04-09 17:55:08 EDT",
+  "lastUpdated": "2026-04-09 18:57:02 EDT",
   "currentSignal": "CASH",
   "signalIsBuy": false,
   "currentActionText": "Hold cash / no long position",
