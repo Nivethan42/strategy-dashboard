@@ -5,7 +5,7 @@
   "tradedTicker": "SPXL",
   "subtitle": "SPY signal, prior-data only, trade SPXL at today's open.",
   "latestTradingDay": "2026-04-10",
-  "lastUpdated": "2026-04-10 09:44:53 EDT",
+  "lastUpdated": "2026-04-10 10:32:27 EDT",
   "currentSignal": "CASH",
   "signalIsBuy": false,
   "currentActionText": "Hold cash / no long position",
@@ -13,8 +13,8 @@
   "streakType": "CASH",
   "streakLength": 24,
   "latestOpen": {
-    "source": "$674.84",
-    "traded": "$205.85"
+    "source": "$681.32",
+    "traded": "$211.59"
   },
   "formula": {
     "buy": [
@@ -6829,8 +6829,8 @@
       },
       {
         "date": "2026-04-10",
-        "sourceOpen": 674.84,
-        "tradedOpen": 205.85,
+        "sourceOpen": 681.32,
+        "tradedOpen": 211.585,
         "signal": 0,
         "signalText": "CASH",
         "equity": null,
@@ -13552,8 +13552,8 @@
     },
     {
       "date": "2026-04-10",
-      "sourceOpen": 674.84,
-      "tradedOpen": 205.85,
+      "sourceOpen": 681.32,
+      "tradedOpen": 211.585,
       "signal": 0,
       "signalText": "CASH",
       "equity": null,
