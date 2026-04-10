@@ -1,18 +1,5 @@
 [
   {
-    "date": "2024-08-06",
-    "sourceOpen": 437.23,
-    "tradedOpen": 27.065,
-    "signal": 1,
-    "signalText": "BUY",
-    "equity": 817.765373,
-    "sslp20_2": -0.011675,
-    "mom150": 0.029176,
-    "rv5": 0.027639,
-    "rv7": 0.025163,
-    "sr63_126": 1.035688
-  },
-  {
     "date": "2024-08-07",
     "sourceOpen": 446.49,
     "tradedOpen": 28.785,
@@ -5452,11 +5439,24 @@
     "tradedOpen": 48.02,
     "signal": 1,
     "signalText": "BUY",
-    "equity": null,
+    "equity": 966.743824,
     "sslp20_2": -0.00065,
     "mom150": 0.084445,
     "rv5": 0.01954,
     "rv7": 0.019088,
     "sr63_126": 0.992162
+  },
+  {
+    "date": "2026-04-10",
+    "sourceOpen": 611.85,
+    "tradedOpen": 49.3775,
+    "signal": 1,
+    "signalText": "BUY",
+    "equity": null,
+    "sslp20_2": -0.000177,
+    "mom150": 0.064473,
+    "rv5": 0.019181,
+    "rv7": 0.018927,
+    "sr63_126": 0.991756
   }
 ]

@@ -1,8 +1,8 @@
 {
   "siteTitle": "Dual Strategy Dashboard",
-  "lastUpdated": "2026-04-10 07:57:49 EDT",
-  "latestTradingDay": "2026-04-09",
-  "latestSuccessfulRefresh": "2026-04-10 07:57:49 EDT",
+  "lastUpdated": "2026-04-10 09:44:51 EDT",
+  "latestTradingDay": "2026-04-10",
+  "latestSuccessfulRefresh": "2026-04-10 09:44:51 EDT",
   "strategies": [
     {
       "id": "tqqq",
@@ -14,16 +14,16 @@
       "currentActionText": "Buy TQQQ at today's open",
       "signalChangeSummary": "No signal change today",
       "streakType": "BUY",
-      "streakLength": 5,
+      "streakLength": 6,
       "latestOpen": {
-        "source": "$605.93",
-        "traded": "$48.02"
+        "source": "$611.85",
+        "traded": "$49.38"
       },
       "backtest": {
-        "cagr": "52.78%",
+        "cagr": "53.03%",
         "maxDrawdown": "-46.98%",
         "tradeCount": 65,
-        "window": "2010-02-11 to 2026-04-08"
+        "window": "2010-02-11 to 2026-04-09"
       }
     },
     {
@@ -36,7 +36,7 @@
       "currentActionText": "Hold cash / no long position",
       "signalChangeSummary": "No signal change today",
       "streakType": "CASH",
-      "streakLength": 23,
+      "streakLength": 24,
       "latestOpen": {
         "source": "$674.84",
         "traded": "$205.85"
@@ -45,7 +45,7 @@
         "cagr": "31.60%",
         "maxDrawdown": "-41.51%",
         "tradeCount": 67,
-        "window": "2008-11-05 to 2026-04-08"
+        "window": "2008-11-05 to 2026-04-09"
       }
     }
   ]

@@ -4,14 +4,14 @@
   "sourceTicker": "SPY",
   "tradedTicker": "SPXL",
   "subtitle": "SPY signal, prior-data only, trade SPXL at today's open.",
-  "latestTradingDay": "2026-04-09",
-  "lastUpdated": "2026-04-10 07:57:51 EDT",
+  "latestTradingDay": "2026-04-10",
+  "lastUpdated": "2026-04-10 09:44:53 EDT",
   "currentSignal": "CASH",
   "signalIsBuy": false,
   "currentActionText": "Hold cash / no long position",
   "signalChangeSummary": "No signal change today",
   "streakType": "CASH",
-  "streakLength": 23,
+  "streakLength": 24,
   "latestOpen": {
     "source": "$674.84",
     "traded": "$205.85"
@@ -43,8 +43,8 @@
     {
       "key": "score",
       "label": "Score (6 checks)",
-      "displayValue": "2",
-      "rawValue": 2.0,
+      "displayValue": "1",
+      "rawValue": 1.0,
       "rule": ">= 3 to buy",
       "passed": false,
       "description": "Count of MOM90, MOM100, ABVMA100, SLP5_1, SLP20_1, SLP20_3 that pass."
@@ -52,17 +52,17 @@
     {
       "key": "mom90",
       "label": "MOM90",
-      "displayValue": "1.16%",
-      "rawValue": 0.011605835378244889,
+      "displayValue": "-0.41%",
+      "rawValue": -0.004117258691675341,
       "rule": "> 0",
-      "passed": true,
+      "passed": false,
       "description": "SPY Open[t-1] / SPY Open[t-91] - 1."
     },
     {
       "key": "mom100",
       "label": "MOM100",
-      "displayValue": "-0.52%",
-      "rawValue": -0.005235675409488438,
+      "displayValue": "-1.45%",
+      "rawValue": -0.014529931060816015,
       "rule": "> 0",
       "passed": false,
       "description": "SPY Open[t-1] / SPY Open[t-101] - 1."
@@ -79,8 +79,8 @@
     {
       "key": "slp5_1",
       "label": "SLP5_1",
-      "displayValue": "1.15%",
-      "rawValue": 0.011516808378850163,
+      "displayValue": "0.64%",
+      "rawValue": 0.00636625164609006,
       "rule": "> 0",
       "passed": true,
       "description": "5-day SMA slope versus 1 day ago."
@@ -88,8 +88,8 @@
     {
       "key": "slp20_1",
       "label": "SLP20_1",
-      "displayValue": "-0.01%",
-      "rawValue": -0.00010096198375886267,
+      "displayValue": "-0.02%",
+      "rawValue": -0.00020802400274100297,
       "rule": "> 0",
       "passed": false,
       "description": "20-day SMA slope versus 1 day ago."
@@ -97,8 +97,8 @@
     {
       "key": "slp20_3",
       "label": "SLP20_3",
-      "displayValue": "-0.22%",
-      "rawValue": -0.0021681554805731418,
+      "displayValue": "-0.10%",
+      "rawValue": -0.0010475898169761688,
       "rule": "> 0",
       "passed": false,
       "description": "20-day SMA slope versus 3 days ago."
@@ -106,8 +106,8 @@
     {
       "key": "vr20_100",
       "label": "VR20/100",
-      "displayValue": "1.288",
-      "rawValue": 1.2875098477413014,
+      "displayValue": "1.292",
+      "rawValue": 1.2921400935658298,
       "rule": "< 1.4",
       "passed": true,
       "description": "20-day realized vol / 100-day realized vol."
@@ -117,28 +117,12 @@
     "cagr": "31.60%",
     "maxDrawdown": "-41.51%",
     "tradeCount": 67,
-    "window": "2008-11-05 to 2026-04-08"
+    "window": "2008-11-05 to 2026-04-09"
   },
   "chart": {
     "sourceLabel": "SPY Open",
     "tradedLabel": "SPXL Open",
     "history": [
-      {
-        "date": "2024-08-06",
-        "sourceOpen": 519.22,
-        "tradedOpen": 123.91,
-        "signal": 0,
-        "signalText": "CASH",
-        "equity": 79.646892,
-        "score": 0,
-        "mom90": -0.018399,
-        "mom100": -0.003525,
-        "abvma100": false,
-        "slp5_1": -0.012595,
-        "slp20_1": -0.003963,
-        "slp20_3": -0.005056,
-        "vr20_100": 1.441241
-      },
       {
         "date": "2024-08-07",
         "sourceOpen": 528.47,
@@ -6833,7 +6817,7 @@
         "tradedOpen": 205.85,
         "signal": 0,
         "signalText": "CASH",
-        "equity": null,
+        "equity": 119.604104,
         "score": 2,
         "mom90": 0.011606,
         "mom100": -0.005236,
@@ -6842,26 +6826,26 @@
         "slp20_1": -0.000101,
         "slp20_3": -0.002168,
         "vr20_100": 1.28751
+      },
+      {
+        "date": "2026-04-10",
+        "sourceOpen": 674.84,
+        "tradedOpen": 205.85,
+        "signal": 0,
+        "signalText": "CASH",
+        "equity": null,
+        "score": 1,
+        "mom90": -0.004117,
+        "mom100": -0.01453,
+        "abvma100": false,
+        "slp5_1": 0.006366,
+        "slp20_1": -0.000208,
+        "slp20_3": -0.001048,
+        "vr20_100": 1.29214
       }
     ]
   },
   "signalHistory": [
-    {
-      "date": "2024-08-06",
-      "sourceOpen": 519.22,
-      "tradedOpen": 123.91,
-      "signal": 0,
-      "signalText": "CASH",
-      "equity": 79.646892,
-      "score": 0,
-      "mom90": -0.018399,
-      "mom100": -0.003525,
-      "abvma100": false,
-      "slp5_1": -0.012595,
-      "slp20_1": -0.003963,
-      "slp20_3": -0.005056,
-      "vr20_100": 1.441241
-    },
     {
       "date": "2024-08-07",
       "sourceOpen": 528.47,
@@ -13556,7 +13540,7 @@
       "tradedOpen": 205.85,
       "signal": 0,
       "signalText": "CASH",
-      "equity": null,
+      "equity": 119.604104,
       "score": 2,
       "mom90": 0.011606,
       "mom100": -0.005236,
@@ -13565,6 +13549,22 @@
       "slp20_1": -0.000101,
       "slp20_3": -0.002168,
       "vr20_100": 1.28751
+    },
+    {
+      "date": "2026-04-10",
+      "sourceOpen": 674.84,
+      "tradedOpen": 205.85,
+      "signal": 0,
+      "signalText": "CASH",
+      "equity": null,
+      "score": 1,
+      "mom90": -0.004117,
+      "mom100": -0.01453,
+      "abvma100": false,
+      "slp5_1": 0.006366,
+      "slp20_1": -0.000208,
+      "slp20_3": -0.001048,
+      "vr20_100": 1.29214
     }
   ]
 }
