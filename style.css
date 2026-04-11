@@ -154,3 +154,44 @@ summary { font-weight: 800; cursor: pointer; }
   th, td { font-size: .76rem; padding: 6px; }
   #refresh-log { max-height: 300px; }
 }
+
+.formula-box {
+  width: 100%;
+  min-height: 140px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .9rem;
+  margin-top: 10px;
+}
+.button-row { display: flex; gap: 8px; margin-top: 10px; }
+.btn-primary, .btn-secondary {
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-primary { background: #111827; color: #fff; border-color: #111827; }
+.btn-secondary { background: #fff; color: #1f2937; }
+.example-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.example-pill {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #fff;
+  padding: 5px 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.muted-note { color: var(--muted); margin: 9px 0 0; font-size: .9rem; }
+.trade-log-wrap {
+  max-height: 380px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+@media (max-width: 780px) {
+  .button-row { flex-direction: column; }
+}
