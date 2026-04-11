@@ -629,6 +629,57 @@ def ensure_changelog() -> None:
     path.write_text(json.dumps(initial, indent=2), encoding="utf-8")
 
 
+def write_test_strategy_data(qqq: pd.Series, spy: pd.Series, tqqq: pd.Series, spxl: pd.Series) -> None:
+    frame = pd.DataFrame(index=qqq.index.union(spy.index).union(tqqq.index).union(spxl.index)).sort_index()
+    frame["qqqOpen"] = qqq.reindex(frame.index).astype(float)
+    frame["spyOpen"] = spy.reindex(frame.index).astype(float)
+    frame["tqqqOpen"] = tqqq.reindex(frame.index).astype(float)
+    frame["spxlOpen"] = spxl.reindex(frame.index).astype(float)
+
+    rows = []
+    for idx, row in frame.iterrows():
+        rows.append(
+            {
+                "date": idx.strftime("%Y-%m-%d"),
+                "qqqOpen": round(float(row["qqqOpen"]), 6) if pd.notna(row["qqqOpen"]) else None,
+                "spyOpen": round(float(row["spyOpen"]), 6) if pd.notna(row["spyOpen"]) else None,
+                "tqqqOpen": round(float(row["tqqqOpen"]), 6) if pd.notna(row["tqqqOpen"]) else None,
+                "spxlOpen": round(float(row["spxlOpen"]), 6) if pd.notna(row["spxlOpen"]) else None,
+            }
+        )
+
+    payload = {
+        "generatedAt": now_ny().strftime("%Y-%m-%d %H:%M:%S %Z"),
+        "rows": rows,
+    }
+    (DATA_DIR / "test_strategy_data.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def write_test_strategy_data_from_payloads(tqqq_payload: dict, spxl_payload: dict) -> None:
+    rows_by_date: dict[str, dict] = {}
+    for row in tqqq_payload.get("signalHistory", []):
+        d = row.get("date")
+        if not d:
+            continue
+        rows_by_date.setdefault(d, {"date": d, "qqqOpen": None, "spyOpen": None, "tqqqOpen": None, "spxlOpen": None})
+        rows_by_date[d]["qqqOpen"] = row.get("sourceOpen")
+        rows_by_date[d]["tqqqOpen"] = row.get("tradedOpen")
+
+    for row in spxl_payload.get("signalHistory", []):
+        d = row.get("date")
+        if not d:
+            continue
+        rows_by_date.setdefault(d, {"date": d, "qqqOpen": None, "spyOpen": None, "tqqqOpen": None, "spxlOpen": None})
+        rows_by_date[d]["spyOpen"] = row.get("sourceOpen")
+        rows_by_date[d]["spxlOpen"] = row.get("tradedOpen")
+
+    payload = {
+        "generatedAt": now_ny().strftime("%Y-%m-%d %H:%M:%S %Z"),
+        "rows": [rows_by_date[k] for k in sorted(rows_by_date.keys())],
+    }
+    (DATA_DIR / "test_strategy_data.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
 def empty_strategy_payload(
     strategy_id: str,
     display_name: str,
@@ -783,6 +834,11 @@ def main() -> None:
         configure_yfinance_network()
         warnings: list[str] = []
 
+        qqq = None
+        tqqq = None
+        spy = None
+        spxl = None
+
         tqqq_existing = load_existing_strategy_payload(STRATEGY_DIR / "tqqq.json", "tqqq")
         try:
             qqq = get_daily_opens("QQQ")
@@ -869,6 +925,10 @@ def main() -> None:
         # Backward compatibility for older readers.
         (DATA_DIR / "latest.json").write_text(json.dumps(tqqq_payload, indent=2), encoding="utf-8")
         (DATA_DIR / "history.json").write_text(json.dumps(tqqq_payload["signalHistory"], indent=2), encoding="utf-8")
+        if qqq is not None and tqqq is not None and spy is not None and spxl is not None:
+            write_test_strategy_data(qqq, spy, tqqq, spxl)
+        else:
+            write_test_strategy_data_from_payloads(tqqq_payload, spxl_payload)
 
         ensure_changelog()
         if warnings:

@@ -1,0 +1,2945 @@
+{
+  "generatedAt": "2026-04-10 21:51:18 EDT",
+  "rows": [
+    {
+      "date": "2024-08-07",
+      "qqqOpen": 446.49,
+      "spyOpen": 528.47,
+      "tqqqOpen": 28.785,
+      "spxlOpen": 130.55
+    },
+    {
+      "date": "2024-08-08",
+      "qqqOpen": 441.06,
+      "spyOpen": 523.91,
+      "tqqqOpen": 27.725,
+      "spxlOpen": 127.07
+    },
+    {
+      "date": "2024-08-09",
+      "qqqOpen": 446.74,
+      "spyOpen": 529.81,
+      "tqqqOpen": 28.72,
+      "spxlOpen": 131.15
+    },
+    {
+      "date": "2024-08-12",
+      "qqqOpen": 451.39,
+      "spyOpen": 534.21,
+      "tqqqOpen": 29.615,
+      "spxlOpen": 134.37
+    },
+    {
+      "date": "2024-08-13",
+      "qqqOpen": 455.82,
+      "spyOpen": 536.53,
+      "tqqqOpen": 30.48,
+      "spxlOpen": 136.09
+    },
+    {
+      "date": "2024-08-14",
+      "qqqOpen": 463.51,
+      "spyOpen": 542.85,
+      "tqqqOpen": 31.995,
+      "spxlOpen": 140.82
+    },
+    {
+      "date": "2024-08-15",
+      "qqqOpen": 468.76,
+      "spyOpen": 549.5,
+      "tqqqOpen": 33.065,
+      "spxlOpen": 145.92
+    },
+    {
+      "date": "2024-08-16",
+      "qqqOpen": 472.62,
+      "spyOpen": 551.42,
+      "tqqqOpen": 33.81,
+      "spxlOpen": 147.26
+    },
+    {
+      "date": "2024-08-19",
+      "qqqOpen": 475.17,
+      "spyOpen": 554.73,
+      "tqqqOpen": 34.34,
+      "spxlOpen": 149.87
+    },
+    {
+      "date": "2024-08-20",
+      "qqqOpen": 480.35,
+      "spyOpen": 559.15,
+      "tqqqOpen": 35.45,
+      "spxlOpen": 153.41
+    },
+    {
+      "date": "2024-08-21",
+      "qqqOpen": 481.05,
+      "spyOpen": 559.77,
+      "tqqqOpen": 35.59,
+      "spxlOpen": 153.77
+    },
+    {
+      "date": "2024-08-22",
+      "qqqOpen": 484.84,
+      "spyOpen": 562.56,
+      "tqqqOpen": 36.43,
+      "spxlOpen": 156.05
+    },
+    {
+      "date": "2024-08-23",
+      "qqqOpen": 479.24,
+      "spyOpen": 559.53,
+      "tqqqOpen": 35.1,
+      "spxlOpen": 153.37
+    },
+    {
+      "date": "2024-08-26",
+      "qqqOpen": 479.45,
+      "spyOpen": 563.18,
+      "tqqqOpen": 35.135,
+      "spxlOpen": 156.27
+    },
+    {
+      "date": "2024-08-27",
+      "qqqOpen": 473.69,
+      "spyOpen": 559.49,
+      "tqqqOpen": 33.865,
+      "spxlOpen": 153.18
+    },
+    {
+      "date": "2024-08-28",
+      "qqqOpen": 476.29,
+      "spyOpen": 561.21,
+      "tqqqOpen": 34.4,
+      "spxlOpen": 154.51
+    },
+    {
+      "date": "2024-08-29",
+      "qqqOpen": 473.28,
+      "spyOpen": 560.31,
+      "tqqqOpen": 33.725,
+      "spxlOpen": 153.74
+    },
+    {
+      "date": "2024-08-30",
+      "qqqOpen": 475.04,
+      "spyOpen": 560.77,
+      "tqqqOpen": 34.06,
+      "spxlOpen": 153.89
+    },
+    {
+      "date": "2024-09-03",
+      "qqqOpen": 473.2,
+      "spyOpen": 560.47,
+      "tqqqOpen": 33.63,
+      "spxlOpen": 153.51
+    },
+    {
+      "date": "2024-09-04",
+      "qqqOpen": 458.67,
+      "spyOpen": 550.2,
+      "tqqqOpen": 30.52,
+      "spxlOpen": 145.0
+    },
+    {
+      "date": "2024-09-05",
+      "qqqOpen": 458.97,
+      "spyOpen": 550.89,
+      "tqqqOpen": 30.57,
+      "spxlOpen": 145.51
+    },
+    {
+      "date": "2024-09-06",
+      "qqqOpen": 460.33,
+      "spyOpen": 549.94,
+      "tqqqOpen": 30.805,
+      "spxlOpen": 144.6
+    },
+    {
+      "date": "2024-09-09",
+      "qqqOpen": 453.06,
+      "spyOpen": 544.65,
+      "tqqqOpen": 29.285,
+      "spxlOpen": 140.25
+    },
+    {
+      "date": "2024-09-10",
+      "qqqOpen": 456.24,
+      "spyOpen": 548.36,
+      "tqqqOpen": 29.89,
+      "spxlOpen": 143.04
+    },
+    {
+      "date": "2024-09-11",
+      "qqqOpen": 459.91,
+      "spyOpen": 548.7,
+      "tqqqOpen": 30.59,
+      "spxlOpen": 143.23
+    },
+    {
+      "date": "2024-09-12",
+      "qqqOpen": 468.65,
+      "spyOpen": 555.01,
+      "tqqqOpen": 32.315,
+      "spxlOpen": 148.11
+    },
+    {
+      "date": "2024-09-13",
+      "qqqOpen": 472.48,
+      "spyOpen": 559.71,
+      "tqqqOpen": 33.075,
+      "spxlOpen": 151.74
+    },
+    {
+      "date": "2024-09-16",
+      "qqqOpen": 473.19,
+      "spyOpen": 561.74,
+      "tqqqOpen": 33.21,
+      "spxlOpen": 153.37
+    },
+    {
+      "date": "2024-09-17",
+      "qqqOpen": 476.29,
+      "spyOpen": 565.1,
+      "tqqqOpen": 33.85,
+      "spxlOpen": 156.05
+    },
+    {
+      "date": "2024-09-18",
+      "qqqOpen": 474.7,
+      "spyOpen": 563.74,
+      "tqqqOpen": 33.51,
+      "spxlOpen": 154.88
+    },
+    {
+      "date": "2024-09-19",
+      "qqqOpen": 482.61,
+      "spyOpen": 571.01,
+      "tqqqOpen": 35.15,
+      "spxlOpen": 160.74
+    },
+    {
+      "date": "2024-09-20",
+      "qqqOpen": 482.49,
+      "spyOpen": 567.84,
+      "tqqqOpen": 35.075,
+      "spxlOpen": 159.38
+    },
+    {
+      "date": "2024-09-23",
+      "qqqOpen": 482.95,
+      "spyOpen": 569.34,
+      "tqqqOpen": 35.31,
+      "spxlOpen": 160.58
+    },
+    {
+      "date": "2024-09-24",
+      "qqqOpen": 484.46,
+      "spyOpen": 570.48,
+      "tqqqOpen": 35.64,
+      "spxlOpen": 161.32
+    },
+    {
+      "date": "2024-09-25",
+      "qqqOpen": 484.74,
+      "spyOpen": 571.14,
+      "tqqqOpen": 35.57,
+      "spxlOpen": 161.79
+    },
+    {
+      "date": "2024-09-26",
+      "qqqOpen": 493.37,
+      "spyOpen": 574.38,
+      "tqqqOpen": 37.46,
+      "spxlOpen": 164.55
+    },
+    {
+      "date": "2024-09-27",
+      "qqqOpen": 490.5,
+      "spyOpen": 573.39,
+      "tqqqOpen": 36.81,
+      "spxlOpen": 163.54
+    },
+    {
+      "date": "2024-09-30",
+      "qqqOpen": 485.78,
+      "spyOpen": 570.42,
+      "tqqqOpen": 35.73,
+      "spxlOpen": 160.95
+    },
+    {
+      "date": "2024-10-01",
+      "qqqOpen": 487.7,
+      "spyOpen": 573.4,
+      "tqqqOpen": 36.14,
+      "spxlOpen": 163.39
+    },
+    {
+      "date": "2024-10-02",
+      "qqqOpen": 480.36,
+      "spyOpen": 567.71,
+      "tqqqOpen": 34.505,
+      "spxlOpen": 158.51
+    },
+    {
+      "date": "2024-10-03",
+      "qqqOpen": 479.74,
+      "spyOpen": 567.36,
+      "tqqqOpen": 34.365,
+      "spxlOpen": 158.19
+    },
+    {
+      "date": "2024-10-04",
+      "qqqOpen": 487.45,
+      "spyOpen": 572.35,
+      "tqqqOpen": 36.0,
+      "spxlOpen": 162.2
+    },
+    {
+      "date": "2024-10-07",
+      "qqqOpen": 485.39,
+      "spyOpen": 571.3,
+      "tqqqOpen": 35.525,
+      "spxlOpen": 161.27
+    },
+    {
+      "date": "2024-10-08",
+      "qqqOpen": 484.66,
+      "spyOpen": 570.42,
+      "tqqqOpen": 35.33,
+      "spxlOpen": 160.37
+    },
+    {
+      "date": "2024-10-09",
+      "qqqOpen": 489.0,
+      "spyOpen": 573.16,
+      "tqqqOpen": 36.26,
+      "spxlOpen": 162.67
+    },
+    {
+      "date": "2024-10-10",
+      "qqqOpen": 490.85,
+      "spyOpen": 575.77,
+      "tqqqOpen": 36.66,
+      "spxlOpen": 164.8
+    },
+    {
+      "date": "2024-10-11",
+      "qqqOpen": 490.74,
+      "spyOpen": 576.05,
+      "tqqqOpen": 36.585,
+      "spxlOpen": 164.82
+    },
+    {
+      "date": "2024-10-14",
+      "qqqOpen": 495.77,
+      "spyOpen": 581.22,
+      "tqqqOpen": 37.72,
+      "spxlOpen": 169.21
+    },
+    {
+      "date": "2024-10-15",
+      "qqqOpen": 497.83,
+      "spyOpen": 584.59,
+      "tqqqOpen": 38.175,
+      "spxlOpen": 172.17
+    },
+    {
+      "date": "2024-10-16",
+      "qqqOpen": 491.18,
+      "spyOpen": 579.78,
+      "tqqqOpen": 36.62,
+      "spxlOpen": 167.87
+    },
+    {
+      "date": "2024-10-17",
+      "qqqOpen": 496.44,
+      "spyOpen": 585.91,
+      "tqqqOpen": 37.79,
+      "spxlOpen": 173.19
+    },
+    {
+      "date": "2024-10-18",
+      "qqqOpen": 494.06,
+      "spyOpen": 584.07,
+      "tqqqOpen": 37.23,
+      "spxlOpen": 171.38
+    },
+    {
+      "date": "2024-10-21",
+      "qqqOpen": 493.25,
+      "spyOpen": 583.85,
+      "tqqqOpen": 37.03,
+      "spxlOpen": 171.16
+    },
+    {
+      "date": "2024-10-22",
+      "qqqOpen": 492.73,
+      "spyOpen": 581.05,
+      "tqqqOpen": 36.905,
+      "spxlOpen": 168.6
+    },
+    {
+      "date": "2024-10-23",
+      "qqqOpen": 493.59,
+      "spyOpen": 581.26,
+      "tqqqOpen": 37.085,
+      "spxlOpen": 168.69
+    },
+    {
+      "date": "2024-10-24",
+      "qqqOpen": 492.11,
+      "spyOpen": 579.98,
+      "tqqqOpen": 36.71,
+      "spxlOpen": 167.54
+    },
+    {
+      "date": "2024-10-25",
+      "qqqOpen": 495.14,
+      "spyOpen": 581.51,
+      "tqqqOpen": 37.35,
+      "spxlOpen": 168.71
+    },
+    {
+      "date": "2024-10-28",
+      "qqqOpen": 498.46,
+      "spyOpen": 582.58,
+      "tqqqOpen": 38.095,
+      "spxlOpen": 169.59
+    },
+    {
+      "date": "2024-10-29",
+      "qqqOpen": 495.72,
+      "spyOpen": 579.85,
+      "tqqqOpen": 37.465,
+      "spxlOpen": 167.21
+    },
+    {
+      "date": "2024-10-30",
+      "qqqOpen": 499.39,
+      "spyOpen": 581.29,
+      "tqqqOpen": 38.275,
+      "spxlOpen": 168.39
+    },
+    {
+      "date": "2024-10-31",
+      "qqqOpen": 492.38,
+      "spyOpen": 575.56,
+      "tqqqOpen": 36.655,
+      "spxlOpen": 163.36
+    },
+    {
+      "date": "2024-11-01",
+      "qqqOpen": 485.5,
+      "spyOpen": 571.32,
+      "tqqqOpen": 35.04,
+      "spxlOpen": 159.41
+    },
+    {
+      "date": "2024-11-04",
+      "qqqOpen": 486.82,
+      "spyOpen": 571.18,
+      "tqqqOpen": 35.32,
+      "spxlOpen": 159.25
+    },
+    {
+      "date": "2024-11-05",
+      "qqqOpen": 487.61,
+      "spyOpen": 570.74,
+      "tqqqOpen": 35.475,
+      "spxlOpen": 158.92
+    },
+    {
+      "date": "2024-11-06",
+      "qqqOpen": 500.56,
+      "spyOpen": 589.2,
+      "tqqqOpen": 38.33,
+      "spxlOpen": 174.47
+    },
+    {
+      "date": "2024-11-07",
+      "qqqOpen": 508.4,
+      "spyOpen": 593.08,
+      "tqqqOpen": 40.08,
+      "spxlOpen": 177.76
+    },
+    {
+      "date": "2024-11-08",
+      "qqqOpen": 513.04,
+      "spyOpen": 596.17,
+      "tqqqOpen": 41.11,
+      "spxlOpen": 180.38
+    },
+    {
+      "date": "2024-11-11",
+      "qqqOpen": 515.37,
+      "spyOpen": 599.81,
+      "tqqqOpen": 41.665,
+      "spxlOpen": 183.66
+    },
+    {
+      "date": "2024-11-12",
+      "qqqOpen": 513.77,
+      "spyOpen": 598.68,
+      "tqqqOpen": 41.27,
+      "spxlOpen": 182.6
+    },
+    {
+      "date": "2024-11-13",
+      "qqqOpen": 512.4,
+      "spyOpen": 597.37,
+      "tqqqOpen": 40.93,
+      "spxlOpen": 181.25
+    },
+    {
+      "date": "2024-11-14",
+      "qqqOpen": 511.91,
+      "spyOpen": 597.32,
+      "tqqqOpen": 40.795,
+      "spxlOpen": 181.15
+    },
+    {
+      "date": "2024-11-15",
+      "qqqOpen": 502.94,
+      "spyOpen": 589.72,
+      "tqqqOpen": 38.635,
+      "spxlOpen": 174.16
+    },
+    {
+      "date": "2024-11-18",
+      "qqqOpen": 498.13,
+      "spyOpen": 586.22,
+      "tqqqOpen": 37.465,
+      "spxlOpen": 170.95
+    },
+    {
+      "date": "2024-11-19",
+      "qqqOpen": 497.42,
+      "spyOpen": 584.71,
+      "tqqqOpen": 37.275,
+      "spxlOpen": 169.5
+    },
+    {
+      "date": "2024-11-20",
+      "qqqOpen": 503.16,
+      "spyOpen": 590.38,
+      "tqqqOpen": 38.575,
+      "spxlOpen": 174.39
+    },
+    {
+      "date": "2024-11-21",
+      "qqqOpen": 506.24,
+      "spyOpen": 593.4,
+      "tqqqOpen": 39.275,
+      "spxlOpen": 177.02
+    },
+    {
+      "date": "2024-11-22",
+      "qqqOpen": 504.42,
+      "spyOpen": 593.66,
+      "tqqqOpen": 38.82,
+      "spxlOpen": 177.13
+    },
+    {
+      "date": "2024-11-25",
+      "qqqOpen": 509.9,
+      "spyOpen": 599.52,
+      "tqqqOpen": 40.08,
+      "spxlOpen": 182.32
+    },
+    {
+      "date": "2024-11-26",
+      "qqqOpen": 508.08,
+      "spyOpen": 598.8,
+      "tqqqOpen": 39.645,
+      "spxlOpen": 181.64
+    },
+    {
+      "date": "2024-11-27",
+      "qqqOpen": 508.17,
+      "spyOpen": 600.46,
+      "tqqqOpen": 39.645,
+      "spxlOpen": 183.02
+    },
+    {
+      "date": "2024-11-29",
+      "qqqOpen": 505.93,
+      "spyOpen": 599.66,
+      "tqqqOpen": 39.065,
+      "spxlOpen": 182.09
+    },
+    {
+      "date": "2024-12-02",
+      "qqqOpen": 511.01,
+      "spyOpen": 602.97,
+      "tqqqOpen": 40.24,
+      "spxlOpen": 185.08
+    },
+    {
+      "date": "2024-12-03",
+      "qqqOpen": 513.95,
+      "spyOpen": 603.39,
+      "tqqqOpen": 40.9,
+      "spxlOpen": 185.41
+    },
+    {
+      "date": "2024-12-04",
+      "qqqOpen": 520.32,
+      "spyOpen": 605.63,
+      "tqqqOpen": 42.435,
+      "spxlOpen": 187.4
+    },
+    {
+      "date": "2024-12-05",
+      "qqqOpen": 523.31,
+      "spyOpen": 607.66,
+      "tqqqOpen": 43.125,
+      "spxlOpen": 189.18
+    },
+    {
+      "date": "2024-12-06",
+      "qqqOpen": 522.48,
+      "spyOpen": 607.44,
+      "tqqqOpen": 42.89,
+      "spxlOpen": 188.82
+    },
+    {
+      "date": "2024-12-09",
+      "qqqOpen": 525.55,
+      "spyOpen": 607.69,
+      "tqqqOpen": 43.625,
+      "spxlOpen": 189.0
+    },
+    {
+      "date": "2024-12-10",
+      "qqqOpen": 523.62,
+      "spyOpen": 605.37,
+      "tqqqOpen": 43.125,
+      "spxlOpen": 186.75
+    },
+    {
+      "date": "2024-12-11",
+      "qqqOpen": 525.0,
+      "spyOpen": 605.78,
+      "tqqqOpen": 43.44,
+      "spxlOpen": 187.1
+    },
+    {
+      "date": "2024-12-12",
+      "qqqOpen": 527.68,
+      "spyOpen": 606.58,
+      "tqqqOpen": 44.065,
+      "spxlOpen": 187.72
+    },
+    {
+      "date": "2024-12-13",
+      "qqqOpen": 530.46,
+      "spyOpen": 606.4,
+      "tqqqOpen": 44.71,
+      "spxlOpen": 187.4
+    },
+    {
+      "date": "2024-12-16",
+      "qqqOpen": 533.08,
+      "spyOpen": 606.0,
+      "tqqqOpen": 45.36,
+      "spxlOpen": 186.92
+    },
+    {
+      "date": "2024-12-17",
+      "qqqOpen": 536.36,
+      "spyOpen": 604.19,
+      "tqqqOpen": 46.165,
+      "spxlOpen": 185.15
+    },
+    {
+      "date": "2024-12-18",
+      "qqqOpen": 535.15,
+      "spyOpen": 603.98,
+      "tqqqOpen": 45.825,
+      "spxlOpen": 184.89
+    },
+    {
+      "date": "2024-12-19",
+      "qqqOpen": 521.19,
+      "spyOpen": 591.36,
+      "tqqqOpen": 42.135,
+      "spxlOpen": 172.88
+    },
+    {
+      "date": "2024-12-20",
+      "qqqOpen": 510.44,
+      "spyOpen": 581.77,
+      "tqqqOpen": 39.53,
+      "spxlOpen": 166.13
+    },
+    {
+      "date": "2024-12-23",
+      "qqqOpen": 519.55,
+      "spyOpen": 590.89,
+      "tqqqOpen": 41.725,
+      "spxlOpen": 173.64
+    },
+    {
+      "date": "2024-12-24",
+      "qqqOpen": 524.83,
+      "spyOpen": 596.06,
+      "tqqqOpen": 42.975,
+      "spxlOpen": 178.07
+    },
+    {
+      "date": "2024-12-26",
+      "qqqOpen": 528.32,
+      "spyOpen": 599.5,
+      "tqqqOpen": 43.81,
+      "spxlOpen": 181.07
+    },
+    {
+      "date": "2024-12-27",
+      "qqqOpen": 526.01,
+      "spyOpen": 597.54,
+      "tqqqOpen": 43.185,
+      "spxlOpen": 179.05
+    },
+    {
+      "date": "2024-12-30",
+      "qqqOpen": 515.51,
+      "spyOpen": 587.89,
+      "tqqqOpen": 40.6,
+      "spxlOpen": 170.43
+    },
+    {
+      "date": "2024-12-31",
+      "qqqOpen": 516.9,
+      "spyOpen": 589.91,
+      "tqqqOpen": 40.9,
+      "spxlOpen": 172.09
+    },
+    {
+      "date": "2025-01-02",
+      "qqqOpen": 514.3,
+      "spyOpen": 589.39,
+      "tqqqOpen": 40.27,
+      "spxlOpen": 171.53
+    },
+    {
+      "date": "2025-01-03",
+      "qqqOpen": 513.35,
+      "spyOpen": 587.53,
+      "tqqqOpen": 39.995,
+      "spxlOpen": 169.73
+    },
+    {
+      "date": "2025-01-06",
+      "qqqOpen": 524.02,
+      "spyOpen": 596.27,
+      "tqqqOpen": 42.485,
+      "spxlOpen": 177.24
+    },
+    {
+      "date": "2025-01-07",
+      "qqqOpen": 525.59,
+      "spyOpen": 597.42,
+      "tqqqOpen": 42.86,
+      "spxlOpen": 178.21
+    },
+    {
+      "date": "2025-01-08",
+      "qqqOpen": 515.08,
+      "spyOpen": 588.7,
+      "tqqqOpen": 40.28,
+      "spxlOpen": 170.39
+    },
+    {
+      "date": "2025-01-10",
+      "qqqOpen": 511.48,
+      "spyOpen": 585.88,
+      "tqqqOpen": 39.4,
+      "spxlOpen": 167.73
+    },
+    {
+      "date": "2025-01-13",
+      "qqqOpen": 501.2,
+      "spyOpen": 575.77,
+      "tqqqOpen": 37.025,
+      "spxlOpen": 158.98
+    },
+    {
+      "date": "2025-01-14",
+      "qqqOpen": 508.74,
+      "spyOpen": 584.36,
+      "tqqqOpen": 38.74,
+      "spxlOpen": 166.2
+    },
+    {
+      "date": "2025-01-15",
+      "qqqOpen": 513.03,
+      "spyOpen": 590.33,
+      "tqqqOpen": 39.655,
+      "spxlOpen": 171.25
+    },
+    {
+      "date": "2025-01-16",
+      "qqqOpen": 518.98,
+      "spyOpen": 594.17,
+      "tqqqOpen": 41.005,
+      "spxlOpen": 174.37
+    },
+    {
+      "date": "2025-01-17",
+      "qqqOpen": 522.85,
+      "spyOpen": 596.96,
+      "tqqqOpen": 41.845,
+      "spxlOpen": 176.63
+    },
+    {
+      "date": "2025-01-21",
+      "qqqOpen": 524.48,
+      "spyOpen": 600.67,
+      "tqqqOpen": 42.225,
+      "spxlOpen": 179.93
+    },
+    {
+      "date": "2025-01-22",
+      "qqqOpen": 529.57,
+      "spyOpen": 605.92,
+      "tqqqOpen": 43.42,
+      "spxlOpen": 184.51
+    },
+    {
+      "date": "2025-01-23",
+      "qqqOpen": 529.04,
+      "spyOpen": 605.8,
+      "tqqqOpen": 43.27,
+      "spxlOpen": 184.33
+    },
+    {
+      "date": "2025-01-24",
+      "qqqOpen": 533.02,
+      "spyOpen": 609.81,
+      "tqqqOpen": 44.215,
+      "spxlOpen": 187.83
+    },
+    {
+      "date": "2025-01-27",
+      "qqqOpen": 511.0,
+      "spyOpen": 594.81,
+      "tqqqOpen": 38.79,
+      "spxlOpen": 173.94
+    },
+    {
+      "date": "2025-01-28",
+      "qqqOpen": 515.22,
+      "spyOpen": 600.62,
+      "tqqqOpen": 39.79,
+      "spxlOpen": 179.17
+    },
+    {
+      "date": "2025-01-29",
+      "qqqOpen": 522.46,
+      "spyOpen": 603.72,
+      "tqqqOpen": 41.455,
+      "spxlOpen": 181.8
+    },
+    {
+      "date": "2025-01-30",
+      "qqqOpen": 523.71,
+      "spyOpen": 603.96,
+      "tqqqOpen": 41.735,
+      "spxlOpen": 182.05
+    },
+    {
+      "date": "2025-01-31",
+      "qqqOpen": 526.92,
+      "spyOpen": 607.5,
+      "tqqqOpen": 42.46,
+      "spxlOpen": 185.2
+    },
+    {
+      "date": "2025-02-03",
+      "qqqOpen": 513.47,
+      "spyOpen": 592.67,
+      "tqqqOpen": 39.265,
+      "spxlOpen": 171.63
+    },
+    {
+      "date": "2025-02-04",
+      "qqqOpen": 518.63,
+      "spyOpen": 597.83,
+      "tqqqOpen": 40.455,
+      "spxlOpen": 176.21
+    },
+    {
+      "date": "2025-02-05",
+      "qqqOpen": 521.82,
+      "spyOpen": 600.64,
+      "tqqqOpen": 41.175,
+      "spxlOpen": 178.7
+    },
+    {
+      "date": "2025-02-06",
+      "qqqOpen": 527.36,
+      "spyOpen": 605.99,
+      "tqqqOpen": 42.48,
+      "spxlOpen": 183.31
+    },
+    {
+      "date": "2025-02-07",
+      "qqqOpen": 530.14,
+      "spyOpen": 606.89,
+      "tqqqOpen": 43.13,
+      "spxlOpen": 183.94
+    },
+    {
+      "date": "2025-02-10",
+      "qqqOpen": 527.22,
+      "spyOpen": 604.03,
+      "tqqqOpen": 42.365,
+      "spxlOpen": 181.29
+    },
+    {
+      "date": "2025-02-11",
+      "qqqOpen": 525.96,
+      "spyOpen": 602.55,
+      "tqqqOpen": 42.035,
+      "spxlOpen": 179.87
+    },
+    {
+      "date": "2025-02-12",
+      "qqqOpen": 522.3,
+      "spyOpen": 599.2,
+      "tqqqOpen": 41.14,
+      "spxlOpen": 176.79
+    },
+    {
+      "date": "2025-02-13",
+      "qqqOpen": 529.98,
+      "spyOpen": 604.48,
+      "tqqqOpen": 42.99,
+      "spxlOpen": 181.56
+    },
+    {
+      "date": "2025-02-14",
+      "qqqOpen": 536.01,
+      "spyOpen": 609.94,
+      "tqqqOpen": 44.405,
+      "spxlOpen": 186.17
+    },
+    {
+      "date": "2025-02-18",
+      "qqqOpen": 539.73,
+      "spyOpen": 610.88,
+      "tqqqOpen": 45.315,
+      "spxlOpen": 187.01
+    },
+    {
+      "date": "2025-02-19",
+      "qqqOpen": 538.57,
+      "spyOpen": 610.08,
+      "tqqqOpen": 45.0,
+      "spxlOpen": 186.18
+    },
+    {
+      "date": "2025-02-20",
+      "qqqOpen": 538.73,
+      "spyOpen": 611.54,
+      "tqqqOpen": 45.025,
+      "spxlOpen": 187.48
+    },
+    {
+      "date": "2025-02-21",
+      "qqqOpen": 538.38,
+      "spyOpen": 610.16,
+      "tqqqOpen": 44.885,
+      "spxlOpen": 186.02
+    },
+    {
+      "date": "2025-02-24",
+      "qqqOpen": 527.88,
+      "spyOpen": 602.02,
+      "tqqqOpen": 42.25,
+      "spxlOpen": 178.39
+    },
+    {
+      "date": "2025-02-25",
+      "qqqOpen": 519.24,
+      "spyOpen": 597.15,
+      "tqqqOpen": 40.165,
+      "spxlOpen": 174.11
+    },
+    {
+      "date": "2025-02-26",
+      "qqqOpen": 515.53,
+      "spyOpen": 595.93,
+      "tqqqOpen": 39.29,
+      "spxlOpen": 172.96
+    },
+    {
+      "date": "2025-02-27",
+      "qqqOpen": 518.13,
+      "spyOpen": 596.85,
+      "tqqqOpen": 39.86,
+      "spxlOpen": 173.66
+    },
+    {
+      "date": "2025-02-28",
+      "qqqOpen": 500.13,
+      "spyOpen": 585.56,
+      "tqqqOpen": 35.73,
+      "spxlOpen": 163.76
+    },
+    {
+      "date": "2025-03-03",
+      "qqqOpen": 511.52,
+      "spyOpen": 596.18,
+      "tqqqOpen": 38.185,
+      "spxlOpen": 172.59
+    },
+    {
+      "date": "2025-03-04",
+      "qqqOpen": 494.18,
+      "spyOpen": 579.71,
+      "tqqqOpen": 34.38,
+      "spxlOpen": 158.46
+    },
+    {
+      "date": "2025-03-05",
+      "qqqOpen": 496.2,
+      "spyOpen": 576.69,
+      "tqqqOpen": 34.775,
+      "spxlOpen": 155.85
+    },
+    {
+      "date": "2025-03-06",
+      "qqqOpen": 493.69,
+      "spyOpen": 575.48,
+      "tqqqOpen": 34.195,
+      "spxlOpen": 154.68
+    },
+    {
+      "date": "2025-03-07",
+      "qqqOpen": 487.16,
+      "spyOpen": 570.9,
+      "tqqqOpen": 32.78,
+      "spxlOpen": 150.81
+    },
+    {
+      "date": "2025-03-10",
+      "qqqOpen": 483.45,
+      "spyOpen": 567.59,
+      "tqqqOpen": 32.0,
+      "spxlOpen": 148.03
+    },
+    {
+      "date": "2025-03-11",
+      "qqqOpen": 472.35,
+      "spyOpen": 559.4,
+      "tqqqOpen": 29.7,
+      "spxlOpen": 141.41
+    },
+    {
+      "date": "2025-03-12",
+      "qqqOpen": 479.16,
+      "spyOpen": 562.17,
+      "tqqqOpen": 30.97,
+      "spxlOpen": 143.44
+    },
+    {
+      "date": "2025-03-13",
+      "qqqOpen": 476.25,
+      "spyOpen": 558.49,
+      "tqqqOpen": 30.4,
+      "spxlOpen": 140.59
+    },
+    {
+      "date": "2025-03-14",
+      "qqqOpen": 473.73,
+      "spyOpen": 556.11,
+      "tqqqOpen": 29.855,
+      "spxlOpen": 138.58
+    },
+    {
+      "date": "2025-03-17",
+      "qqqOpen": 479.61,
+      "spyOpen": 562.79,
+      "tqqqOpen": 30.94,
+      "spxlOpen": 143.44
+    },
+    {
+      "date": "2025-03-18",
+      "qqqOpen": 479.41,
+      "spyOpen": 564.8,
+      "tqqqOpen": 30.885,
+      "spxlOpen": 144.91
+    },
+    {
+      "date": "2025-03-19",
+      "qqqOpen": 476.81,
+      "spyOpen": 562.83,
+      "tqqqOpen": 30.34,
+      "spxlOpen": 143.27
+    },
+    {
+      "date": "2025-03-20",
+      "qqqOpen": 476.88,
+      "spyOpen": 563.33,
+      "tqqqOpen": 30.33,
+      "spxlOpen": 143.55
+    },
+    {
+      "date": "2025-03-21",
+      "qqqOpen": 474.08,
+      "spyOpen": 559.28,
+      "tqqqOpen": 29.765,
+      "spxlOpen": 141.59
+    },
+    {
+      "date": "2025-03-24",
+      "qqqOpen": 487.74,
+      "spyOpen": 570.8,
+      "tqqqOpen": 32.53,
+      "spxlOpen": 150.48
+    },
+    {
+      "date": "2025-03-25",
+      "qqqOpen": 491.39,
+      "spyOpen": 575.3,
+      "tqqqOpen": 33.24,
+      "spxlOpen": 153.45
+    },
+    {
+      "date": "2025-03-26",
+      "qqqOpen": 492.3,
+      "spyOpen": 575.19,
+      "tqqqOpen": 33.32,
+      "spxlOpen": 153.34
+    },
+    {
+      "date": "2025-03-27",
+      "qqqOpen": 482.41,
+      "spyOpen": 567.18,
+      "tqqqOpen": 31.3,
+      "spxlOpen": 146.93
+    },
+    {
+      "date": "2025-03-28",
+      "qqqOpen": 479.81,
+      "spyOpen": 565.53,
+      "tqqqOpen": 30.77,
+      "spxlOpen": 145.44
+    },
+    {
+      "date": "2025-03-31",
+      "qqqOpen": 461.92,
+      "spyOpen": 549.83,
+      "tqqqOpen": 27.36,
+      "spxlOpen": 133.42
+    },
+    {
+      "date": "2025-04-01",
+      "qqqOpen": 467.3,
+      "spyOpen": 557.45,
+      "tqqqOpen": 28.34,
+      "spxlOpen": 139.04
+    },
+    {
+      "date": "2025-04-02",
+      "qqqOpen": 466.12,
+      "spyOpen": 555.05,
+      "tqqqOpen": 28.095,
+      "spxlOpen": 137.14
+    },
+    {
+      "date": "2025-04-03",
+      "qqqOpen": 456.44,
+      "spyOpen": 545.11,
+      "tqqqOpen": 26.215,
+      "spxlOpen": 129.38
+    },
+    {
+      "date": "2025-04-04",
+      "qqqOpen": 438.14,
+      "spyOpen": 523.67,
+      "tqqqOpen": 22.995,
+      "spxlOpen": 113.89
+    },
+    {
+      "date": "2025-04-07",
+      "qqqOpen": 408.66,
+      "spyOpen": 489.19,
+      "tqqqOpen": 18.375,
+      "spxlOpen": 91.46
+    },
+    {
+      "date": "2025-04-08",
+      "qqqOpen": 438.16,
+      "spyOpen": 521.86,
+      "tqqqOpen": 22.695,
+      "spxlOpen": 111.1
+    },
+    {
+      "date": "2025-04-09",
+      "qqqOpen": 415.57,
+      "spyOpen": 493.44,
+      "tqqqOpen": 19.38,
+      "spxlOpen": 94.08
+    },
+    {
+      "date": "2025-04-10",
+      "qqqOpen": 453.56,
+      "spyOpen": 532.17,
+      "tqqqOpen": 24.34,
+      "spxlOpen": 115.32
+    },
+    {
+      "date": "2025-04-11",
+      "qqqOpen": 444.65,
+      "spyOpen": 523.01,
+      "tqqqOpen": 22.835,
+      "spxlOpen": 109.07
+    },
+    {
+      "date": "2025-04-14",
+      "qqqOpen": 464.46,
+      "spyOpen": 544.05,
+      "tqqqOpen": 25.95,
+      "spxlOpen": 122.54
+    },
+    {
+      "date": "2025-04-15",
+      "qqqOpen": 458.54,
+      "spyOpen": 539.67,
+      "tqqqOpen": 24.98,
+      "spxlOpen": 119.63
+    },
+    {
+      "date": "2025-04-16",
+      "qqqOpen": 449.03,
+      "spyOpen": 531.68,
+      "tqqqOpen": 23.415,
+      "spxlOpen": 114.27
+    },
+    {
+      "date": "2025-04-17",
+      "qqqOpen": 447.17,
+      "spyOpen": 527.64,
+      "tqqqOpen": 23.045,
+      "spxlOpen": 111.37
+    },
+    {
+      "date": "2025-04-21",
+      "qqqOpen": 438.23,
+      "spyOpen": 521.16,
+      "tqqqOpen": 21.685,
+      "spxlOpen": 107.32
+    },
+    {
+      "date": "2025-04-22",
+      "qqqOpen": 438.82,
+      "spyOpen": 520.14,
+      "tqqqOpen": 21.73,
+      "spxlOpen": 106.48
+    },
+    {
+      "date": "2025-04-23",
+      "qqqOpen": 458.17,
+      "spyOpen": 540.43,
+      "tqqqOpen": 24.62,
+      "spxlOpen": 118.98
+    },
+    {
+      "date": "2025-04-24",
+      "qqqOpen": 456.48,
+      "spyOpen": 536.72,
+      "tqqqOpen": 24.37,
+      "spxlOpen": 116.57
+    },
+    {
+      "date": "2025-04-25",
+      "qqqOpen": 466.97,
+      "spyOpen": 546.65,
+      "tqqqOpen": 26.02,
+      "spxlOpen": 123.01
+    },
+    {
+      "date": "2025-04-28",
+      "qqqOpen": 473.03,
+      "spyOpen": 551.39,
+      "tqqqOpen": 27.01,
+      "spxlOpen": 126.11
+    },
+    {
+      "date": "2025-04-29",
+      "qqqOpen": 470.17,
+      "spyOpen": 548.91,
+      "tqqqOpen": 26.52,
+      "spxlOpen": 124.41
+    },
+    {
+      "date": "2025-04-30",
+      "qqqOpen": 467.13,
+      "spyOpen": 547.57,
+      "tqqqOpen": 25.98,
+      "spxlOpen": 123.4
+    },
+    {
+      "date": "2025-05-01",
+      "qqqOpen": 483.41,
+      "spyOpen": 560.37,
+      "tqqqOpen": 28.78,
+      "spxlOpen": 132.23
+    },
+    {
+      "date": "2025-05-02",
+      "qqqOpen": 486.54,
+      "spyOpen": 564.73,
+      "tqqqOpen": 29.32,
+      "spxlOpen": 135.22
+    },
+    {
+      "date": "2025-05-05",
+      "qqqOpen": 484.6,
+      "spyOpen": 562.57,
+      "tqqqOpen": 28.95,
+      "spxlOpen": 133.54
+    },
+    {
+      "date": "2025-05-06",
+      "qqqOpen": 479.56,
+      "spyOpen": 557.93,
+      "tqqqOpen": 28.03,
+      "spxlOpen": 130.17
+    },
+    {
+      "date": "2025-05-07",
+      "qqqOpen": 482.08,
+      "spyOpen": 560.15,
+      "tqqqOpen": 28.48,
+      "spxlOpen": 131.74
+    },
+    {
+      "date": "2025-05-08",
+      "qqqOpen": 488.53,
+      "spyOpen": 565.24,
+      "tqqqOpen": 29.6,
+      "spxlOpen": 135.31
+    },
+    {
+      "date": "2025-05-09",
+      "qqqOpen": 490.21,
+      "spyOpen": 566.48,
+      "tqqqOpen": 29.9,
+      "spxlOpen": 136.07
+    },
+    {
+      "date": "2025-05-12",
+      "qqqOpen": 506.99,
+      "spyOpen": 581.47,
+      "tqqqOpen": 32.925,
+      "spxlOpen": 146.73
+    },
+    {
+      "date": "2025-05-13",
+      "qqqOpen": 509.16,
+      "spyOpen": 583.41,
+      "tqqqOpen": 33.335,
+      "spxlOpen": 148.15
+    },
+    {
+      "date": "2025-05-14",
+      "qqqOpen": 516.77,
+      "spyOpen": 587.81,
+      "tqqqOpen": 34.805,
+      "spxlOpen": 151.47
+    },
+    {
+      "date": "2025-05-15",
+      "qqqOpen": 516.52,
+      "spyOpen": 585.56,
+      "tqqqOpen": 34.74,
+      "spxlOpen": 149.6
+    },
+    {
+      "date": "2025-05-16",
+      "qqqOpen": 520.66,
+      "spyOpen": 591.25,
+      "tqqqOpen": 35.555,
+      "spxlOpen": 153.89
+    },
+    {
+      "date": "2025-05-19",
+      "qqqOpen": 514.24,
+      "spyOpen": 588.1,
+      "tqqqOpen": 34.235,
+      "spxlOpen": 151.38
+    },
+    {
+      "date": "2025-05-20",
+      "qqqOpen": 519.47,
+      "spyOpen": 593.09,
+      "tqqqOpen": 35.29,
+      "spxlOpen": 155.23
+    },
+    {
+      "date": "2025-05-21",
+      "qqqOpen": 516.27,
+      "spyOpen": 588.44,
+      "tqqqOpen": 34.62,
+      "spxlOpen": 151.51
+    },
+    {
+      "date": "2025-05-22",
+      "qqqOpen": 513.66,
+      "spyOpen": 582.66,
+      "tqqqOpen": 34.08,
+      "spxlOpen": 146.94
+    },
+    {
+      "date": "2025-05-23",
+      "qqqOpen": 506.18,
+      "spyOpen": 575.98,
+      "tqqqOpen": 32.545,
+      "spxlOpen": 141.73
+    },
+    {
+      "date": "2025-05-27",
+      "qqqOpen": 516.15,
+      "spyOpen": 586.07,
+      "tqqqOpen": 34.495,
+      "spxlOpen": 149.3
+    },
+    {
+      "date": "2025-05-28",
+      "qqqOpen": 522.18,
+      "spyOpen": 591.56,
+      "tqqqOpen": 35.67,
+      "spxlOpen": 153.37
+    },
+    {
+      "date": "2025-05-29",
+      "qqqOpen": 526.33,
+      "spyOpen": 593.06,
+      "tqqqOpen": 36.5,
+      "spxlOpen": 154.4
+    },
+    {
+      "date": "2025-05-30",
+      "qqqOpen": 519.44,
+      "spyOpen": 588.93,
+      "tqqqOpen": 35.065,
+      "spxlOpen": 151.08
+    },
+    {
+      "date": "2025-06-02",
+      "qqqOpen": 517.24,
+      "spyOpen": 587.76,
+      "tqqqOpen": 34.6,
+      "spxlOpen": 150.13
+    },
+    {
+      "date": "2025-06-03",
+      "qqqOpen": 523.56,
+      "spyOpen": 592.34,
+      "tqqqOpen": 35.88,
+      "spxlOpen": 153.65
+    },
+    {
+      "date": "2025-06-04",
+      "qqqOpen": 528.01,
+      "spyOpen": 596.96,
+      "tqqqOpen": 36.79,
+      "spxlOpen": 157.22
+    },
+    {
+      "date": "2025-06-05",
+      "qqqOpen": 530.18,
+      "spyOpen": 597.63,
+      "tqqqOpen": 37.225,
+      "spxlOpen": 157.74
+    },
+    {
+      "date": "2025-06-06",
+      "qqqOpen": 530.0,
+      "spyOpen": 598.66,
+      "tqqqOpen": 37.135,
+      "spxlOpen": 158.28
+    },
+    {
+      "date": "2025-06-09",
+      "qqqOpen": 530.14,
+      "spyOpen": 599.72,
+      "tqqqOpen": 37.155,
+      "spxlOpen": 159.08
+    },
+    {
+      "date": "2025-06-10",
+      "qqqOpen": 531.17,
+      "spyOpen": 600.22,
+      "tqqqOpen": 37.355,
+      "spxlOpen": 159.42
+    },
+    {
+      "date": "2025-06-11",
+      "qqqOpen": 535.62,
+      "spyOpen": 604.19,
+      "tqqqOpen": 38.295,
+      "spxlOpen": 162.55
+    },
+    {
+      "date": "2025-06-12",
+      "qqqOpen": 531.09,
+      "spyOpen": 600.01,
+      "tqqqOpen": 37.3,
+      "spxlOpen": 159.2
+    },
+    {
+      "date": "2025-06-13",
+      "qqqOpen": 527.68,
+      "spyOpen": 598.5,
+      "tqqqOpen": 36.55,
+      "spxlOpen": 157.82
+    },
+    {
+      "date": "2025-06-16",
+      "qqqOpen": 530.5,
+      "spyOpen": 600.4,
+      "tqqqOpen": 37.11,
+      "spxlOpen": 159.26
+    },
+    {
+      "date": "2025-06-17",
+      "qqqOpen": 531.71,
+      "spyOpen": 600.21,
+      "tqqqOpen": 37.34,
+      "spxlOpen": 158.99
+    },
+    {
+      "date": "2025-06-18",
+      "qqqOpen": 530.1,
+      "spyOpen": 598.44,
+      "tqqqOpen": 36.96,
+      "spxlOpen": 157.47
+    },
+    {
+      "date": "2025-06-20",
+      "qqqOpen": 532.26,
+      "spyOpen": 598.38,
+      "tqqqOpen": 37.38,
+      "spxlOpen": 158.66
+    },
+    {
+      "date": "2025-06-23",
+      "qqqOpen": 526.81,
+      "spyOpen": 595.04,
+      "tqqqOpen": 36.365,
+      "spxlOpen": 155.95
+    },
+    {
+      "date": "2025-06-24",
+      "qqqOpen": 536.89,
+      "spyOpen": 604.33,
+      "tqqqOpen": 38.455,
+      "spxlOpen": 162.66
+    },
+    {
+      "date": "2025-06-25",
+      "qqqOpen": 542.06,
+      "spyOpen": 607.91,
+      "tqqqOpen": 39.44,
+      "spxlOpen": 165.52
+    },
+    {
+      "date": "2025-06-26",
+      "qqqOpen": 543.35,
+      "spyOpen": 608.99,
+      "tqqqOpen": 39.71,
+      "spxlOpen": 166.35
+    },
+    {
+      "date": "2025-06-27",
+      "qqqOpen": 547.26,
+      "spyOpen": 612.88,
+      "tqqqOpen": 40.515,
+      "spxlOpen": 169.49
+    },
+    {
+      "date": "2025-06-30",
+      "qqqOpen": 551.26,
+      "spyOpen": 617.38,
+      "tqqqOpen": 41.4,
+      "spxlOpen": 173.08
+    },
+    {
+      "date": "2025-07-01",
+      "qqqOpen": 549.73,
+      "spyOpen": 616.36,
+      "tqqqOpen": 41.06,
+      "spxlOpen": 172.13
+    },
+    {
+      "date": "2025-07-02",
+      "qqqOpen": 546.16,
+      "spyOpen": 617.24,
+      "tqqqOpen": 40.23,
+      "spxlOpen": 172.84
+    },
+    {
+      "date": "2025-07-03",
+      "qqqOpen": 553.18,
+      "spyOpen": 622.45,
+      "tqqqOpen": 41.745,
+      "spxlOpen": 177.08
+    },
+    {
+      "date": "2025-07-07",
+      "qqqOpen": 553.52,
+      "spyOpen": 623.36,
+      "tqqqOpen": 41.8,
+      "spxlOpen": 177.71
+    },
+    {
+      "date": "2025-07-08",
+      "qqqOpen": 553.38,
+      "spyOpen": 621.35,
+      "tqqqOpen": 41.74,
+      "spxlOpen": 175.95
+    },
+    {
+      "date": "2025-07-09",
+      "qqqOpen": 554.48,
+      "spyOpen": 622.77,
+      "tqqqOpen": 41.985,
+      "spxlOpen": 177.09
+    },
+    {
+      "date": "2025-07-10",
+      "qqqOpen": 556.89,
+      "spyOpen": 624.2,
+      "tqqqOpen": 42.515,
+      "spxlOpen": 178.25
+    },
+    {
+      "date": "2025-07-11",
+      "qqqOpen": 553.3,
+      "spyOpen": 622.74,
+      "tqqqOpen": 41.66,
+      "spxlOpen": 176.86
+    },
+    {
+      "date": "2025-07-14",
+      "qqqOpen": 553.99,
+      "spyOpen": 623.16,
+      "tqqqOpen": 41.815,
+      "spxlOpen": 177.15
+    },
+    {
+      "date": "2025-07-15",
+      "qqqOpen": 560.25,
+      "spyOpen": 627.52,
+      "tqqqOpen": 43.215,
+      "spxlOpen": 180.87
+    },
+    {
+      "date": "2025-07-16",
+      "qqqOpen": 557.28,
+      "spyOpen": 623.74,
+      "tqqqOpen": 42.53,
+      "spxlOpen": 177.56
+    },
+    {
+      "date": "2025-07-17",
+      "qqqOpen": 558.02,
+      "spyOpen": 624.4,
+      "tqqqOpen": 42.685,
+      "spxlOpen": 178.11
+    },
+    {
+      "date": "2025-07-18",
+      "qqqOpen": 563.12,
+      "spyOpen": 629.3,
+      "tqqqOpen": 43.82,
+      "spxlOpen": 182.05
+    },
+    {
+      "date": "2025-07-21",
+      "qqqOpen": 562.09,
+      "spyOpen": 628.77,
+      "tqqqOpen": 43.575,
+      "spxlOpen": 181.6
+    },
+    {
+      "date": "2025-07-22",
+      "qqqOpen": 564.3,
+      "spyOpen": 629.1,
+      "tqqqOpen": 44.065,
+      "spxlOpen": 181.78
+    },
+    {
+      "date": "2025-07-23",
+      "qqqOpen": 562.34,
+      "spyOpen": 631.55,
+      "tqqqOpen": 43.59,
+      "spxlOpen": 183.91
+    },
+    {
+      "date": "2025-07-24",
+      "qqqOpen": 565.13,
+      "spyOpen": 634.6,
+      "tqqqOpen": 44.225,
+      "spxlOpen": 186.5
+    },
+    {
+      "date": "2025-07-25",
+      "qqqOpen": 564.93,
+      "spyOpen": 635.09,
+      "tqqqOpen": 44.155,
+      "spxlOpen": 186.78
+    },
+    {
+      "date": "2025-07-28",
+      "qqqOpen": 567.74,
+      "spyOpen": 637.48,
+      "tqqqOpen": 44.795,
+      "spxlOpen": 188.84
+    },
+    {
+      "date": "2025-07-29",
+      "qqqOpen": 570.76,
+      "spyOpen": 638.35,
+      "tqqqOpen": 45.495,
+      "spxlOpen": 189.56
+    },
+    {
+      "date": "2025-07-30",
+      "qqqOpen": 568.18,
+      "spyOpen": 635.92,
+      "tqqqOpen": 44.87,
+      "spxlOpen": 187.4
+    },
+    {
+      "date": "2025-07-31",
+      "qqqOpen": 574.54,
+      "spyOpen": 639.46,
+      "tqqqOpen": 46.355,
+      "spxlOpen": 190.37
+    },
+    {
+      "date": "2025-08-01",
+      "qqqOpen": 558.83,
+      "spyOpen": 626.3,
+      "tqqqOpen": 42.625,
+      "spxlOpen": 178.71
+    },
+    {
+      "date": "2025-08-04",
+      "qqqOpen": 559.05,
+      "spyOpen": 625.67,
+      "tqqqOpen": 42.61,
+      "spxlOpen": 178.02
+    },
+    {
+      "date": "2025-08-05",
+      "qqqOpen": 565.39,
+      "spyOpen": 631.79,
+      "tqqqOpen": 44.025,
+      "spxlOpen": 183.15
+    },
+    {
+      "date": "2025-08-06",
+      "qqqOpen": 561.11,
+      "spyOpen": 629.05,
+      "tqqqOpen": 43.015,
+      "spxlOpen": 180.71
+    },
+    {
+      "date": "2025-08-07",
+      "qqqOpen": 571.67,
+      "spyOpen": 636.24,
+      "tqqqOpen": 45.445,
+      "spxlOpen": 186.86
+    },
+    {
+      "date": "2025-08-08",
+      "qqqOpen": 570.45,
+      "spyOpen": 634.06,
+      "tqqqOpen": 45.12,
+      "spxlOpen": 184.76
+    },
+    {
+      "date": "2025-08-11",
+      "qqqOpen": 574.69,
+      "spyOpen": 637.46,
+      "tqqqOpen": 46.115,
+      "spxlOpen": 187.66
+    },
+    {
+      "date": "2025-08-12",
+      "qqqOpen": 575.16,
+      "spyOpen": 638.29,
+      "tqqqOpen": 46.21,
+      "spxlOpen": 188.34
+    },
+    {
+      "date": "2025-08-13",
+      "qqqOpen": 582.76,
+      "spyOpen": 644.91,
+      "tqqqOpen": 48.025,
+      "spxlOpen": 194.13
+    },
+    {
+      "date": "2025-08-14",
+      "qqqOpen": 578.28,
+      "spyOpen": 642.79,
+      "tqqqOpen": 46.92,
+      "spxlOpen": 192.22
+    },
+    {
+      "date": "2025-08-15",
+      "qqqOpen": 579.8,
+      "spyOpen": 645.99,
+      "tqqqOpen": 47.235,
+      "spxlOpen": 194.89
+    },
+    {
+      "date": "2025-08-18",
+      "qqqOpen": 576.44,
+      "spyOpen": 642.86,
+      "tqqqOpen": 46.4,
+      "spxlOpen": 192.04
+    },
+    {
+      "date": "2025-08-19",
+      "qqqOpen": 576.39,
+      "spyOpen": 643.12,
+      "tqqqOpen": 46.385,
+      "spxlOpen": 192.23
+    },
+    {
+      "date": "2025-08-20",
+      "qqqOpen": 568.33,
+      "spyOpen": 639.4,
+      "tqqqOpen": 44.415,
+      "spxlOpen": 188.75
+    },
+    {
+      "date": "2025-08-21",
+      "qqqOpen": 564.35,
+      "spyOpen": 636.28,
+      "tqqqOpen": 43.475,
+      "spxlOpen": 185.91
+    },
+    {
+      "date": "2025-08-22",
+      "qqqOpen": 564.67,
+      "spyOpen": 637.76,
+      "tqqqOpen": 43.51,
+      "spxlOpen": 187.09
+    },
+    {
+      "date": "2025-08-25",
+      "qqqOpen": 570.4,
+      "spyOpen": 644.04,
+      "tqqqOpen": 44.81,
+      "spxlOpen": 192.46
+    },
+    {
+      "date": "2025-08-26",
+      "qqqOpen": 569.83,
+      "spyOpen": 642.2,
+      "tqqqOpen": 44.655,
+      "spxlOpen": 190.75
+    },
+    {
+      "date": "2025-08-27",
+      "qqqOpen": 571.59,
+      "spyOpen": 644.57,
+      "tqqqOpen": 45.07,
+      "spxlOpen": 192.79
+    },
+    {
+      "date": "2025-08-28",
+      "qqqOpen": 574.11,
+      "spyOpen": 647.24,
+      "tqqqOpen": 45.64,
+      "spxlOpen": 195.21
+    },
+    {
+      "date": "2025-08-29",
+      "qqqOpen": 574.66,
+      "spyOpen": 647.47,
+      "tqqqOpen": 45.71,
+      "spxlOpen": 195.2
+    },
+    {
+      "date": "2025-09-02",
+      "qqqOpen": 561.31,
+      "spyOpen": 637.5,
+      "tqqqOpen": 42.555,
+      "spxlOpen": 186.14
+    },
+    {
+      "date": "2025-09-03",
+      "qqqOpen": 569.23,
+      "spyOpen": 642.67,
+      "tqqqOpen": 44.365,
+      "spxlOpen": 190.66
+    },
+    {
+      "date": "2025-09-04",
+      "qqqOpen": 570.74,
+      "spyOpen": 644.42,
+      "tqqqOpen": 44.7,
+      "spxlOpen": 192.22
+    },
+    {
+      "date": "2025-09-05",
+      "qqqOpen": 580.49,
+      "spyOpen": 651.48,
+      "tqqqOpen": 46.97,
+      "spxlOpen": 198.32
+    },
+    {
+      "date": "2025-09-08",
+      "qqqOpen": 578.37,
+      "spyOpen": 648.62,
+      "tqqqOpen": 46.455,
+      "spxlOpen": 195.67
+    },
+    {
+      "date": "2025-09-09",
+      "qqqOpen": 579.67,
+      "spyOpen": 648.97,
+      "tqqqOpen": 46.75,
+      "spxlOpen": 195.93
+    },
+    {
+      "date": "2025-09-10",
+      "qqqOpen": 583.74,
+      "spyOpen": 653.62,
+      "tqqqOpen": 47.725,
+      "spxlOpen": 200.08
+    },
+    {
+      "date": "2025-09-11",
+      "qqqOpen": 583.24,
+      "spyOpen": 654.18,
+      "tqqqOpen": 47.595,
+      "spxlOpen": 200.6
+    },
+    {
+      "date": "2025-09-12",
+      "qqqOpen": 585.04,
+      "spyOpen": 657.6,
+      "tqqqOpen": 47.98,
+      "spxlOpen": 203.51
+    },
+    {
+      "date": "2025-09-15",
+      "qqqOpen": 588.44,
+      "spyOpen": 659.64,
+      "tqqqOpen": 48.82,
+      "spxlOpen": 205.4
+    },
+    {
+      "date": "2025-09-16",
+      "qqqOpen": 592.61,
+      "spyOpen": 661.47,
+      "tqqqOpen": 49.835,
+      "spxlOpen": 207.04
+    },
+    {
+      "date": "2025-09-17",
+      "qqqOpen": 591.1,
+      "spyOpen": 660.01,
+      "tqqqOpen": 49.445,
+      "spxlOpen": 205.63
+    },
+    {
+      "date": "2025-09-18",
+      "qqqOpen": 594.91,
+      "spyOpen": 661.89,
+      "tqqqOpen": 50.38,
+      "spxlOpen": 207.3
+    },
+    {
+      "date": "2025-09-19",
+      "qqqOpen": 597.33,
+      "spyOpen": 662.33,
+      "tqqqOpen": 50.94,
+      "spxlOpen": 209.18
+    },
+    {
+      "date": "2025-09-22",
+      "qqqOpen": 597.74,
+      "spyOpen": 662.2,
+      "tqqqOpen": 51.21,
+      "spxlOpen": 209.0
+    },
+    {
+      "date": "2025-09-23",
+      "qqqOpen": 602.37,
+      "spyOpen": 666.72,
+      "tqqqOpen": 52.395,
+      "spxlOpen": 213.0
+    },
+    {
+      "date": "2025-09-24",
+      "qqqOpen": 599.58,
+      "spyOpen": 664.51,
+      "tqqqOpen": 51.605,
+      "spxlOpen": 210.8
+    },
+    {
+      "date": "2025-09-25",
+      "qqqOpen": 592.2,
+      "spyOpen": 657.94,
+      "tqqqOpen": 49.7,
+      "spxlOpen": 204.57
+    },
+    {
+      "date": "2025-09-26",
+      "qqqOpen": 594.35,
+      "spyOpen": 659.51,
+      "tqqqOpen": 50.2,
+      "spxlOpen": 205.88
+    },
+    {
+      "date": "2025-09-29",
+      "qqqOpen": 599.11,
+      "spyOpen": 664.36,
+      "tqqqOpen": 51.395,
+      "spxlOpen": 210.34
+    },
+    {
+      "date": "2025-09-30",
+      "qqqOpen": 598.43,
+      "spyOpen": 662.93,
+      "tqqqOpen": 51.205,
+      "spxlOpen": 208.89
+    },
+    {
+      "date": "2025-10-01",
+      "qqqOpen": 597.17,
+      "spyOpen": 663.17,
+      "tqqqOpen": 50.865,
+      "spxlOpen": 209.04
+    },
+    {
+      "date": "2025-10-02",
+      "qqqOpen": 607.06,
+      "spyOpen": 670.45,
+      "tqqqOpen": 53.405,
+      "spxlOpen": 215.95
+    },
+    {
+      "date": "2025-10-03",
+      "qqqOpen": 606.51,
+      "spyOpen": 669.99,
+      "tqqqOpen": 53.22,
+      "spxlOpen": 215.35
+    },
+    {
+      "date": "2025-10-06",
+      "qqqOpen": 608.45,
+      "spyOpen": 671.62,
+      "tqqqOpen": 53.7,
+      "spxlOpen": 216.84
+    },
+    {
+      "date": "2025-10-07",
+      "qqqOpen": 609.02,
+      "spyOpen": 672.54,
+      "tqqqOpen": 53.85,
+      "spxlOpen": 217.71
+    },
+    {
+      "date": "2025-10-08",
+      "qqqOpen": 605.41,
+      "spyOpen": 670.25,
+      "tqqqOpen": 52.86,
+      "spxlOpen": 215.44
+    },
+    {
+      "date": "2025-10-09",
+      "qqqOpen": 611.48,
+      "spyOpen": 673.53,
+      "tqqqOpen": 54.44,
+      "spxlOpen": 218.52
+    },
+    {
+      "date": "2025-10-10",
+      "qqqOpen": 611.4,
+      "spyOpen": 672.13,
+      "tqqqOpen": 54.365,
+      "spxlOpen": 217.0
+    },
+    {
+      "date": "2025-10-13",
+      "qqqOpen": 599.68,
+      "spyOpen": 660.65,
+      "tqqqOpen": 51.03,
+      "spxlOpen": 205.4
+    },
+    {
+      "date": "2025-10-14",
+      "qqqOpen": 595.31,
+      "spyOpen": 657.17,
+      "tqqqOpen": 49.865,
+      "spxlOpen": 202.05
+    },
+    {
+      "date": "2025-10-15",
+      "qqqOpen": 604.01,
+      "spyOpen": 666.82,
+      "tqqqOpen": 52.07,
+      "spxlOpen": 211.03
+    },
+    {
+      "date": "2025-10-16",
+      "qqqOpen": 605.11,
+      "spyOpen": 666.82,
+      "tqqqOpen": 52.34,
+      "spxlOpen": 210.98
+    },
+    {
+      "date": "2025-10-17",
+      "qqqOpen": 597.95,
+      "spyOpen": 659.5,
+      "tqqqOpen": 50.46,
+      "spxlOpen": 203.9
+    },
+    {
+      "date": "2025-10-20",
+      "qqqOpen": 607.14,
+      "spyOpen": 667.32,
+      "tqqqOpen": 52.805,
+      "spxlOpen": 211.09
+    },
+    {
+      "date": "2025-10-21",
+      "qqqOpen": 611.64,
+      "spyOpen": 671.44,
+      "tqqqOpen": 53.95,
+      "spxlOpen": 214.88
+    },
+    {
+      "date": "2025-10-22",
+      "qqqOpen": 610.82,
+      "spyOpen": 672.0,
+      "tqqqOpen": 53.725,
+      "spxlOpen": 215.34
+    },
+    {
+      "date": "2025-10-23",
+      "qqqOpen": 604.91,
+      "spyOpen": 668.12,
+      "tqqqOpen": 52.135,
+      "spxlOpen": 211.56
+    },
+    {
+      "date": "2025-10-24",
+      "qqqOpen": 615.99,
+      "spyOpen": 676.46,
+      "tqqqOpen": 54.995,
+      "spxlOpen": 219.35
+    },
+    {
+      "date": "2025-10-27",
+      "qqqOpen": 624.52,
+      "spyOpen": 682.73,
+      "tqqqOpen": 57.26,
+      "spxlOpen": 225.46
+    },
+    {
+      "date": "2025-10-28",
+      "qqqOpen": 630.36,
+      "spyOpen": 687.05,
+      "tqqqOpen": 58.825,
+      "spxlOpen": 229.62
+    },
+    {
+      "date": "2025-10-29",
+      "qqqOpen": 635.59,
+      "spyOpen": 688.72,
+      "tqqqOpen": 60.285,
+      "spxlOpen": 231.2
+    },
+    {
+      "date": "2025-10-30",
+      "qqqOpen": 632.17,
+      "spyOpen": 683.9,
+      "tqqqOpen": 59.295,
+      "spxlOpen": 226.37
+    },
+    {
+      "date": "2025-10-31",
+      "qqqOpen": 634.17,
+      "spyOpen": 685.04,
+      "tqqqOpen": 59.745,
+      "spxlOpen": 227.29
+    },
+    {
+      "date": "2025-11-03",
+      "qqqOpen": 635.11,
+      "spyOpen": 685.67,
+      "tqqqOpen": 60.0,
+      "spxlOpen": 227.75
+    },
+    {
+      "date": "2025-11-04",
+      "qqqOpen": 623.28,
+      "spyOpen": 676.11,
+      "tqqqOpen": 56.68,
+      "spxlOpen": 218.29
+    },
+    {
+      "date": "2025-11-05",
+      "qqqOpen": 618.49,
+      "spyOpen": 674.98,
+      "tqqqOpen": 55.34,
+      "spxlOpen": 217.08
+    },
+    {
+      "date": "2025-11-06",
+      "qqqOpen": 621.79,
+      "spyOpen": 676.47,
+      "tqqqOpen": 56.185,
+      "spxlOpen": 218.44
+    },
+    {
+      "date": "2025-11-07",
+      "qqqOpen": 608.31,
+      "spyOpen": 667.91,
+      "tqqqOpen": 52.51,
+      "spxlOpen": 209.99
+    },
+    {
+      "date": "2025-11-10",
+      "qqqOpen": 618.92,
+      "spyOpen": 677.24,
+      "tqqqOpen": 55.215,
+      "spxlOpen": 218.83
+    },
+    {
+      "date": "2025-11-11",
+      "qqqOpen": 620.57,
+      "spyOpen": 679.95,
+      "tqqqOpen": 55.635,
+      "spxlOpen": 221.3
+    },
+    {
+      "date": "2025-11-12",
+      "qqqOpen": 624.84,
+      "spyOpen": 684.79,
+      "tqqqOpen": 56.765,
+      "spxlOpen": 226.03
+    },
+    {
+      "date": "2025-11-13",
+      "qqqOpen": 617.54,
+      "spyOpen": 680.5,
+      "tqqqOpen": 54.785,
+      "spxlOpen": 221.77
+    },
+    {
+      "date": "2025-11-14",
+      "qqqOpen": 599.55,
+      "spyOpen": 665.38,
+      "tqqqOpen": 49.99,
+      "spxlOpen": 206.89
+    },
+    {
+      "date": "2025-11-17",
+      "qqqOpen": 606.3,
+      "spyOpen": 669.7,
+      "tqqqOpen": 51.705,
+      "spxlOpen": 210.91
+    },
+    {
+      "date": "2025-11-18",
+      "qqqOpen": 599.62,
+      "spyOpen": 662.1,
+      "tqqqOpen": 49.985,
+      "spxlOpen": 203.67
+    },
+    {
+      "date": "2025-11-19",
+      "qqqOpen": 597.07,
+      "spyOpen": 660.78,
+      "tqqqOpen": 49.325,
+      "spxlOpen": 202.38
+    },
+    {
+      "date": "2025-11-20",
+      "qqqOpen": 611.62,
+      "spyOpen": 672.91,
+      "tqqqOpen": 52.95,
+      "spxlOpen": 213.58
+    },
+    {
+      "date": "2025-11-21",
+      "qqqOpen": 587.47,
+      "spyOpen": 655.05,
+      "tqqqOpen": 46.85,
+      "spxlOpen": 196.74
+    },
+    {
+      "date": "2025-11-24",
+      "qqqOpen": 595.28,
+      "spyOpen": 662.69,
+      "tqqqOpen": 48.7,
+      "spxlOpen": 203.58
+    },
+    {
+      "date": "2025-11-25",
+      "qqqOpen": 603.51,
+      "spyOpen": 668.63,
+      "tqqqOpen": 50.64,
+      "spxlOpen": 208.97
+    },
+    {
+      "date": "2025-11-26",
+      "qqqOpen": 612.51,
+      "spyOpen": 677.63,
+      "tqqqOpen": 52.91,
+      "spxlOpen": 217.32
+    },
+    {
+      "date": "2025-11-28",
+      "qqqOpen": 616.11,
+      "spyOpen": 680.86,
+      "tqqqOpen": 53.82,
+      "spxlOpen": 220.29
+    },
+    {
+      "date": "2025-12-01",
+      "qqqOpen": 613.63,
+      "spyOpen": 678.81,
+      "tqqqOpen": 53.11,
+      "spxlOpen": 218.16
+    },
+    {
+      "date": "2025-12-02",
+      "qqqOpen": 619.46,
+      "spyOpen": 681.92,
+      "tqqqOpen": 54.63,
+      "spxlOpen": 221.11
+    },
+    {
+      "date": "2025-12-03",
+      "qqqOpen": 619.62,
+      "spyOpen": 680.57,
+      "tqqqOpen": 54.66,
+      "spxlOpen": 219.81
+    },
+    {
+      "date": "2025-12-04",
+      "qqqOpen": 624.93,
+      "spyOpen": 685.3,
+      "tqqqOpen": 56.04,
+      "spxlOpen": 224.3
+    },
+    {
+      "date": "2025-12-05",
+      "qqqOpen": 624.38,
+      "spyOpen": 685.47,
+      "tqqqOpen": 55.86,
+      "spxlOpen": 224.37
+    },
+    {
+      "date": "2025-12-08",
+      "qqqOpen": 627.21,
+      "spyOpen": 686.59,
+      "tqqqOpen": 56.57,
+      "spxlOpen": 225.35
+    },
+    {
+      "date": "2025-12-09",
+      "qqqOpen": 623.01,
+      "spyOpen": 683.15,
+      "tqqqOpen": 55.45,
+      "spxlOpen": 221.87
+    },
+    {
+      "date": "2025-12-10",
+      "qqqOpen": 623.85,
+      "spyOpen": 682.56,
+      "tqqqOpen": 55.65,
+      "spxlOpen": 221.24
+    },
+    {
+      "date": "2025-12-11",
+      "qqqOpen": 623.82,
+      "spyOpen": 685.14,
+      "tqqqOpen": 55.63,
+      "spxlOpen": 223.68
+    },
+    {
+      "date": "2025-12-12",
+      "qqqOpen": 622.08,
+      "spyOpen": 688.17,
+      "tqqqOpen": 55.11,
+      "spxlOpen": 226.5
+    },
+    {
+      "date": "2025-12-15",
+      "qqqOpen": 618.37,
+      "spyOpen": 685.74,
+      "tqqqOpen": 54.06,
+      "spxlOpen": 223.91
+    },
+    {
+      "date": "2025-12-16",
+      "qqqOpen": 608.26,
+      "spyOpen": 679.23,
+      "tqqqOpen": 51.43,
+      "spxlOpen": 217.46
+    },
+    {
+      "date": "2025-12-17",
+      "qqqOpen": 613.06,
+      "spyOpen": 679.89,
+      "tqqqOpen": 52.65,
+      "spxlOpen": 218.08
+    },
+    {
+      "date": "2025-12-18",
+      "qqqOpen": 609.8,
+      "spyOpen": 677.6,
+      "tqqqOpen": 51.67,
+      "spxlOpen": 215.66
+    },
+    {
+      "date": "2025-12-19",
+      "qqqOpen": 611.95,
+      "spyOpen": 676.59,
+      "tqqqOpen": 52.2,
+      "spxlOpen": 216.46
+    },
+    {
+      "date": "2025-12-22",
+      "qqqOpen": 621.35,
+      "spyOpen": 683.94,
+      "tqqqOpen": 54.81,
+      "spxlOpen": 223.44
+    },
+    {
+      "date": "2025-12-23",
+      "qqqOpen": 618.2,
+      "spyOpen": 683.92,
+      "tqqqOpen": 53.97,
+      "spxlOpen": 223.14
+    },
+    {
+      "date": "2025-12-24",
+      "qqqOpen": 621.99,
+      "spyOpen": 687.95,
+      "tqqqOpen": 54.87,
+      "spxlOpen": 226.98
+    },
+    {
+      "date": "2025-12-26",
+      "qqqOpen": 624.66,
+      "spyOpen": 690.64,
+      "tqqqOpen": 55.52,
+      "spxlOpen": 229.5
+    },
+    {
+      "date": "2025-12-29",
+      "qqqOpen": 620.1,
+      "spyOpen": 687.54,
+      "tqqqOpen": 54.29,
+      "spxlOpen": 226.36
+    },
+    {
+      "date": "2025-12-30",
+      "qqqOpen": 619.84,
+      "spyOpen": 687.45,
+      "tqqqOpen": 54.2,
+      "spxlOpen": 226.2
+    },
+    {
+      "date": "2025-12-31",
+      "qqqOpen": 619.65,
+      "spyOpen": 687.14,
+      "tqqqOpen": 54.13,
+      "spxlOpen": 225.76
+    },
+    {
+      "date": "2026-01-02",
+      "qqqOpen": 620.06,
+      "spyOpen": 685.71,
+      "tqqqOpen": 54.17,
+      "spxlOpen": 224.1
+    },
+    {
+      "date": "2026-01-05",
+      "qqqOpen": 619.32,
+      "spyOpen": 686.54,
+      "tqqqOpen": 53.95,
+      "spxlOpen": 224.88
+    },
+    {
+      "date": "2026-01-06",
+      "qqqOpen": 619.23,
+      "spyOpen": 687.93,
+      "tqqqOpen": 53.92,
+      "spxlOpen": 226.18
+    },
+    {
+      "date": "2026-01-07",
+      "qqqOpen": 623.04,
+      "spyOpen": 692.19,
+      "tqqqOpen": 54.89,
+      "spxlOpen": 230.29
+    },
+    {
+      "date": "2026-01-08",
+      "qqqOpen": 623.03,
+      "spyOpen": 688.82,
+      "tqqqOpen": 54.87,
+      "spxlOpen": 226.85
+    },
+    {
+      "date": "2026-01-09",
+      "qqqOpen": 621.41,
+      "spyOpen": 690.63,
+      "tqqqOpen": 54.39,
+      "spxlOpen": 228.48
+    },
+    {
+      "date": "2026-01-12",
+      "qqqOpen": 622.31,
+      "spyOpen": 690.68,
+      "tqqqOpen": 54.6,
+      "spxlOpen": 228.45
+    },
+    {
+      "date": "2026-01-13",
+      "qqqOpen": 627.27,
+      "spyOpen": 695.49,
+      "tqqqOpen": 55.91,
+      "spxlOpen": 233.2
+    },
+    {
+      "date": "2026-01-14",
+      "qqqOpen": 622.24,
+      "spyOpen": 691.0,
+      "tqqqOpen": 54.55,
+      "spxlOpen": 228.63
+    },
+    {
+      "date": "2026-01-15",
+      "qqqOpen": 626.6,
+      "spyOpen": 694.57,
+      "tqqqOpen": 55.65,
+      "spxlOpen": 232.07
+    },
+    {
+      "date": "2026-01-16",
+      "qqqOpen": 625.5,
+      "spyOpen": 693.66,
+      "tqqqOpen": 55.32,
+      "spxlOpen": 231.0
+    },
+    {
+      "date": "2026-01-20",
+      "qqqOpen": 610.53,
+      "spyOpen": 681.49,
+      "tqqqOpen": 51.39,
+      "spxlOpen": 218.72
+    },
+    {
+      "date": "2026-01-21",
+      "qqqOpen": 609.47,
+      "spyOpen": 679.65,
+      "tqqqOpen": 51.07,
+      "spxlOpen": 216.74
+    },
+    {
+      "date": "2026-01-22",
+      "qqqOpen": 622.35,
+      "spyOpen": 689.85,
+      "tqqqOpen": 54.32,
+      "spxlOpen": 226.51
+    },
+    {
+      "date": "2026-01-23",
+      "qqqOpen": 619.73,
+      "spyOpen": 688.15,
+      "tqqqOpen": 53.59,
+      "spxlOpen": 224.63
+    },
+    {
+      "date": "2026-01-26",
+      "qqqOpen": 623.21,
+      "spyOpen": 690.49,
+      "tqqqOpen": 54.47,
+      "spxlOpen": 226.86
+    },
+    {
+      "date": "2026-01-27",
+      "qqqOpen": 628.91,
+      "spyOpen": 694.18,
+      "tqqqOpen": 55.98,
+      "spxlOpen": 230.42
+    },
+    {
+      "date": "2026-01-28",
+      "qqqOpen": 635.46,
+      "spyOpen": 697.05,
+      "tqqqOpen": 57.7,
+      "spxlOpen": 233.26
+    },
+    {
+      "date": "2026-01-29",
+      "qqqOpen": 632.65,
+      "spyOpen": 696.39,
+      "tqqqOpen": 56.95,
+      "spxlOpen": 232.5
+    },
+    {
+      "date": "2026-01-30",
+      "qqqOpen": 625.71,
+      "spyOpen": 691.79,
+      "tqqqOpen": 55.02,
+      "spxlOpen": 227.9
+    },
+    {
+      "date": "2026-02-02",
+      "qqqOpen": 618.7,
+      "spyOpen": 689.58,
+      "tqqqOpen": 53.16,
+      "spxlOpen": 225.55
+    },
+    {
+      "date": "2026-02-03",
+      "qqqOpen": 628.3,
+      "spyOpen": 696.21,
+      "tqqqOpen": 55.64,
+      "spxlOpen": 232.07
+    },
+    {
+      "date": "2026-02-04",
+      "qqqOpen": 615.02,
+      "spyOpen": 690.35,
+      "tqqqOpen": 52.14,
+      "spxlOpen": 226.11
+    },
+    {
+      "date": "2026-02-05",
+      "qqqOpen": 600.21,
+      "spyOpen": 680.94,
+      "tqqqOpen": 48.39,
+      "spxlOpen": 216.86
+    },
+    {
+      "date": "2026-02-06",
+      "qqqOpen": 600.19,
+      "spyOpen": 681.46,
+      "tqqqOpen": 48.34,
+      "spxlOpen": 217.1
+    },
+    {
+      "date": "2026-02-09",
+      "qqqOpen": 607.54,
+      "spyOpen": 689.42,
+      "tqqqOpen": 50.06,
+      "spxlOpen": 224.55
+    },
+    {
+      "date": "2026-02-10",
+      "qqqOpen": 615.31,
+      "spyOpen": 694.95,
+      "tqqqOpen": 51.97,
+      "spxlOpen": 229.86
+    },
+    {
+      "date": "2026-02-11",
+      "qqqOpen": 616.38,
+      "spyOpen": 696.39,
+      "tqqqOpen": 52.21,
+      "spxlOpen": 231.29
+    },
+    {
+      "date": "2026-02-12",
+      "qqqOpen": 614.71,
+      "spyOpen": 694.24,
+      "tqqqOpen": 51.8,
+      "spxlOpen": 229.04
+    },
+    {
+      "date": "2026-02-13",
+      "qqqOpen": 600.43,
+      "spyOpen": 681.69,
+      "tqqqOpen": 48.15,
+      "spxlOpen": 216.45
+    },
+    {
+      "date": "2026-02-17",
+      "qqqOpen": 598.38,
+      "spyOpen": 680.14,
+      "tqqqOpen": 47.64,
+      "spxlOpen": 214.91
+    },
+    {
+      "date": "2026-02-18",
+      "qqqOpen": 602.11,
+      "spyOpen": 684.02,
+      "tqqqOpen": 48.53,
+      "spxlOpen": 218.57
+    },
+    {
+      "date": "2026-02-19",
+      "qqqOpen": 602.81,
+      "spyOpen": 683.84,
+      "tqqqOpen": 48.67,
+      "spxlOpen": 218.33
+    },
+    {
+      "date": "2026-02-20",
+      "qqqOpen": 600.12,
+      "spyOpen": 682.32,
+      "tqqqOpen": 47.96,
+      "spxlOpen": 216.62
+    },
+    {
+      "date": "2026-02-23",
+      "qqqOpen": 606.61,
+      "spyOpen": 687.83,
+      "tqqqOpen": 49.53,
+      "spxlOpen": 221.85
+    },
+    {
+      "date": "2026-02-24",
+      "qqqOpen": 602.4,
+      "spyOpen": 681.9,
+      "tqqqOpen": 48.45,
+      "spxlOpen": 216.01
+    },
+    {
+      "date": "2026-02-25",
+      "qqqOpen": 611.07,
+      "spyOpen": 690.18,
+      "tqqqOpen": 50.55,
+      "spxlOpen": 223.88
+    },
+    {
+      "date": "2026-02-26",
+      "qqqOpen": 615.59,
+      "spyOpen": 693.28,
+      "tqqqOpen": 51.63,
+      "spxlOpen": 226.84
+    },
+    {
+      "date": "2026-02-27",
+      "qqqOpen": 602.98,
+      "spyOpen": 683.09,
+      "tqqqOpen": 48.45,
+      "spxlOpen": 216.67
+    },
+    {
+      "date": "2026-03-02",
+      "qqqOpen": 598.86,
+      "spyOpen": 678.7,
+      "tqqqOpen": 47.46,
+      "spxlOpen": 212.5
+    },
+    {
+      "date": "2026-03-03",
+      "qqqOpen": 596.33,
+      "spyOpen": 675.06,
+      "tqqqOpen": 46.81,
+      "spxlOpen": 208.89
+    },
+    {
+      "date": "2026-03-04",
+      "qqqOpen": 604.16,
+      "spyOpen": 681.63,
+      "tqqqOpen": 48.69,
+      "spxlOpen": 215.16
+    },
+    {
+      "date": "2026-03-05",
+      "qqqOpen": 607.4,
+      "spyOpen": 682.08,
+      "tqqqOpen": 49.44,
+      "spxlOpen": 215.47
+    },
+    {
+      "date": "2026-03-06",
+      "qqqOpen": 600.31,
+      "spyOpen": 673.41,
+      "tqqqOpen": 47.66,
+      "spxlOpen": 207.09
+    },
+    {
+      "date": "2026-03-09",
+      "qqqOpen": 594.23,
+      "spyOpen": 666.39,
+      "tqqqOpen": 46.19,
+      "spxlOpen": 200.52
+    },
+    {
+      "date": "2026-03-10",
+      "qqqOpen": 607.78,
+      "spyOpen": 677.72,
+      "tqqqOpen": 49.41,
+      "spxlOpen": 210.94
+    },
+    {
+      "date": "2026-03-11",
+      "qqqOpen": 608.95,
+      "spyOpen": 677.58,
+      "tqqqOpen": 49.68,
+      "spxlOpen": 210.73
+    },
+    {
+      "date": "2026-03-12",
+      "qqqOpen": 602.76,
+      "spyOpen": 671.16,
+      "tqqqOpen": 48.15,
+      "spxlOpen": 204.64
+    },
+    {
+      "date": "2026-03-13",
+      "qqqOpen": 599.73,
+      "spyOpen": 669.27,
+      "tqqqOpen": 47.35,
+      "spxlOpen": 202.61
+    },
+    {
+      "date": "2026-03-16",
+      "qqqOpen": 600.04,
+      "spyOpen": 668.38,
+      "tqqqOpen": 47.37,
+      "spxlOpen": 201.74
+    },
+    {
+      "date": "2026-03-17",
+      "qqqOpen": 603.14,
+      "spyOpen": 672.39,
+      "tqqqOpen": 48.12,
+      "spxlOpen": 205.28
+    },
+    {
+      "date": "2026-03-18",
+      "qqqOpen": 601.49,
+      "spyOpen": 668.36,
+      "tqqqOpen": 47.72,
+      "spxlOpen": 201.58
+    },
+    {
+      "date": "2026-03-19",
+      "qqqOpen": 589.51,
+      "spyOpen": 656.97,
+      "tqqqOpen": 44.87,
+      "spxlOpen": 191.19
+    },
+    {
+      "date": "2026-03-20",
+      "qqqOpen": 591.06,
+      "spyOpen": 656.51,
+      "tqqqOpen": 45.18,
+      "spxlOpen": 192.27
+    },
+    {
+      "date": "2026-03-23",
+      "qqqOpen": 590.52,
+      "spyOpen": 658.07,
+      "tqqqOpen": 45.11,
+      "spxlOpen": 193.26
+    },
+    {
+      "date": "2026-03-24",
+      "qqqOpen": 584.81,
+      "spyOpen": 651.32,
+      "tqqqOpen": 43.84,
+      "spxlOpen": 186.98
+    },
+    {
+      "date": "2026-03-25",
+      "qqqOpen": 589.14,
+      "spyOpen": 658.67,
+      "tqqqOpen": 44.7,
+      "spxlOpen": 193.26
+    },
+    {
+      "date": "2026-03-26",
+      "qqqOpen": 582.6,
+      "spyOpen": 652.06,
+      "tqqqOpen": 43.23,
+      "spxlOpen": 187.43
+    },
+    {
+      "date": "2026-03-27",
+      "qqqOpen": 570.81,
+      "spyOpen": 642.5,
+      "tqqqOpen": 40.56,
+      "spxlOpen": 179.07
+    },
+    {
+      "date": "2026-03-30",
+      "qqqOpen": 567.38,
+      "spyOpen": 640.11,
+      "tqqqOpen": 39.75,
+      "spxlOpen": 176.78
+    },
+    {
+      "date": "2026-03-31",
+      "qqqOpen": 564.29,
+      "spyOpen": 638.94,
+      "tqqqOpen": 39.09,
+      "spxlOpen": 175.78
+    },
+    {
+      "date": "2026-04-01",
+      "qqqOpen": 581.48,
+      "spyOpen": 653.9,
+      "tqqqOpen": 42.63,
+      "spxlOpen": 187.96
+    },
+    {
+      "date": "2026-04-02",
+      "qqqOpen": 573.97,
+      "spyOpen": 646.42,
+      "tqqqOpen": 40.88,
+      "spxlOpen": 181.31
+    },
+    {
+      "date": "2026-04-06",
+      "qqqOpen": 586.23,
+      "spyOpen": 655.86,
+      "tqqqOpen": 43.6,
+      "spxlOpen": 189.4
+    },
+    {
+      "date": "2026-04-07",
+      "qqqOpen": 585.64,
+      "spyOpen": 656.65,
+      "tqqqOpen": 43.45,
+      "spxlOpen": 190.02
+    },
+    {
+      "date": "2026-04-08",
+      "qqqOpen": 608.71,
+      "spyOpen": 676.39,
+      "tqqqOpen": 48.64,
+      "spxlOpen": 207.23
+    },
+    {
+      "date": "2026-04-09",
+      "qqqOpen": 605.93,
+      "spyOpen": 674.84,
+      "tqqqOpen": 48.02,
+      "spxlOpen": 205.85
+    },
+    {
+      "date": "2026-04-10",
+      "qqqOpen": 611.85,
+      "spyOpen": 681.32,
+      "tqqqOpen": 49.3775,
+      "spxlOpen": 211.585
+    }
+  ]
+}

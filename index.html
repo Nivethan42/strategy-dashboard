@@ -6,6 +6,7 @@
   <title>Dual Strategy Dashboard</title>
   <link rel="stylesheet" href="./style.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -26,6 +27,7 @@
       <button class="tab" data-tab="compare">Compare</button>
       <button class="tab" data-tab="updates">Update History</button>
       <button class="tab" data-tab="methodology">Methodology</button>
+      <button class="tab" data-tab="test-strategy">Test Strategy</button>
     </nav>
 
     <section class="view is-active" data-view="overview">
@@ -112,6 +114,79 @@
 
     <section class="view" data-view="methodology">
       <div id="methodology-content" class="method-grid"></div>
+    </section>
+
+    <section class="view" data-view="test-strategy">
+      <section class="panel">
+        <div class="panel-head between">
+          <div>
+            <h2>Custom Formula Test Strategy</h2>
+            <p>Type formulas manually. Signals use prior source data only and execute at same-day traded ETF open.</p>
+          </div>
+          <div class="toolbar">
+            <select id="tester-mode">
+              <option value="tqqq">TQQQ (source QQQ, trade TQQQ)</option>
+              <option value="spxl">SPXL (source SPY, trade SPXL)</option>
+            </select>
+          </div>
+        </div>
+        <textarea id="tester-formula" class="formula-box" spellcheck="false"></textarea>
+        <div class="button-row">
+          <button id="run-test" class="btn-primary">Run Test</button>
+          <button id="reset-test" class="btn-secondary">Reset</button>
+        </div>
+        <div id="formula-examples" class="example-list"></div>
+        <p id="tester-message" class="muted-note"></p>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Backtest Summary</h2></div>
+        <div id="test-summary" class="summary-grid"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head between">
+          <div>
+            <h2>Cumulative Return: Strategy vs Buy & Hold</h2>
+            <p>Interactive chart with zoom, pan, hover details, and reset zoom.</p>
+          </div>
+          <div class="toolbar">
+            <div class="range-toggle" id="test-range-toggle">
+              <button data-range="1Y">1Y</button>
+              <button data-range="3Y">3Y</button>
+              <button data-range="5Y">5Y</button>
+              <button data-range="10Y">10Y</button>
+              <button data-range="FULL" class="is-active">Full</button>
+            </div>
+            <button id="reset-zoom" class="btn-secondary">Reset Zoom</button>
+          </div>
+        </div>
+        <div class="chart-wrap"><canvas id="test-chart"></canvas></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Trade Log</h2></div>
+        <div class="trade-log-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Entry Date</th>
+                <th>Exit Date</th>
+                <th>Entry Price</th>
+                <th>Exit Price</th>
+                <th>Trade Return</th>
+                <th>Holding Days</th>
+              </tr>
+            </thead>
+            <tbody id="trade-log-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>Recent Signal Changes</h2></div>
+        <div id="recent-events" class="timeline"></div>
+      </section>
     </section>
 
     <footer class="footer">Built with static HTML/CSS/JS + Python + yFinance + GitHub Actions.</footer>
