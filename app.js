@@ -155,6 +155,12 @@ function renderOverviewChart(strategyId) {
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
       scales: { y: { ticks: { callback: (value) => `${value}%` } } },
+      plugins: {
+        zoom: {
+          pan: { enabled: true, mode: "x" },
+          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "x" },
+        },
+      },
     },
   });
 }
@@ -836,6 +842,9 @@ function bindControls() {
     byId("range-toggle").querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
     btn.classList.add("is-active");
     renderOverviewChart(overviewSelect.value);
+  });
+  byId("overview-reset-zoom").addEventListener("click", () => {
+    if (overviewChart) overviewChart.resetZoom();
   });
 
   renderOverviewChart(strategyIds[0]);
