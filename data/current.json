@@ -9,21 +9,21 @@
       "displayName": "TQQQ Strategy",
       "sourceTicker": "QQQ",
       "tradedTicker": "TQQQ",
-      "currentSignal": "BUY",
-      "signalIsBuy": true,
-      "currentActionText": "Buy TQQQ at today's open",
-      "signalChangeSummary": "No signal change today",
-      "streakType": "BUY",
-      "streakLength": 6,
+      "currentSignal": "CASH",
+      "signalIsBuy": false,
+      "currentActionText": "Hold cash / no long position",
+      "signalChangeSummary": "Changed today",
+      "streakType": "CASH",
+      "streakLength": 1,
       "latestOpen": {
         "source": "$611.85",
         "traded": "$49.38"
       },
       "backtest": {
-        "cagr": "53.03%",
-        "maxDrawdown": "-46.98%",
-        "tradeCount": 65,
-        "window": "2010-02-11 to 2026-04-09"
+        "cagr": "-4.65%",
+        "maxDrawdown": "-31.37%",
+        "tradeCount": 4,
+        "window": "2024-08-07 to 2026-04-09"
       }
     },
     {
