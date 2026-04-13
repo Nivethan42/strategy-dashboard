@@ -1,29 +1,29 @@
 {
   "siteTitle": "Dual Strategy Dashboard",
-  "lastUpdated": "2026-04-13 08:08:54 EDT",
-  "latestTradingDay": "2026-04-10",
-  "latestSuccessfulRefresh": "2026-04-13 08:08:54 EDT",
+  "lastUpdated": "2026-04-13 10:05:51 EDT",
+  "latestTradingDay": "2026-04-13",
+  "latestSuccessfulRefresh": "2026-04-13 10:05:51 EDT",
   "strategies": [
     {
       "id": "tqqq",
       "displayName": "TQQQ Strategy",
       "sourceTicker": "QQQ",
       "tradedTicker": "TQQQ",
-      "currentSignal": "CASH",
-      "signalIsBuy": false,
-      "currentActionText": "Hold cash / no long position",
+      "currentSignal": "BUY",
+      "signalIsBuy": true,
+      "currentActionText": "Buy TQQQ at today's open",
       "signalChangeSummary": "Changed today",
-      "streakType": "CASH",
+      "streakType": "BUY",
       "streakLength": 1,
       "latestOpen": {
-        "source": "$611.84",
-        "traded": "$49.36"
+        "source": "$609.56",
+        "traded": "$48.78"
       },
       "backtest": {
-        "cagr": "57.29%",
+        "cagr": "57.28%",
         "maxDrawdown": "-52.47%",
-        "tradeCount": 67,
-        "window": "2010-02-11 to 2026-04-09"
+        "tradeCount": 68,
+        "window": "2010-02-11 to 2026-04-10"
       }
     },
     {
@@ -31,21 +31,21 @@
       "displayName": "SPXL Strategy",
       "sourceTicker": "SPY",
       "tradedTicker": "SPXL",
-      "currentSignal": "CASH",
-      "signalIsBuy": false,
-      "currentActionText": "Hold cash / no long position",
-      "signalChangeSummary": "No signal change today",
-      "streakType": "CASH",
-      "streakLength": 24,
+      "currentSignal": "BUY",
+      "signalIsBuy": true,
+      "currentActionText": "Buy SPXL at today's open",
+      "signalChangeSummary": "Changed today",
+      "streakType": "BUY",
+      "streakLength": 1,
       "latestOpen": {
-        "source": "$681.32",
-        "traded": "$211.59"
+        "source": "$677.41",
+        "traded": "$207.92"
       },
       "backtest": {
-        "cagr": "31.60%",
+        "cagr": "31.59%",
         "maxDrawdown": "-41.51%",
-        "tradeCount": 67,
-        "window": "2008-11-05 to 2026-04-09"
+        "tradeCount": 68,
+        "window": "2008-11-05 to 2026-04-10"
       }
     }
   ]
