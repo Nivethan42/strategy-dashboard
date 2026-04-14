@@ -1,8 +1,8 @@
 {
   "siteTitle": "Dual Strategy Dashboard",
-  "lastUpdated": "2026-04-14 07:15:48 EDT",
-  "latestTradingDay": "2026-04-13",
-  "latestSuccessfulRefresh": "2026-04-14 07:15:48 EDT",
+  "lastUpdated": "2026-04-14 10:07:44 EDT",
+  "latestTradingDay": "2026-04-14",
+  "latestSuccessfulRefresh": "2026-04-14 10:07:44 EDT",
   "strategies": [
     {
       "id": "tqqq",
@@ -12,18 +12,18 @@
       "currentSignal": "BUY",
       "signalIsBuy": true,
       "currentActionText": "Buy TQQQ at today's open",
-      "signalChangeSummary": "Changed today",
+      "signalChangeSummary": "No signal change today",
       "streakType": "BUY",
-      "streakLength": 1,
+      "streakLength": 2,
       "latestOpen": {
-        "source": "$609.48",
-        "traded": "$48.78"
+        "source": "$620.27",
+        "traded": "$51.40"
       },
       "backtest": {
-        "cagr": "57.28%",
+        "cagr": "57.75%",
         "maxDrawdown": "-52.47%",
         "tradeCount": 68,
-        "window": "2010-02-11 to 2026-04-10"
+        "window": "2010-02-11 to 2026-04-13"
       }
     },
     {
@@ -34,18 +34,18 @@
       "currentSignal": "BUY",
       "signalIsBuy": true,
       "currentActionText": "Buy SPXL at today's open",
-      "signalChangeSummary": "Changed today",
+      "signalChangeSummary": "No signal change today",
       "streakType": "BUY",
-      "streakLength": 1,
+      "streakLength": 2,
       "latestOpen": {
-        "source": "$677.41",
-        "traded": "$207.92"
+        "source": "$687.69",
+        "traded": "$217.39"
       },
       "backtest": {
-        "cagr": "31.59%",
+        "cagr": "31.91%",
         "maxDrawdown": "-41.51%",
         "tradeCount": 68,
-        "window": "2008-11-05 to 2026-04-10"
+        "window": "2008-11-05 to 2026-04-13"
       }
     }
   ]
