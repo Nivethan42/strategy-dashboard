@@ -5,7 +5,7 @@
   "tradedTicker": "TQQQ",
   "subtitle": "QQQ signal, prior-data only, trade TQQQ at today's open.",
   "latestTradingDay": "2026-04-14",
-  "lastUpdated": "2026-04-14 10:58:17 EDT",
+  "lastUpdated": "2026-04-14 11:05:06 EDT",
   "currentSignal": "BUY",
   "signalIsBuy": true,
   "currentActionText": "Buy TQQQ at today's open",
