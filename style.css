@@ -16,6 +16,7 @@
 }
 
 * { box-sizing: border-box; }
+html, body { overflow-x: hidden; }
 body {
   margin: 0;
   background: linear-gradient(180deg, #d9e2ff 0%, var(--bg) 180px);
@@ -52,6 +53,7 @@ h1 { margin: 4px 0; font-size: clamp(1.4rem, 3vw, 2rem); }
 .panel {
   background: var(--panel); border: 1px solid var(--border);
   border-radius: var(--radius); box-shadow: var(--shadow); padding: 13px;
+  min-width: 0;
 }
 .panel-head h2 { margin: 0; font-size: 1.1rem; letter-spacing: -.01em; }
 .panel-head p { margin: 3px 0 0; color: var(--muted); font-size: .9rem; line-height: 1.45; }
@@ -63,7 +65,7 @@ h1 { margin: 4px 0; font-size: clamp(1.4rem, 3vw, 2rem); }
   color: #fff; border-radius: var(--radius); padding: 16px;
 }
 .hero-main h2 { margin: 0; font-size: clamp(1.35rem, 4vw, 2rem); }
-.hero-main p { margin: 6px 0 0; color: rgba(255,255,255,.85); line-height: 1.45; }
+.hero-main p { margin: 6px 0 0; color: rgba(255,255,255,.85); line-height: 1.45; overflow-wrap: anywhere; }
 .hero-signal { padding: 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.08); }
 .signal-pill {
   margin: 8px 0 4px; font-size: 1.2rem; font-weight: 900; padding: 8px 10px;
@@ -119,8 +121,8 @@ select { border: 1px solid var(--border); border-radius: 10px; padding: 6px 8px;
 }
 .range-toggle button.is-active { background: #4e73d5; color: #fff; border-color: #4e73d5; }
 
-.table-wrap { overflow: auto; border: 1px solid #e8ecf2; border-radius: 10px; max-height: 420px; }
-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+.table-wrap { overflow: auto; border: 1px solid #e8ecf2; border-radius: 10px; max-height: 420px; width: 100%; max-width: 100%; }
+table { width: 100%; border-collapse: collapse; min-width: 760px; }
 th, td { padding: 7px 8px; font-size: .83rem; border-bottom: 1px solid #eef2f7; text-align: left; white-space: nowrap; }
 th { position: sticky; top: 0; background: #fff; z-index: 2; color: var(--muted); }
 
@@ -136,9 +138,11 @@ summary { font-weight: 800; cursor: pointer; }
 .footer { text-align: center; color: var(--muted); font-size: .86rem; padding: 10px 0 24px; }
 
 @media (max-width: 780px) {
+  html { -webkit-text-size-adjust: 100%; }
   body { font-size: 15px; }
   .container { padding: 10px; }
   .hero { grid-template-columns: 1fr; gap: 10px; padding: 12px; }
+  .hero-main h2 { font-size: 1.65rem; line-height: 1.2; overflow-wrap: anywhere; }
   .hero-main p { margin-top: 4px; }
   .topbar { align-items: flex-start; flex-direction: column; margin-bottom: 10px; }
   .tabs { gap: 5px; margin-bottom: 10px; }
@@ -156,6 +160,7 @@ summary { font-weight: 800; cursor: pointer; }
   .chart-wrap { min-height: 230px; }
   .chart-wrap.mini { min-height: 200px; }
   .kv { font-size: .84rem; }
+  table { min-width: 560px; }
   th, td { font-size: .76rem; padding: 6px; }
   #refresh-log { max-height: 300px; }
 }
