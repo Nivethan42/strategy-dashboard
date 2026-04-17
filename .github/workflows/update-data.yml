@@ -3,11 +3,14 @@ name: Update strategy data
 on:
   workflow_dispatch:
   schedule:
-    # Hourly refresh on weekdays.
-    - cron: "10 * * * 1-5"
-    # Additional 5-minute refreshes from 9:20am to 10:00am EDT (13:20 to 14:00 UTC during DST).
-    - cron: "20,25,30,35,40,45,50,55 13 * * 1-5"
+    # 9:35am America/New_York during EDT.
+    - cron: "35 13 * * 1-5"
+    # 9:35am America/New_York during EST.
+    - cron: "35 14 * * 1-5"
+    # 10:00am America/New_York during EDT.
     - cron: "0 14 * * 1-5"
+    # 10:00am America/New_York during EST.
+    - cron: "0 15 * * 1-5"
 
 permissions:
   contents: write

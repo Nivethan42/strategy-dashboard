@@ -8,6 +8,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import pandas as pd
+import pandas_market_calendars as mcal
 import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -27,10 +28,35 @@ PROXY_ENV_VARS = (
     "https_proxy",
     "all_proxy",
 )
+TARGET_REFRESH_TIMES = {(9, 35), (10, 0)}
 
 
 def now_ny() -> datetime:
     return datetime.now(TIMEZONE)
+
+
+def is_nyse_open_day(dt: datetime) -> bool:
+    nyse = mcal.get_calendar("XNYS")
+    schedule = nyse.schedule(start_date=dt.date(), end_date=dt.date())
+    return not schedule.empty
+
+
+def should_run_scheduled_refresh(dt: datetime) -> tuple[bool, str]:
+    if os.getenv("FORCE_REFRESH") == "1":
+        return True, "FORCE_REFRESH=1"
+
+    if not is_nyse_open_day(dt):
+        return False, f"NYSE closed on {dt.date().isoformat()}"
+
+    current_time = (dt.hour, dt.minute)
+    if current_time not in TARGET_REFRESH_TIMES:
+        return (
+            False,
+            "Current America/New_York time "
+            f"{dt.strftime('%H:%M')} is outside scheduled refresh windows (09:35, 10:00).",
+        )
+
+    return True, "Scheduled market-open refresh window"
 
 
 def clean_date_index(df: pd.DataFrame) -> pd.DataFrame:
@@ -840,9 +866,28 @@ def load_existing_strategy_payload(path: Path, strategy_id: str) -> dict | None:
 
     return payload
 
+
 def main() -> None:
-    run_ts = now_ny().strftime("%Y-%m-%d %H:%M:%S %Z")
+    run_dt = now_ny()
+    run_ts = run_dt.strftime("%Y-%m-%d %H:%M:%S %Z")
     commit = os.getenv("GITHUB_SHA") or os.getenv("COMMIT_SHA") or "local"
+
+    should_run, reason = should_run_scheduled_refresh(run_dt)
+    if not should_run:
+        append_refresh_log(
+            {
+                "timestamp": run_ts,
+                "type": "automated_refresh",
+                "status": "SKIP",
+                "latestTradingDay": None,
+                "rowCounts": {},
+                "note": f"Skipped refresh: {reason}",
+                "commit": commit,
+                "source": "yFinance",
+            }
+        )
+        print(f"Skipping refresh. {reason}")
+        return
 
     status = "OK"
     note = "Data refresh completed"
