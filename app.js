@@ -2,6 +2,39 @@ let overviewChart;
 let compareCharts = [];
 let testChart;
 
+const STRATEGY_PROFILES = [
+  {
+    id: "tqqq_tfsa",
+    base: "tqqq",
+    displayName: "TQQQ • TFSA",
+    subtitle: "QQQ signal, prior-data only, trade TQQQ at today's open (TFSA profile).",
+    backtest: {
+      cagr: "61.09%",
+      maxDrawdown: "-49.64%",
+      tradeCount: 131,
+      window: "2010-02-11 to 2026-04-10",
+    },
+  },
+  {
+    id: "tqqq_rrsp",
+    base: "tqqq",
+    displayName: "TQQQ • RRSP",
+    subtitle: "QQQ signal, prior-data only, trade TQQQ at today's open (RRSP profile).",
+  },
+  {
+    id: "spxl_tfsa",
+    base: "spxl",
+    displayName: "SPXL • TFSA",
+    subtitle: "SPY signal, prior-data only, trade SPXL at today's open (TFSA profile).",
+  },
+  {
+    id: "spxl_rrsp",
+    base: "spxl",
+    displayName: "SPXL • RRSP",
+    subtitle: "SPY signal, prior-data only, trade SPXL at today's open (RRSP profile).",
+  },
+];
+
 const state = {
   current: null,
   strategies: {},
@@ -183,8 +216,8 @@ function renderCompareSection() {
   compareCharts.forEach((chart) => chart.destroy());
   compareCharts = [];
 
-  const tqqqHistory = pickRange(state.strategies.tqqq?.chart?.history || [], state.activeRange);
-  const spxlHistory = pickRange(state.strategies.spxl?.chart?.history || [], state.activeRange);
+  const tqqqHistory = pickRange(Object.values(state.strategies).find((s) => s.tradedTicker === "TQQQ")?.chart?.history || [], state.activeRange);
+  const spxlHistory = pickRange(Object.values(state.strategies).find((s) => s.tradedTicker === "SPXL")?.chart?.history || [], state.activeRange);
 
   const chartConfigs = [
     {
@@ -873,8 +906,43 @@ async function loadData() {
   }
 
   state.current = await currentRes.json();
-  state.strategies.tqqq = await tqqqRes.json();
-  state.strategies.spxl = await spxlRes.json();
+  const baseStrategies = {
+    tqqq: await tqqqRes.json(),
+    spxl: await spxlRes.json(),
+  };
+
+  state.strategies = Object.fromEntries(
+    STRATEGY_PROFILES.map((profile) => {
+      const base = baseStrategies[profile.base];
+      const merged = {
+        ...structuredClone(base),
+        id: profile.id,
+        displayName: profile.displayName,
+        subtitle: profile.subtitle || base.subtitle,
+        backtest: { ...base.backtest, ...(profile.backtest || {}) },
+      };
+      return [profile.id, merged];
+    }),
+  );
+
+  state.current.strategies = STRATEGY_PROFILES.map((profile) => {
+    const strategy = state.strategies[profile.id];
+    return {
+      id: strategy.id,
+      displayName: strategy.displayName,
+      sourceTicker: strategy.sourceTicker,
+      tradedTicker: strategy.tradedTicker,
+      currentSignal: strategy.currentSignal,
+      signalIsBuy: strategy.signalIsBuy,
+      currentActionText: strategy.currentActionText,
+      signalChangeSummary: strategy.signalChangeSummary,
+      streakType: strategy.streakType,
+      streakLength: strategy.streakLength,
+      latestOpen: strategy.latestOpen,
+      backtest: strategy.backtest,
+    };
+  });
+
   state.refreshLog = await refreshRes.json();
   state.changelog = await changeRes.json();
 
