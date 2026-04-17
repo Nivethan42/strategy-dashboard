@@ -53,14 +53,27 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
 .health-badge.stale .dot { background: #ee6d72; box-shadow: 0 0 8px rgba(238, 109, 114, 0.5); }
 
 .tabs {
-  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px;
-  padding: 7px; border: 1px solid #2a354e; border-radius: 14px; background: #121d31;
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  margin-bottom: 14px;
+  padding: 2px 0 6px;
+  overflow-x: auto;
+  scrollbar-width: thin;
 }
 .tab {
-  border: 1px solid #334a73; background: #16233b; color: #a6b2cc;
-  border-radius: 999px; padding: 8px 13px; font-weight: 700; cursor: pointer; font-size: .9rem;
+  border: 1px solid #2d3a54;
+  background: transparent;
+  color: #8d9bb8;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: .82rem;
+  white-space: nowrap;
+  line-height: 1.2;
 }
-.tab.is-active { background: #2f4d7a; color: #fff; border-color: #3f6091; }
+.tab.is-active { background: #1a2538; color: #d9e3f7; border-color: #3a4b69; }
 
 .view { display: none; gap: 14px; }
 .view.is-active { display: grid; }
@@ -221,10 +234,7 @@ th { position: sticky; top: 0; background: #fff; z-index: 2; color: #4a5c8f; }
 @media (max-width: 780px) {
   .container { padding: 12px; }
   .topbar { flex-direction: column; align-items: flex-start; }
-  .strategy-card-grid { grid-template-columns: 1fr; }
   .two-col-charts { grid-template-columns: 1fr; }
-  .tabs { gap: 5px; }
-  .tab { flex: 1 1 calc(50% - 6px); text-align: center; }
   .chart-wrap { min-height: 250px; }
   .stats-grid { grid-template-columns: 1fr; }
   .toolbar { width: 100%; justify-content: space-between; flex-wrap: wrap; }
@@ -232,4 +242,23 @@ th { position: sticky; top: 0; background: #fff; z-index: 2; color: #4a5c8f; }
   .range-toggle button { flex: 1; }
   .button-row { flex-direction: column; }
   table { min-width: 560px; }
+}
+
+@media (max-width: 600px) {
+  .strategy-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .strategy-card { padding: 12px; }
+  .strategy-card h3 {
+    font-size: 1.35rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .number { font-size: 2.2rem; }
+  .days-line { margin-top: 12px; font-size: .95rem; }
+  .signal-badge { padding: 6px 10px; font-size: .84rem; }
+}
+
+@media (max-width: 400px) {
+  .strategy-card-grid { grid-template-columns: 1fr; }
 }

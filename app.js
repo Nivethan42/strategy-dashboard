@@ -85,9 +85,34 @@ function daysBetween(a, b) {
   return Math.max(0, Math.floor((new Date(a) - new Date(b)) / (24 * 60 * 60 * 1000)));
 }
 
+function parseDashboardTimestamp(timestamp) {
+  if (!timestamp) return null;
+  const raw = String(timestamp).trim();
+  const nativeParsed = new Date(raw);
+  if (!Number.isNaN(nativeParsed.getTime())) return nativeParsed;
+
+  const match = raw.match(/^(\d{4}-\d{2}-\d{2}) (\d{2}:\d{2}:\d{2}) ([A-Z]{3})$/);
+  if (!match) return null;
+  const [, datePart, timePart, tzAbbr] = match;
+  const tzOffsets = { EDT: "-04:00", EST: "-05:00", UTC: "+00:00" };
+  const offset = tzOffsets[tzAbbr];
+  if (!offset) return null;
+  const isoLike = `${datePart}T${timePart}${offset}`;
+  const parsed = new Date(isoLike);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function formatCurrency(value) {
+  const numeric = Number(value);
+  if (!Number.isFinite(numeric)) return null;
+  return `$${numeric.toFixed(2)}`;
+}
+
 function formatRelativeAge(timestamp) {
   if (!timestamp) return "Updated: --";
-  const diffMs = Date.now() - new Date(timestamp).getTime();
+  const parsed = parseDashboardTimestamp(timestamp);
+  if (!parsed) return `Updated: ${timestamp}`;
+  const diffMs = Date.now() - parsed.getTime();
   if (!Number.isFinite(diffMs) || diffMs < 0) return `Updated: ${timestamp}`;
   const hrs = Math.floor(diffMs / (60 * 60 * 1000));
   if (hrs < 24) return `Updated ${hrs}h ago`;
@@ -97,7 +122,10 @@ function formatRelativeAge(timestamp) {
 
 function refreshBadgeStatus(timestamp) {
   if (!timestamp) return "stale";
-  const ageDays = (Date.now() - new Date(timestamp).getTime()) / (24 * 60 * 60 * 1000);
+  const parsed = parseDashboardTimestamp(timestamp);
+  if (!parsed) return "stale";
+  const ageDays = (Date.now() - parsed.getTime()) / (24 * 60 * 60 * 1000);
+  if (!Number.isFinite(ageDays) || ageDays < 0) return "stale";
   if (ageDays < 1) return "fresh";
   if (ageDays <= 3) return "warn";
   return "stale";
@@ -193,7 +221,7 @@ function buildStrategyCards() {
         <div><span>CAGR</span><strong class="good">${esc(hasData ? strategy.backtest.cagr : "No data yet")}</strong></div>
         <div><span>MAX DD</span><strong class="bad">${esc(hasData ? strategy.backtest.maxDrawdown : "No data yet")}</strong></div>
       </div>
-      <div class="last-change mono">Last change: ${esc(lastChange ? `${lastChange.date} • ${lastChange.signal}` : hasData ? "No recent change" : "No data yet")}</div>`;
+      <div class="last-change mono">Last change: ${esc(lastChange ? `${lastChange.date} · ${lastChange.signal}${formatCurrency(lastChange.price) ? ` @ ${formatCurrency(lastChange.price)}` : ""}` : hasData ? "No recent change" : "No data yet")}</div>`;
 
     card.addEventListener("click", () => {
       state.selectedStrategyId = profile.id;
