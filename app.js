@@ -1,4 +1,6 @@
 let overviewChart;
+let drawdownChart;
+let rollingCagrChart;
 let compareCharts = [];
 let testChart;
 
@@ -6,8 +8,9 @@ const STRATEGY_PROFILES = [
   {
     id: "tqqq_tfsa",
     base: "tqqq",
-    displayName: "TQQQ • TFSA",
-    subtitle: "QQQ signal, prior-data only, trade TQQQ at today's open (TFSA profile).",
+    displayName: "TQQQ-TFSA",
+    cardTitle: "Momentum v3",
+    account: "TFSA",
     backtest: {
       cagr: "61.09%",
       maxDrawdown: "-49.64%",
@@ -15,24 +18,9 @@ const STRATEGY_PROFILES = [
       window: "2010-02-11 to 2026-04-10",
     },
   },
-  {
-    id: "tqqq_rrsp",
-    base: "tqqq",
-    displayName: "TQQQ • RRSP",
-    subtitle: "QQQ signal, prior-data only, trade TQQQ at today's open (RRSP profile).",
-  },
-  {
-    id: "spxl_tfsa",
-    base: "spxl",
-    displayName: "SPXL • TFSA",
-    subtitle: "SPY signal, prior-data only, trade SPXL at today's open (TFSA profile).",
-  },
-  {
-    id: "spxl_rrsp",
-    base: "spxl",
-    displayName: "SPXL • RRSP",
-    subtitle: "SPY signal, prior-data only, trade SPXL at today's open (RRSP profile).",
-  },
+  { id: "tqqq_rrsp", base: "tqqq", displayName: "TQQQ-RRSP", cardTitle: "Dip Hunter", account: "RRSP" },
+  { id: "spxl_tfsa", base: "spxl", displayName: "SPXL-TFSA", cardTitle: "RV Filter", account: "TFSA" },
+  { id: "spxl_rrsp", base: "spxl", displayName: "SPXL-RRSP", cardTitle: "MACD Cross", account: "RRSP" },
 ];
 
 const state = {
@@ -42,6 +30,7 @@ const state = {
   changelog: [],
   testData: null,
   activeRange: "FULL",
+  selectedStrategyId: STRATEGY_PROFILES[0].id,
   testRange: "FULL",
   lastTestResult: null,
 };
@@ -77,79 +66,6 @@ function tabInit() {
   });
 }
 
-function signalClass(signal) {
-  return signal === "BUY" ? "buy" : "cash";
-}
-
-function buildHero() {
-  const strategies = state.current.strategies;
-  const best = strategies.find((s) => s.signalIsBuy) || strategies[0];
-
-  byId("hero").innerHTML = `
-    <div class="hero-main">
-      <h2>${esc(best.displayName)}: ${esc(best.currentSignal)}</h2>
-      <p>${esc(best.currentActionText)}</p>
-      <p>${esc(best.signalChangeSummary)} • ${esc(best.streakType)} streak: ${esc(best.streakLength)} day(s)</p>
-    </div>
-    <div class="hero-signal">
-      <div>Current signal focus</div>
-      <div class="signal-pill ${signalClass(best.currentSignal)}">${esc(best.currentSignal)} / ${best.signalIsBuy ? "INVESTED" : "CASH"}</div>
-      ${metricRow(`Latest open (${fmt(best.sourceTicker)})`, best.latestOpen.source)}
-      ${metricRow(`Latest open (${fmt(best.tradedTicker)})`, best.latestOpen.traded)}
-    </div>`;
-}
-
-function buildSummary() {
-  const container = byId("summary-grid");
-  container.innerHTML = "";
-  state.current.strategies.forEach((s) => {
-    const card = document.createElement("article");
-    card.className = "card";
-    card.innerHTML = `
-      <h3>${esc(s.displayName)}</h3>
-      ${metricRow("Signal", s.currentSignal)}
-      ${metricRow("Today", s.signalChangeSummary)}
-      ${metricRow("Action", s.currentActionText)}
-      ${metricRow("BUY/CASH streak", `${fmt(s.streakType)} ${fmt(s.streakLength)}d`)}
-      ${metricRow(`${fmt(s.tradedTicker)} Open`, s.latestOpen.traded)}
-      <div class="indicator-grid">${renderIndicatorsMini(state.strategies[s.id].indicators)}</div>
-    `;
-    container.appendChild(card);
-  });
-}
-
-function renderIndicatorsMini(indicators) {
-  return indicators
-    .map((i) => `<div class="indicator-card"><div class="top"><strong>${esc(i.label)}</strong><span class="badge ${i.passed ? "ok" : "fail"}">${i.passed ? "PASS" : "FAIL"}</span></div><div class="indicator-val">${esc(i.displayValue)}</div><small>${esc(i.rule)}</small></div>`)
-    .join("");
-}
-
-function buildQuickCompare() {
-  const container = byId("quick-compare");
-  container.innerHTML = "";
-  state.current.strategies.forEach((s) => {
-    container.appendChild(strategyCard(s, [
-      { label: "Signal", value: s.currentSignal },
-      { label: "CAGR", value: s.backtest.cagr },
-      { label: "Max DD", value: s.backtest.maxDrawdown },
-      { label: "Trades", value: s.backtest.tradeCount },
-      { label: "Window", value: s.backtest.window },
-    ]));
-  });
-}
-
-function strategyCard(strategy, metrics, className = "card") {
-  const card = document.createElement("article");
-  card.className = className;
-  card.innerHTML = `
-    <h3>${esc(strategy.displayName)}</h3>
-    <div class="metric-list">
-      ${metrics.map((m) => metricRow(m.label, m.value)).join("")}
-    </div>
-  `;
-  return card;
-}
-
 function pickRange(history, range) {
   if (range === "1Y") return history.slice(-252);
   if (range === "3Y") return history.slice(-756);
@@ -165,11 +81,154 @@ function cumulativeReturn(values) {
   return values.map((v) => ((v / base) - 1) * 100);
 }
 
-function renderOverviewChart(strategyId) {
-  const strategy = state.strategies[strategyId];
-  if (!strategy) return;
-  const rows = pickRange(strategy.chart.history, state.activeRange);
+function daysBetween(a, b) {
+  return Math.max(0, Math.floor((new Date(a) - new Date(b)) / (24 * 60 * 60 * 1000)));
+}
 
+function formatRelativeAge(timestamp) {
+  if (!timestamp) return "Updated: --";
+  const diffMs = Date.now() - new Date(timestamp).getTime();
+  if (!Number.isFinite(diffMs) || diffMs < 0) return `Updated: ${timestamp}`;
+  const hrs = Math.floor(diffMs / (60 * 60 * 1000));
+  if (hrs < 24) return `Updated ${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `Updated ${days}d ago`;
+}
+
+function refreshBadgeStatus(timestamp) {
+  if (!timestamp) return "stale";
+  const ageDays = (Date.now() - new Date(timestamp).getTime()) / (24 * 60 * 60 * 1000);
+  if (ageDays < 1) return "fresh";
+  if (ageDays <= 3) return "warn";
+  return "stale";
+}
+
+function findLastSignalChange(strategy) {
+  const rows = strategy.signalHistory || [];
+  for (let i = rows.length - 1; i > 0; i -= 1) {
+    if (rows[i].signalText !== rows[i - 1].signalText) {
+      return { date: rows[i].date, signal: rows[i].signalText, price: rows[i].tradedOpen };
+    }
+  }
+  return null;
+}
+
+function deriveTradeStats(strategy) {
+  const history = strategy.chart?.history || [];
+  if (history.length < 2) return null;
+
+  const trades = [];
+  const signalHistory = strategy.signalHistory || [];
+  let openTrade = null;
+  for (let i = 1; i < signalHistory.length; i += 1) {
+    const prev = signalHistory[i - 1].signalText;
+    const curr = signalHistory[i].signalText;
+    if (curr === "BUY" && prev !== "BUY") {
+      openTrade = { entryDate: signalHistory[i].date, entryPrice: Number(signalHistory[i].tradedOpen) || null, idx: i };
+    }
+    if (curr !== "BUY" && prev === "BUY" && openTrade?.entryPrice) {
+      const exitPrice = Number(signalHistory[i].tradedOpen) || null;
+      if (exitPrice) {
+        const tradeReturn = exitPrice / openTrade.entryPrice - 1;
+        trades.push({ tradeReturn, holdingDays: i - openTrade.idx });
+      }
+      openTrade = null;
+    }
+  }
+
+  const wins = trades.filter((t) => t.tradeReturn > 0);
+  const losses = trades.filter((t) => t.tradeReturn <= 0);
+  const avg = (vals) => (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null);
+
+  const avgWin = avg(wins.map((t) => t.tradeReturn));
+  const avgLoss = avg(losses.map((t) => t.tradeReturn));
+  const winRate = trades.length ? wins.length / trades.length : null;
+  const expectancy = (winRate ?? 0) * (avgWin ?? 0) + (1 - (winRate ?? 0)) * (avgLoss ?? 0);
+  const profitFactor = losses.length ? Math.abs(wins.reduce((a, t) => a + t.tradeReturn, 0) / losses.reduce((a, t) => a + t.tradeReturn, 0)) : null;
+
+  return {
+    totalTrades: trades.length,
+    winRate,
+    avgWin,
+    avgLoss,
+    expectancy,
+    profitFactor,
+    bestTrade: trades.length ? Math.max(...trades.map((t) => t.tradeReturn)) : null,
+    worstTrade: trades.length ? Math.min(...trades.map((t) => t.tradeReturn)) : null,
+    avgHoldingDays: avg(trades.map((t) => t.holdingDays)),
+  };
+}
+
+function renderRefreshHealth() {
+  const timestamp = state.current?.lastUpdated;
+  const badge = byId("refresh-health");
+  const status = refreshBadgeStatus(timestamp);
+  badge.className = `health-badge ${status}`;
+  badge.innerHTML = `<span class="dot"></span><span>${esc(formatRelativeAge(timestamp))}</span>`;
+}
+
+function buildStrategyCards() {
+  const container = byId("strategy-card-grid");
+  container.innerHTML = "";
+
+  STRATEGY_PROFILES.forEach((profile) => {
+    const strategy = state.strategies[profile.id];
+    const hasData = strategy?.hasData;
+    const lastChange = hasData ? findLastSignalChange(strategy) : null;
+    const signalText = hasData ? (strategy.signalIsBuy ? "HOLD LONG" : "IN CASH") : "No data yet";
+
+    const card = document.createElement("article");
+    card.className = `strategy-card ${state.selectedStrategyId === profile.id ? "is-active" : ""}`;
+    card.dataset.strategyId = profile.id;
+    card.innerHTML = `
+      <div class="strategy-card-head">
+        <div>
+          <div class="ticker-meta mono">${esc(profile.displayName.replace("-", " • "))}</div>
+          <h3>${esc(profile.cardTitle)}</h3>
+        </div>
+        <span class="signal-badge ${hasData ? (strategy.signalIsBuy ? "buy" : "cash") : "nodata"}">${esc(signalText)}</span>
+      </div>
+      <div class="days-line"><strong class="number">${esc(hasData ? strategy.streakLength : "—")}</strong> days in position</div>
+      <div class="card-metrics mono">
+        <div><span>CAGR</span><strong class="good">${esc(hasData ? strategy.backtest.cagr : "No data yet")}</strong></div>
+        <div><span>MAX DD</span><strong class="bad">${esc(hasData ? strategy.backtest.maxDrawdown : "No data yet")}</strong></div>
+      </div>
+      <div class="last-change mono">Last change: ${esc(lastChange ? `${lastChange.date} • ${lastChange.signal}` : hasData ? "No recent change" : "No data yet")}</div>`;
+
+    card.addEventListener("click", () => {
+      state.selectedStrategyId = profile.id;
+      renderOverview();
+    });
+
+    container.appendChild(card);
+  });
+}
+
+function buildSelectorPills() {
+  const container = byId("strategy-pill-selector");
+  container.innerHTML = STRATEGY_PROFILES.map((profile) => {
+    const active = state.selectedStrategyId === profile.id ? "is-active" : "";
+    return `<button class="strategy-pill ${active}" data-strategy-pill="${profile.id}">${esc(profile.displayName.replace("-", " · "))}</button>`;
+  }).join("");
+
+  container.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedStrategyId = button.dataset.strategyPill;
+      renderOverview();
+    });
+  });
+}
+
+function renderOverviewCharts(strategy) {
+  if (!strategy?.hasData) {
+    ["overview-chart", "drawdown-chart", "rolling-cagr-chart"].forEach((id) => {
+      const ctx = byId(id).getContext("2d");
+      ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    });
+    return;
+  }
+
+  const rows = pickRange(strategy.chart.history, state.activeRange);
   const strategyReturns = cumulativeReturn(rows.map((r) => r.equity));
   const buyHoldReturns = cumulativeReturn(rows.map((r) => r.tradedOpen));
 
@@ -179,30 +238,138 @@ function renderOverviewChart(strategyId) {
     data: {
       labels: rows.map((r) => r.date),
       datasets: [
-        { label: `${strategy.tradedTicker} Strategy Cumulative Return (%)`, data: strategyReturns, borderWidth: 2, tension: 0.15 },
-        { label: `${strategy.tradedTicker} Buy & Hold Cumulative Return (%)`, data: buyHoldReturns, borderWidth: 2, tension: 0.15 },
+        { label: "Strategy", data: strategyReturns, borderWidth: 2, borderColor: "#E7B77C", backgroundColor: "rgba(231,183,124,0.16)", tension: 0.22, fill: true },
+        { label: "Buy & Hold", data: buyHoldReturns, borderWidth: 2, borderColor: "#8A96B2", tension: 0.22, borderDash: [4, 4] },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
-      scales: { y: { ticks: { callback: (value) => `${value}%` } } },
+      scales: {
+        y: { ticks: { callback: (v) => `${v}%`, color: "#7785A5" }, grid: { color: "rgba(129,149,182,0.2)" } },
+        x: { ticks: { color: "#7785A5", maxTicksLimit: 8 }, grid: { display: false } },
+      },
       plugins: {
-        zoom: {
-          pan: { enabled: true, mode: "x" },
-          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "x" },
-        },
+        legend: { labels: { color: "#A8B4D0" } },
+        zoom: { pan: { enabled: true, mode: "x" }, zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "x" } },
       },
     },
   });
+
+  const equity = rows.map((r) => r.equity);
+  let peak = -Infinity;
+  const drawdown = equity.map((v) => {
+    peak = Math.max(peak, v);
+    return ((v / peak) - 1) * 100;
+  });
+
+  if (drawdownChart) drawdownChart.destroy();
+  drawdownChart = new Chart(byId("drawdown-chart").getContext("2d"), {
+    type: "line",
+    data: { labels: rows.map((r) => r.date), datasets: [{ label: "Drawdown", data: drawdown, borderColor: "#F17379", backgroundColor: "rgba(151,41,56,0.45)", fill: true, tension: 0.16, borderWidth: 2 }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { ticks: { callback: (v) => `${v}%`, color: "#7785A5" }, grid: { color: "rgba(129,149,182,0.2)" } },
+        x: { ticks: { color: "#7785A5", maxTicksLimit: 6 }, grid: { display: false } },
+      },
+      plugins: { legend: { display: false } },
+    },
+  });
+
+  const rolling = [];
+  const labels = [];
+  for (let i = 252; i < rows.length; i += 1) {
+    const start = rows[i - 252].equity;
+    const end = rows[i].equity;
+    labels.push(rows[i].date);
+    rolling.push(((end / start) ** (252 / 252) - 1) * 100);
+  }
+  if (rollingCagrChart) rollingCagrChart.destroy();
+  rollingCagrChart = new Chart(byId("rolling-cagr-chart").getContext("2d"), {
+    type: "line",
+    data: { labels, datasets: [{ label: "Rolling 1Y CAGR", data: rolling, borderColor: "#67A8FF", tension: 0.18, borderWidth: 2 }] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        y: { ticks: { callback: (v) => `${v}%`, color: "#7785A5" }, grid: { color: "rgba(129,149,182,0.2)" } },
+        x: { ticks: { color: "#7785A5", maxTicksLimit: 6 }, grid: { display: false } },
+      },
+      plugins: { legend: { display: false } },
+    },
+  });
+}
+
+function renderTradeStats(strategy) {
+  const container = byId("trade-stats");
+  const stats = strategy?.hasData ? deriveTradeStats(strategy) : null;
+  const pct = (v) => (v == null ? "No data yet" : `${(v * 100).toFixed(2)}%`);
+  const num = (v) => (v == null ? "No data yet" : Number(v).toFixed(1));
+
+  const items = [
+    ["Total trades", stats?.totalTrades],
+    ["Win rate", pct(stats?.winRate)],
+    ["Avg win", pct(stats?.avgWin)],
+    ["Avg loss", pct(stats?.avgLoss)],
+    ["Expectancy", pct(stats?.expectancy)],
+    ["Profit factor", num(stats?.profitFactor)],
+    ["Best trade", pct(stats?.bestTrade)],
+    ["Worst trade", pct(stats?.worstTrade)],
+    ["Avg holding days", num(stats?.avgHoldingDays)],
+  ];
+
+  container.innerHTML = items.map(([label, value]) => `<article class="stat-card"><span>${esc(label)}</span><strong class="mono">${esc(value)}</strong></article>`).join("");
+}
+
+function renderRecentSignals(strategy) {
+  const container = byId("recent-signals");
+  if (!strategy?.hasData) {
+    container.innerHTML = '<article class="log-item"><p>No data yet.</p></article>';
+    return;
+  }
+  const rows = strategy.signalHistory || [];
+  const changes = [];
+  for (let i = rows.length - 1; i > 0; i -= 1) {
+    if (rows[i].signalText !== rows[i - 1].signalText) {
+      changes.push(rows[i]);
+      if (changes.length >= 6) break;
+    }
+  }
+  container.innerHTML = changes.length
+    ? changes.map((r) => `<article class="log-item dark"><div class="kv"><strong>${esc(r.date)}</strong><span class="badge ${r.signalText === "BUY" ? "ok" : "warn"}">${esc(r.signalText === "BUY" ? "HOLD LONG" : "IN CASH")}</span></div><p>${esc(strategy.displayName)} signal changed at traded open ${esc(r.tradedOpen)}</p></article>`).join("")
+    : '<article class="log-item"><p>No signal changes found.</p></article>';
+}
+
+function renderOverview() {
+  const strategy = state.strategies[state.selectedStrategyId];
+  buildStrategyCards();
+  buildSelectorPills();
+  renderOverviewCharts(strategy);
+  renderTradeStats(strategy);
+  renderRecentSignals(strategy);
+}
+
+function strategyCard(strategy, metrics, className = "card") {
+  const card = document.createElement("article");
+  card.className = className;
+  card.innerHTML = `
+    <h3>${esc(strategy.displayName)}</h3>
+    <div class="metric-list">
+      ${metrics.map((m) => metricRow(m.label, m.value)).join("")}
+    </div>
+  `;
+  return card;
 }
 
 function renderCompareSection() {
   const container = byId("compare-cards");
   container.innerHTML = "";
 
-  state.current.strategies.forEach((s) => {
+  Object.values(state.strategies).forEach((s) => {
+    if (!s.hasData) return;
     container.appendChild(strategyCard(s, [
       { label: "Current signal", value: s.currentSignal },
       { label: `Latest open (${s.tradedTicker})`, value: s.latestOpen.traded },
@@ -216,34 +383,14 @@ function renderCompareSection() {
   compareCharts.forEach((chart) => chart.destroy());
   compareCharts = [];
 
-  const tqqqHistory = pickRange(Object.values(state.strategies).find((s) => s.tradedTicker === "TQQQ")?.chart?.history || [], state.activeRange);
-  const spxlHistory = pickRange(Object.values(state.strategies).find((s) => s.tradedTicker === "SPXL")?.chart?.history || [], state.activeRange);
+  const tqqqHistory = pickRange(Object.values(state.strategies).find((s) => s.hasData && s.tradedTicker === "TQQQ")?.chart?.history || [], state.activeRange);
+  const spxlHistory = pickRange(Object.values(state.strategies).find((s) => s.hasData && s.tradedTicker === "SPXL")?.chart?.history || [], state.activeRange);
 
   const chartConfigs = [
-    {
-      canvasId: "compare-chart-tqqq",
-      title: "TQQQ",
-      prices: tqqqHistory.map((r) => r.tradedOpen),
-      labels: tqqqHistory.map((r) => r.date),
-    },
-    {
-      canvasId: "compare-chart-spxl",
-      title: "SPXL",
-      prices: spxlHistory.map((r) => r.tradedOpen),
-      labels: spxlHistory.map((r) => r.date),
-    },
-    {
-      canvasId: "compare-chart-qqq",
-      title: "QQQ",
-      prices: tqqqHistory.map((r) => r.sourceOpen),
-      labels: tqqqHistory.map((r) => r.date),
-    },
-    {
-      canvasId: "compare-chart-spy",
-      title: "SPY",
-      prices: spxlHistory.map((r) => r.sourceOpen),
-      labels: spxlHistory.map((r) => r.date),
-    },
+    { canvasId: "compare-chart-tqqq", title: "TQQQ", prices: tqqqHistory.map((r) => r.tradedOpen), labels: tqqqHistory.map((r) => r.date) },
+    { canvasId: "compare-chart-spxl", title: "SPXL", prices: spxlHistory.map((r) => r.tradedOpen), labels: spxlHistory.map((r) => r.date) },
+    { canvasId: "compare-chart-qqq", title: "QQQ", prices: tqqqHistory.map((r) => r.sourceOpen), labels: tqqqHistory.map((r) => r.date) },
+    { canvasId: "compare-chart-spy", title: "SPY", prices: spxlHistory.map((r) => r.sourceOpen), labels: spxlHistory.map((r) => r.date) },
   ];
 
   chartConfigs.forEach(({ canvasId, title, prices, labels }) => {
@@ -264,28 +411,11 @@ function renderCompareSection() {
         interaction: { mode: "index", intersect: false },
         scales: {
           y: { title: { display: true, text: "Price" } },
-          y1: {
-            position: "right",
-            grid: { drawOnChartArea: false },
-            title: { display: true, text: "Cumulative Return" },
-            ticks: { callback: (value) => `${value}%` },
-          },
+          y1: { position: "right", grid: { drawOnChartArea: false }, title: { display: true, text: "Cumulative Return" }, ticks: { callback: (value) => `${value}%` } },
         },
       },
     }));
   });
-}
-
-function renderHistoryTable(strategyId) {
-  const rows = [...(state.strategies[strategyId].signalHistory || [])].reverse().slice(0, 180);
-  const head = byId("history-head");
-  const body = byId("history-body");
-
-  const cols = Object.keys(rows[0] || { date: "", signalText: "", sourceOpen: "", tradedOpen: "" });
-  head.innerHTML = cols.map((c) => `<th>${esc(c)}</th>`).join("");
-  body.innerHTML = rows
-    .map((r) => `<tr>${cols.map((c) => `<td>${esc(r[c])}</td>`).join("")}</tr>`)
-    .join("");
 }
 
 function renderUpdates() {
@@ -299,12 +429,10 @@ function renderUpdates() {
 
   const reversedLog = [...state.refreshLog].reverse();
   const latestDate = reversedLog.length ? new Date(reversedLog[0].timestamp) : null;
-  const fiveDayLog = latestDate
-    ? reversedLog.filter((entry) => {
-      const diffMs = latestDate.getTime() - new Date(entry.timestamp).getTime();
-      return diffMs >= 0 && diffMs < 5 * 24 * 60 * 60 * 1000;
-    })
-    : [];
+  const fiveDayLog = latestDate ? reversedLog.filter((entry) => {
+    const diffMs = latestDate.getTime() - new Date(entry.timestamp).getTime();
+    return diffMs >= 0 && diffMs < 5 * 24 * 60 * 60 * 1000;
+  }) : [];
 
   byId("refresh-log").innerHTML = fiveDayLog.map((r) => {
     const cls = r.status === "OK" ? "ok" : r.status === "WARN" ? "warn" : "fail";
@@ -322,6 +450,7 @@ function renderMethodology() {
   container.innerHTML = "";
 
   Object.values(state.strategies).forEach((s) => {
+    if (!s.hasData) return;
     const block = document.createElement("section");
     block.className = "panel";
     block.innerHTML = `
@@ -350,14 +479,8 @@ function renderMethodology() {
   });
 }
 
-function mean(values) {
-  return values.reduce((a, b) => a + b, 0) / values.length;
-}
-
-function std(values) {
-  const m = mean(values);
-  return Math.sqrt(mean(values.map((v) => (v - m) ** 2)));
-}
+function mean(values) { return values.reduce((a, b) => a + b, 0) / values.length; }
+function std(values) { const m = mean(values); return Math.sqrt(mean(values.map((v) => (v - m) ** 2))); }
 
 function tokenize(input) {
   const pattern = /\s*(>=|<=|==|!=|>|<|\(|\)|,|\/|\*|\+|-|AND\b|OR\b|[A-Za-z_][A-Za-z0-9_]*|-?\d*\.?\d+)\s*/g;
@@ -372,30 +495,17 @@ function buildParser(tokens, ctx) {
   const peek = () => tokens[pos];
   const take = () => tokens[pos++];
 
-  function parseExpression() {
-    return parseOr();
-  }
-
+  function parseExpression() { return parseOr(); }
   function parseOr() {
     let left = parseAnd();
-    while (peek() === "OR") {
-      take();
-      const right = parseAnd();
-      left = Boolean(left) || Boolean(right);
-    }
+    while (peek() === "OR") { take(); left = Boolean(left) || Boolean(parseAnd()); }
     return left;
   }
-
   function parseAnd() {
     let left = parseCompare();
-    while (peek() === "AND") {
-      take();
-      const right = parseCompare();
-      left = Boolean(left) && Boolean(right);
-    }
+    while (peek() === "AND") { take(); left = Boolean(left) && Boolean(parseCompare()); }
     return left;
   }
-
   function parseCompare() {
     let left = parseAddSub();
     const op = peek();
@@ -411,50 +521,26 @@ function buildParser(tokens, ctx) {
     }
     return left;
   }
-
   function parseAddSub() {
     let left = parseMulDiv();
-    while (["+", "-"].includes(peek())) {
-      const op = take();
-      const right = parseMulDiv();
-      left = op === "+" ? left + right : left - right;
-    }
+    while (["+", "-"].includes(peek())) { const op = take(); const right = parseMulDiv(); left = op === "+" ? left + right : left - right; }
     return left;
   }
-
   function parseMulDiv() {
     let left = parsePrimary();
-    while (["*", "/"].includes(peek())) {
-      const op = take();
-      const right = parsePrimary();
-      left = op === "*" ? left * right : left / right;
-    }
+    while (["*", "/"].includes(peek())) { const op = take(); const right = parsePrimary(); left = op === "*" ? left * right : left / right; }
     return left;
   }
-
   function parsePrimary() {
     const tok = peek();
-    if (tok === "(") {
-      take();
-      const value = parseExpression();
-      if (peek() === ")") take();
-      return value;
-    }
-
-    if (/^-?\d*\.?\d+$/.test(tok || "")) {
-      take();
-      return Number(tok);
-    }
-
+    if (tok === "(") { take(); const value = parseExpression(); if (peek() === ")") take(); return value; }
+    if (/^-?\d*\.?\d+$/.test(tok || "")) { take(); return Number(tok); }
     if (/^[A-Za-z_]/.test(tok || "")) {
       const ident = take();
       if (peek() === "(") {
         take();
         const args = [];
-        while (peek() && peek() !== ")") {
-          args.push(parseExpression());
-          if (peek() === ",") take();
-        }
+        while (peek() && peek() !== ")") { args.push(parseExpression()); if (peek() === ",") take(); }
         if (peek() === ")") take();
         if (ident === "COUNT_TRUE") return args.filter(Boolean).length;
         throw new Error(`Unsupported function: ${ident}`);
@@ -471,16 +557,13 @@ function buildParser(tokens, ctx) {
 
 function buildIndicatorContext(source, traded, i) {
   const sourceReturns = source.map((v, idx) => (idx > 0 ? v / source[idx - 1] - 1 : null));
-
   const emaSeries = (period) => {
     const alpha = 2 / (period + 1);
     const out = new Array(source.length).fill(null);
     let prev = null;
     for (let idx = 0; idx < source.length; idx += 1) {
-      const v = source[idx];
-      if (v == null) continue;
-      if (prev == null) prev = v;
-      else prev = alpha * v + (1 - alpha) * prev;
+      const v = source[idx]; if (v == null) continue;
+      if (prev == null) prev = v; else prev = alpha * v + (1 - alpha) * prev;
       out[idx] = prev;
     }
     return out;
@@ -488,165 +571,72 @@ function buildIndicatorContext(source, traded, i) {
 
   const emaCache = {};
   const macdCache = {};
-
-  const getLag = (name) => {
-    const m = name.match(/^(.*)_L(\d+)$/);
-    if (!m) return { base: name, lag: 0 };
-    return { base: m[1], lag: Number(m[2]) };
-  };
-
-  const withLag = (arr, lag = 1) => {
-    const idx = i - lag;
-    if (idx < 0) return null;
-    return arr[idx];
-  };
-
+  const getLag = (name) => { const m = name.match(/^(.*)_L(\d+)$/); return m ? { base: m[1], lag: Number(m[2]) } : { base: name, lag: 0 }; };
+  const withLag = (arr, lag = 1) => { const idx = i - lag; return idx < 0 ? null : arr[idx]; };
   const window = (arr, length, lag = 1) => {
-    const end = i - lag;
-    const start = end - length + 1;
+    const end = i - lag; const start = end - length + 1;
     if (start < 0 || end < 0) return null;
     const vals = arr.slice(start, end + 1);
-    if (vals.some((v) => v === null || Number.isNaN(v))) return null;
-    return vals;
+    return vals.some((v) => v === null || Number.isNaN(v)) ? null : vals;
   };
-
-  const sma = (n, lag = 1) => {
-    const vals = window(source, n, lag);
-    return vals ? mean(vals) : null;
-  };
-
-  const momentum = (n, lag = 1) => {
-    const a = withLag(source, lag);
-    const b = withLag(source, lag + n);
-    if (!a || !b) return null;
-    return a / b - 1;
-  };
-
-  const rv = (n, lag = 1) => {
-    const vals = window(sourceReturns, n, lag);
-    return vals ? std(vals) : null;
-  };
-
-  const slp = (n, shift, lag = 1) => {
-    const a = sma(n, lag);
-    const b = sma(n, lag + shift);
-    if (!a || !b) return null;
-    return a / b - 1;
-  };
-
-  const maxN = (n, lag = 1) => {
-    const vals = window(source, n, lag);
-    return vals ? Math.max(...vals) : null;
-  };
-
-  const minN = (n, lag = 1) => {
-    const vals = window(source, n, lag);
-    return vals ? Math.min(...vals) : null;
-  };
+  const sma = (n, lag = 1) => { const vals = window(source, n, lag); return vals ? mean(vals) : null; };
+  const momentum = (n, lag = 1) => { const a = withLag(source, lag); const b = withLag(source, lag + n); return !a || !b ? null : a / b - 1; };
+  const rv = (n, lag = 1) => { const vals = window(sourceReturns, n, lag); return vals ? std(vals) : null; };
+  const slp = (n, shift, lag = 1) => { const a = sma(n, lag); const b = sma(n, lag + shift); return !a || !b ? null : a / b - 1; };
+  const maxN = (n, lag = 1) => { const vals = window(source, n, lag); return vals ? Math.max(...vals) : null; };
+  const minN = (n, lag = 1) => { const vals = window(source, n, lag); return vals ? Math.min(...vals) : null; };
 
   const get = (name) => {
     const { base, lag } = getLag(name.toUpperCase());
     const liveLag = 1 + lag;
-
     if (base === "OPEN") return withLag(source, liveLag);
-    if (base === "ABVMA100") {
-      const o = withLag(source, liveLag);
-      const m = sma(100, liveLag);
-      return o != null && m != null ? o > m : null;
-    }
-
-    let m = base.match(/^MOM(\d+)$/);
-    if (m) return momentum(Number(m[1]), liveLag);
-
-    m = base.match(/^RV(\d+)$/);
-    if (m) return rv(Number(m[1]), liveLag);
-
-    m = base.match(/^MAX(\d+)$/);
-    if (m) return maxN(Number(m[1]), liveLag);
-
-    m = base.match(/^MIN(\d+)$/);
-    if (m) return minN(Number(m[1]), liveLag);
-
+    if (base === "ABVMA100") { const o = withLag(source, liveLag); const m = sma(100, liveLag); return o != null && m != null ? o > m : null; }
+    let m = base.match(/^MOM(\d+)$/); if (m) return momentum(Number(m[1]), liveLag);
+    m = base.match(/^RV(\d+)$/); if (m) return rv(Number(m[1]), liveLag);
+    m = base.match(/^MAX(\d+)$/); if (m) return maxN(Number(m[1]), liveLag);
+    m = base.match(/^MIN(\d+)$/); if (m) return minN(Number(m[1]), liveLag);
     m = base.match(/^(SMA_RATIO|SR|TREND_RATIO)_(\d+)_(\d+)$/);
-    if (m) {
-      const a = sma(Number(m[2]), liveLag);
-      const b = sma(Number(m[3]), liveLag);
-      return a != null && b != null ? a / b : null;
-    }
-
-    m = base.match(/^(SLP|SSLP)(\d+)_(\d+)$/);
-    if (m) return slp(Number(m[2]), Number(m[3]), liveLag);
-
+    if (m) { const a = sma(Number(m[2]), liveLag); const b = sma(Number(m[3]), liveLag); return a != null && b != null ? a / b : null; }
+    m = base.match(/^(SLP|SSLP)(\d+)_(\d+)$/); if (m) return slp(Number(m[2]), Number(m[3]), liveLag);
     m = base.match(/^VR(\d+)_(\d+)$/);
-    if (m) {
-      const a = rv(Number(m[1]), liveLag);
-      const b = rv(Number(m[2]), liveLag);
-      return a != null && b != null ? a / b : null;
-    }
-
+    if (m) { const a = rv(Number(m[1]), liveLag); const b = rv(Number(m[2]), liveLag); return a != null && b != null ? a / b : null; }
     m = base.match(/^MACD(\d+)_(\d+)$/);
     if (m) {
-      const fast = Number(m[1]);
-      const slow = Number(m[2]);
-      const key = `${fast}_${slow}`;
+      const key = `${Number(m[1])}_${Number(m[2])}`;
       if (!macdCache[key]) {
-        const ef = emaCache[fast] || (emaCache[fast] = emaSeries(fast));
-        const es = emaCache[slow] || (emaCache[slow] = emaSeries(slow));
+        const ef = emaCache[Number(m[1])] || (emaCache[Number(m[1])] = emaSeries(Number(m[1])));
+        const es = emaCache[Number(m[2])] || (emaCache[Number(m[2])] = emaSeries(Number(m[2])));
         macdCache[key] = ef.map((v, idx) => (v != null && es[idx] != null ? v - es[idx] : null));
       }
       return withLag(macdCache[key], liveLag);
     }
-
     m = base.match(/^MACDH(\d+)_(\d+)$/);
     if (m) {
-      const fast = Number(m[1]);
-      const slow = Number(m[2]);
-      const key = `${fast}_${slow}`;
+      const key = `${Number(m[1])}_${Number(m[2])}`;
       if (!macdCache[key]) {
-        const ef = emaCache[fast] || (emaCache[fast] = emaSeries(fast));
-        const es = emaCache[slow] || (emaCache[slow] = emaSeries(slow));
+        const ef = emaCache[Number(m[1])] || (emaCache[Number(m[1])] = emaSeries(Number(m[1])));
+        const es = emaCache[Number(m[2])] || (emaCache[Number(m[2])] = emaSeries(Number(m[2])));
         macdCache[key] = ef.map((v, idx) => (v != null && es[idx] != null ? v - es[idx] : null));
       }
       const histKey = `hist_${key}`;
       if (!macdCache[histKey]) {
         const macd = macdCache[key];
-        const alpha = 2 / (9 + 1);
+        const alpha = 2 / 10;
         const signal = new Array(macd.length).fill(null);
         let prev = null;
         for (let idx = 0; idx < macd.length; idx += 1) {
-          const v = macd[idx];
-          if (v == null) continue;
-          if (prev == null) prev = v;
-          else prev = alpha * v + (1 - alpha) * prev;
+          const v = macd[idx]; if (v == null) continue;
+          if (prev == null) prev = v; else prev = alpha * v + (1 - alpha) * prev;
           signal[idx] = prev;
         }
         macdCache[histKey] = macd.map((v, idx) => (v != null && signal[idx] != null ? v - signal[idx] : null));
       }
       return withLag(macdCache[histKey], liveLag);
     }
-
-    if (base === "RECOVERY" || base === "RECAPTURE") {
-      const o = withLag(source, liveLag);
-      const mn = minN(20, liveLag + 1);
-      return o != null && mn != null ? o / mn - 1 : null;
-    }
-
-    if (base === "PERSISTENCE") {
-      return [1, 2, 3].every((k) => momentum(20, liveLag + k) > 0);
-    }
-
-    if (base === "LEVEL52") {
-      const o = withLag(source, liveLag);
-      const high = maxN(252, liveLag);
-      return o != null && high != null ? o / high : null;
-    }
-
-    if (base === "STRETCH") {
-      const o = withLag(source, liveLag);
-      const m50 = sma(50, liveLag);
-      return o != null && m50 != null ? o / m50 : null;
-    }
-
+    if (base === "RECOVERY" || base === "RECAPTURE") { const o = withLag(source, liveLag); const mn = minN(20, liveLag + 1); return o != null && mn != null ? o / mn - 1 : null; }
+    if (base === "PERSISTENCE") return [1, 2, 3].every((k) => momentum(20, liveLag + k) > 0);
+    if (base === "LEVEL52") { const o = withLag(source, liveLag); const high = maxN(252, liveLag); return o != null && high != null ? o / high : null; }
+    if (base === "STRETCH") { const o = withLag(source, liveLag); const m50 = sma(50, liveLag); return o != null && m50 != null ? o / m50 : null; }
     throw new Error(`Unknown indicator: ${name}`);
   };
 
@@ -665,12 +655,7 @@ function runCustomBacktest(mode, formula) {
   for (let i = 0; i < rows.length; i += 1) {
     const ctx = buildIndicatorContext(source, traded, i);
     let signal = false;
-    try {
-      const val = buildParser(tokenize(formula.toUpperCase()), ctx);
-      signal = Boolean(val);
-    } catch {
-      signal = false;
-    }
+    try { signal = Boolean(buildParser(tokenize(formula.toUpperCase()), ctx)); } catch { signal = false; }
     signals.push(signal ? 1 : 0);
   }
 
@@ -688,39 +673,20 @@ function runCustomBacktest(mode, formula) {
     curve.push({ date: dates[i], strategy: equity, buyhold: bh, signal: pos });
 
     const prev = i > 0 ? signals[i - 1] : 0;
-    if (pos === 1 && prev === 0) {
-      openTrade = { entryDate: dates[i], entryPrice: traded[i], entryIdx: i };
-    }
+    if (pos === 1 && prev === 0) openTrade = { entryDate: dates[i], entryPrice: traded[i], entryIdx: i };
     if (pos === 0 && prev === 1 && openTrade) {
-      trades.push({
-        ...openTrade,
-        exitDate: dates[i],
-        exitPrice: traded[i],
-        tradeReturn: traded[i] / openTrade.entryPrice - 1,
-        holdingDays: i - openTrade.entryIdx,
-      });
+      trades.push({ ...openTrade, exitDate: dates[i], exitPrice: traded[i], tradeReturn: traded[i] / openTrade.entryPrice - 1, holdingDays: i - openTrade.entryIdx });
       openTrade = null;
     }
   }
-
   if (openTrade) {
     const lastIdx = rows.length - 1;
-    trades.push({
-      ...openTrade,
-      exitDate: dates[lastIdx],
-      exitPrice: traded[lastIdx],
-      tradeReturn: traded[lastIdx] / openTrade.entryPrice - 1,
-      holdingDays: lastIdx - openTrade.entryIdx,
-    });
+    trades.push({ ...openTrade, exitDate: dates[lastIdx], exitPrice: traded[lastIdx], tradeReturn: traded[lastIdx] / openTrade.entryPrice - 1, holdingDays: lastIdx - openTrade.entryIdx });
   }
 
-  const returns = curve.map((r, idx) => (idx === 0 ? 0 : r.strategy / curve[idx - 1].strategy - 1));
   let peak = 1;
   let maxDrawdown = 0;
-  curve.forEach((r) => {
-    peak = Math.max(peak, r.strategy);
-    maxDrawdown = Math.min(maxDrawdown, r.strategy / peak - 1);
-  });
+  curve.forEach((r) => { peak = Math.max(peak, r.strategy); maxDrawdown = Math.min(maxDrawdown, r.strategy / peak - 1); });
 
   const start = curve[0]?.date;
   const end = curve[curve.length - 1]?.date;
@@ -729,25 +695,10 @@ function runCustomBacktest(mode, formula) {
 
   const recentEvents = [];
   for (let i = Math.max(1, curve.length - 25); i < curve.length; i += 1) {
-    if (curve[i].signal !== curve[i - 1].signal) {
-      recentEvents.push({ date: curve[i].date, event: curve[i].signal ? "Signal switched to BUY" : "Signal switched to CASH" });
-    }
+    if (curve[i].signal !== curve[i - 1].signal) recentEvents.push({ date: curve[i].date, event: curve[i].signal ? "Signal switched to BUY" : "Signal switched to CASH" });
   }
 
-  return {
-    mode,
-    sourceTicker: mode === "tqqq" ? "QQQ" : "SPY",
-    tradedTicker: mode === "tqqq" ? "TQQQ" : "SPXL",
-    signal: signals[signals.length - 1] ? "BUY" : "CASH",
-    cagr,
-    maxDrawdown,
-    tradeCount: trades.length,
-    start,
-    end,
-    curve,
-    trades,
-    recentEvents,
-  };
+  return { mode, sourceTicker: mode.includes("tqqq") ? "QQQ" : "SPY", tradedTicker: mode.includes("tqqq") ? "TQQQ" : "SPXL", signal: signals[signals.length - 1] ? "BUY" : "CASH", cagr, maxDrawdown, tradeCount: trades.length, start, end, curve, trades, recentEvents };
 }
 
 function renderTestSummary(result) {
@@ -765,9 +716,7 @@ function renderTestSummary(result) {
 }
 
 function renderTestTradeLog(result) {
-  byId("trade-log-body").innerHTML = result.trades
-    .map((t) => `<tr><td>${esc(t.entryDate)}</td><td>${esc(t.exitDate)}</td><td>${esc(t.entryPrice.toFixed(2))}</td><td>${esc(t.exitPrice.toFixed(2))}</td><td>${esc(`${(t.tradeReturn * 100).toFixed(2)}%`)}</td><td>${esc(t.holdingDays)}</td></tr>`)
-    .join("");
+  byId("trade-log-body").innerHTML = result.trades.map((t) => `<tr><td>${esc(t.entryDate)}</td><td>${esc(t.exitDate)}</td><td>${esc(t.entryPrice.toFixed(2))}</td><td>${esc(t.exitPrice.toFixed(2))}</td><td>${esc(`${(t.tradeReturn * 100).toFixed(2)}%`)}</td><td>${esc(t.holdingDays)}</td></tr>`).join("");
 }
 
 function renderRecentEvents(result) {
@@ -781,28 +730,16 @@ function renderTestChart() {
   const rows = pickRange(state.lastTestResult.curve, state.testRange);
   const strategy = cumulativeReturn(rows.map((r) => r.strategy));
   const buyhold = cumulativeReturn(rows.map((r) => r.buyhold));
-
   if (testChart) testChart.destroy();
   testChart = new Chart(byId("test-chart").getContext("2d"), {
     type: "line",
-    data: {
-      labels: rows.map((r) => r.date),
-      datasets: [
-        { label: "Strategy (%)", data: strategy, borderWidth: 2, tension: 0.14 },
-        { label: "Buy & Hold (%)", data: buyhold, borderWidth: 2, tension: 0.14 },
-      ],
-    },
+    data: { labels: rows.map((r) => r.date), datasets: [{ label: "Strategy (%)", data: strategy, borderWidth: 2, tension: 0.14 }, { label: "Buy & Hold (%)", data: buyhold, borderWidth: 2, tension: 0.14 }] },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       interaction: { mode: "index", intersect: false },
       scales: { y: { ticks: { callback: (v) => `${v}%` } } },
-      plugins: {
-        zoom: {
-          pan: { enabled: true, mode: "x" },
-          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "x" },
-        },
-      },
+      plugins: { zoom: { pan: { enabled: true, mode: "x" }, zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: "x" } } },
     },
   });
 }
@@ -837,7 +774,7 @@ function initTestStrategy() {
 
   byId("reset-test").addEventListener("click", () => {
     formulaEl.value = TEST_EXAMPLES[0];
-    modeEl.value = "tqqq";
+    modeEl.value = "tqqq_tfsa";
     msg.textContent = "Formula reset to Example 1.";
   });
 
@@ -850,44 +787,52 @@ function initTestStrategy() {
     renderTestChart();
   });
 
-  byId("reset-zoom").addEventListener("click", () => {
-    if (testChart) testChart.resetZoom();
-  });
-
+  byId("reset-zoom").addEventListener("click", () => { if (testChart) testChart.resetZoom(); });
   byId("run-test").click();
 }
 
 function bindControls() {
-  const strategyIds = Object.keys(state.strategies);
-  const overviewSelect = byId("overview-strategy");
-  const historySelect = byId("history-strategy");
-
-  [overviewSelect, historySelect].forEach((sel) => {
-    sel.innerHTML = strategyIds.map((id) => `<option value="${id}">${state.strategies[id].displayName}</option>`).join("");
-  });
-
-  overviewSelect.addEventListener("change", () => renderOverviewChart(overviewSelect.value));
-  historySelect.addEventListener("change", () => renderHistoryTable(historySelect.value));
   byId("range-toggle").addEventListener("click", (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
     state.activeRange = btn.dataset.range;
     byId("range-toggle").querySelectorAll("button").forEach((b) => b.classList.remove("is-active"));
     btn.classList.add("is-active");
-    renderOverviewChart(overviewSelect.value);
-  });
-  byId("overview-reset-zoom").addEventListener("click", () => {
-    if (overviewChart) overviewChart.resetZoom();
+    renderOverview();
   });
 
-  renderOverviewChart(strategyIds[0]);
-  renderHistoryTable(strategyIds[0]);
+  byId("overview-reset-zoom").addEventListener("click", () => {
+    if (overviewChart) overviewChart.resetZoom();
+    if (drawdownChart) drawdownChart.resetZoom?.();
+    if (rollingCagrChart) rollingCagrChart.resetZoom?.();
+  });
 }
 
 function toModeRows(data, sourceKey, tradedKey) {
-  return data
-    .filter((r) => r[sourceKey] != null && r[tradedKey] != null)
-    .map((r) => ({ date: r.date, sourceOpen: r[sourceKey], tradedOpen: r[tradedKey] }));
+  return data.filter((r) => r[sourceKey] != null && r[tradedKey] != null).map((r) => ({ date: r.date, sourceOpen: r[sourceKey], tradedOpen: r[tradedKey] }));
+}
+
+function emptyStrategy(profile) {
+  return {
+    id: profile.id,
+    displayName: profile.displayName,
+    subtitle: "No data yet.",
+    sourceTicker: profile.base === "tqqq" ? "QQQ" : "SPY",
+    tradedTicker: profile.base === "tqqq" ? "TQQQ" : "SPXL",
+    currentSignal: "NO_DATA",
+    signalIsBuy: false,
+    currentActionText: "No data yet",
+    signalChangeSummary: "No data yet",
+    streakType: "N/A",
+    streakLength: "No data yet",
+    latestOpen: { source: "No data yet", traded: "No data yet" },
+    backtest: { cagr: "No data yet", maxDrawdown: "No data yet", tradeCount: "No data yet", window: "No data yet" },
+    chart: { history: [] },
+    signalHistory: [],
+    formula: { buy: [], sell: [], definitions: [] },
+    plainEnglish: [],
+    hasData: false,
+  };
 }
 
 async function loadData() {
@@ -901,55 +846,39 @@ async function loadData() {
     fetch(`./data/test_strategy_data.json${v}`),
   ]);
 
-  if (![currentRes, tqqqRes, spxlRes, refreshRes, changeRes, testerRes].every((r) => r.ok)) {
-    throw new Error("Data files are not ready. Run the workflow once.");
-  }
+  if (![currentRes, refreshRes, changeRes, testerRes].every((r) => r.ok)) throw new Error("Data files are not ready. Run the workflow once.");
 
   state.current = await currentRes.json();
   const baseStrategies = {
-    tqqq: await tqqqRes.json(),
-    spxl: await spxlRes.json(),
+    tqqq: tqqqRes.ok ? await tqqqRes.json() : null,
+    spxl: spxlRes.ok ? await spxlRes.json() : null,
   };
 
-  state.strategies = Object.fromEntries(
-    STRATEGY_PROFILES.map((profile) => {
-      const base = baseStrategies[profile.base];
-      const merged = {
-        ...structuredClone(base),
-        id: profile.id,
-        displayName: profile.displayName,
-        subtitle: profile.subtitle || base.subtitle,
-        backtest: { ...base.backtest, ...(profile.backtest || {}) },
-      };
-      return [profile.id, merged];
-    }),
-  );
-
-  state.current.strategies = STRATEGY_PROFILES.map((profile) => {
-    const strategy = state.strategies[profile.id];
-    return {
-      id: strategy.id,
-      displayName: strategy.displayName,
-      sourceTicker: strategy.sourceTicker,
-      tradedTicker: strategy.tradedTicker,
-      currentSignal: strategy.currentSignal,
-      signalIsBuy: strategy.signalIsBuy,
-      currentActionText: strategy.currentActionText,
-      signalChangeSummary: strategy.signalChangeSummary,
-      streakType: strategy.streakType,
-      streakLength: strategy.streakLength,
-      latestOpen: strategy.latestOpen,
-      backtest: strategy.backtest,
+  state.strategies = Object.fromEntries(STRATEGY_PROFILES.map((profile) => {
+    const base = baseStrategies[profile.base];
+    if (!base) return [profile.id, emptyStrategy(profile)];
+    const merged = {
+      ...structuredClone(base),
+      id: profile.id,
+      displayName: profile.displayName,
+      subtitle: profile.subtitle || base.subtitle,
+      backtest: { ...base.backtest, ...(profile.backtest || {}) },
+      hasData: true,
     };
-  });
+    return [profile.id, merged];
+  }));
 
   state.refreshLog = await refreshRes.json();
   state.changelog = await changeRes.json();
 
   const testerData = await testerRes.json();
+  const tqqqRows = toModeRows(testerData.rows || [], "qqqOpen", "tqqqOpen");
+  const spxlRows = toModeRows(testerData.rows || [], "spyOpen", "spxlOpen");
   state.testData = {
-    tqqq: toModeRows(testerData.rows || [], "qqqOpen", "tqqqOpen"),
-    spxl: toModeRows(testerData.rows || [], "spyOpen", "spxlOpen"),
+    tqqq_tfsa: tqqqRows,
+    tqqq_rrsp: tqqqRows,
+    spxl_tfsa: spxlRows,
+    spxl_rrsp: spxlRows,
   };
 }
 
@@ -958,19 +887,16 @@ async function init() {
     tabInit();
     await loadData();
 
-    byId("latest-day").textContent = `Latest day: ${fmt(state.current.latestTradingDay)}`;
-    byId("last-updated").textContent = `Last updated: ${fmt(state.current.lastUpdated)}`;
-
-    buildHero();
-    buildSummary();
-    buildQuickCompare();
+    renderRefreshHealth();
+    renderOverview();
     renderCompareSection();
     renderUpdates();
     renderMethodology();
     bindControls();
     initTestStrategy();
   } catch (err) {
-    byId("hero").innerHTML = `<div class="hero-main"><h2>Dashboard not ready</h2><p>${err.message}</p></div>`;
+    const grid = byId("strategy-card-grid");
+    if (grid) grid.innerHTML = `<article class="strategy-card"><h3>Dashboard not ready</h3><p>${esc(err.message)}</p></article>`;
   }
 }
 
