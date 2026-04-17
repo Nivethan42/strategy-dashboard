@@ -3,14 +3,10 @@ name: Update strategy data
 on:
   workflow_dispatch:
   schedule:
-    # 9:35am America/New_York during EDT.
-    - cron: "35 13 * * 1-5"
-    # 9:35am America/New_York during EST.
-    - cron: "35 14 * * 1-5"
-    # 10:00am America/New_York during EDT.
-    - cron: "0 14 * * 1-5"
-    # 10:00am America/New_York during EST.
-    - cron: "0 15 * * 1-5"
+    # 9:35am, 9:40am, and 9:45am America/New_York during EDT.
+    - cron: "35,40,45 13 * * 1-5"
+    # 9:35am, 9:40am, and 9:45am America/New_York during EST.
+    - cron: "35,40,45 14 * * 1-5"
 
 permissions:
   contents: write

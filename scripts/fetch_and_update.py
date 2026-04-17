@@ -28,7 +28,7 @@ PROXY_ENV_VARS = (
     "https_proxy",
     "all_proxy",
 )
-TARGET_REFRESH_TIMES = {(9, 35), (10, 0)}
+TARGET_REFRESH_TIMES = {(9, 35), (9, 40), (9, 45)}
 
 
 def now_ny() -> datetime:
@@ -53,7 +53,7 @@ def should_run_scheduled_refresh(dt: datetime) -> tuple[bool, str]:
         return (
             False,
             "Current America/New_York time "
-            f"{dt.strftime('%H:%M')} is outside scheduled refresh windows (09:35, 10:00).",
+            f"{dt.strftime('%H:%M')} is outside scheduled refresh windows (09:35, 09:40, 09:45).",
         )
 
     return True, "Scheduled market-open refresh window"
