@@ -251,41 +251,61 @@ function buildStrategyCards() {
   const container = byId("strategy-card-grid");
   container.innerHTML = "";
 
-  STRATEGY_PROFILES.forEach((profile) => {
-    const strategy = state.strategies[profile.id];
-    const hasData = strategy?.hasData;
-    const lastChange = hasData ? findLastSignalChange(strategy) : null;
-    const signalText = hasData ? (strategy.signalIsBuy ? "HOLD LONG" : "IN CASH") : "No data yet";
-    const shortSignalText = hasData ? (strategy.signalIsBuy ? "LONG" : "CASH") : "N/A";
+  const groupedProfiles = [
+    { id: "tqqq", title: "TQQQ Overview", subtitle: "TQQQ-TFSA and TQQQ-RRSP", profiles: STRATEGY_PROFILES.filter((p) => p.base === "tqqq") },
+    { id: "spxl", title: "SPXL Overview", subtitle: "SPXL-TFSA and SPXL-RRSP", profiles: STRATEGY_PROFILES.filter((p) => p.base === "spxl") },
+  ];
 
-    const card = document.createElement("article");
-    card.className = `strategy-card ${state.selectedStrategyId === profile.id ? "is-active" : ""}`;
-    card.dataset.strategyId = profile.id;
-    card.innerHTML = `
-      <div class="strategy-card-head">
-        <div>
-          <div class="ticker-meta mono">${esc(profile.displayName.replace("-", " • "))}</div>
-          <h3>${esc(profile.cardTitle)}</h3>
+  groupedProfiles.forEach((group) => {
+    const block = document.createElement("section");
+    block.className = "strategy-overview-block";
+    block.innerHTML = `
+      <div class="strategy-overview-head">
+        <h2>${esc(group.title)}</h2>
+        <p>${esc(group.subtitle)}</p>
+      </div>
+      <div class="strategy-overview-cards"></div>`;
+
+    const cardWrap = block.querySelector(".strategy-overview-cards");
+
+    group.profiles.forEach((profile) => {
+      const strategy = state.strategies[profile.id];
+      const hasData = strategy?.hasData;
+      const lastChange = hasData ? findLastSignalChange(strategy) : null;
+      const signalText = hasData ? (strategy.signalIsBuy ? "HOLD LONG" : "IN CASH") : "No data yet";
+      const shortSignalText = hasData ? (strategy.signalIsBuy ? "LONG" : "CASH") : "N/A";
+
+      const card = document.createElement("article");
+      card.className = `strategy-card ${state.selectedStrategyId === profile.id ? "is-active" : ""}`;
+      card.dataset.strategyId = profile.id;
+      card.innerHTML = `
+        <div class="strategy-card-head">
+          <div>
+            <div class="ticker-meta mono">${esc(profile.displayName.replace("-", " • "))}</div>
+            <h3>${esc(profile.cardTitle)}</h3>
+          </div>
+          <span class="signal-badge ${hasData ? (strategy.signalIsBuy ? "buy" : "cash") : "nodata"}">
+            <span class="signal-full">${esc(signalText)}</span>
+            <span class="signal-short">${esc(shortSignalText)}</span>
+          </span>
         </div>
-        <span class="signal-badge ${hasData ? (strategy.signalIsBuy ? "buy" : "cash") : "nodata"}">
-          <span class="signal-full">${esc(signalText)}</span>
-          <span class="signal-short">${esc(shortSignalText)}</span>
-        </span>
-      </div>
-      <div class="days-line"><strong class="number">${esc(hasData ? strategy.streakLength : "—")}</strong> days in position</div>
-      <div class="card-metrics mono">
-        <div><span>CAGR</span><strong class="good">${esc(hasData ? strategy.backtest.cagr : "No data yet")}</strong></div>
-        <div><span>MAX DD</span><strong class="bad">${esc(hasData ? strategy.backtest.maxDrawdown : "No data yet")}</strong></div>
-      </div>
-      ${renderIndicatorSummary(hasData ? strategy : null)}
-      <div class="last-change mono">Last change: ${esc(lastChange ? `${lastChange.date} · ${lastChange.signal}${formatCurrency(lastChange.price) ? ` @ ${formatCurrency(lastChange.price)}` : ""}` : hasData ? "No recent change" : "No data yet")}</div>`;
+        <div class="days-line"><strong class="number">${esc(hasData ? strategy.streakLength : "—")}</strong> days in position</div>
+        <div class="card-metrics mono">
+          <div><span>CAGR</span><strong class="good">${esc(hasData ? strategy.backtest.cagr : "No data yet")}</strong></div>
+          <div><span>MAX DD</span><strong class="bad">${esc(hasData ? strategy.backtest.maxDrawdown : "No data yet")}</strong></div>
+        </div>
+        ${renderIndicatorSummary(hasData ? strategy : null)}
+        <div class="last-change mono">Last change: ${esc(lastChange ? `${lastChange.date} · ${lastChange.signal}${formatCurrency(lastChange.price) ? ` @ ${formatCurrency(lastChange.price)}` : ""}` : hasData ? "No recent change" : "No data yet")}</div>`;
 
-    card.addEventListener("click", () => {
-      state.selectedStrategyId = profile.id;
-      renderOverview();
+      card.addEventListener("click", () => {
+        state.selectedStrategyId = profile.id;
+        renderOverview();
+      });
+
+      cardWrap.appendChild(card);
     });
 
-    container.appendChild(card);
+    container.appendChild(block);
   });
 }
 
