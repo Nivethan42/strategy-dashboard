@@ -204,6 +204,7 @@ function buildStrategyCards() {
     const hasData = strategy?.hasData;
     const lastChange = hasData ? findLastSignalChange(strategy) : null;
     const signalText = hasData ? (strategy.signalIsBuy ? "HOLD LONG" : "IN CASH") : "No data yet";
+    const shortSignalText = hasData ? (strategy.signalIsBuy ? "LONG" : "CASH") : "N/A";
 
     const card = document.createElement("article");
     card.className = `strategy-card ${state.selectedStrategyId === profile.id ? "is-active" : ""}`;
@@ -214,7 +215,10 @@ function buildStrategyCards() {
           <div class="ticker-meta mono">${esc(profile.displayName.replace("-", " • "))}</div>
           <h3>${esc(profile.cardTitle)}</h3>
         </div>
-        <span class="signal-badge ${hasData ? (strategy.signalIsBuy ? "buy" : "cash") : "nodata"}">${esc(signalText)}</span>
+        <span class="signal-badge ${hasData ? (strategy.signalIsBuy ? "buy" : "cash") : "nodata"}">
+          <span class="signal-full">${esc(signalText)}</span>
+          <span class="signal-short">${esc(shortSignalText)}</span>
+        </span>
       </div>
       <div class="days-line"><strong class="number">${esc(hasData ? strategy.streakLength : "—")}</strong> days in position</div>
       <div class="card-metrics mono">
@@ -437,9 +441,22 @@ function renderCompareSection() {
         responsive: true,
         maintainAspectRatio: false,
         interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { labels: { color: "#A8B4D0" } },
+        },
         scales: {
-          y: { title: { display: true, text: "Price" } },
-          y1: { position: "right", grid: { drawOnChartArea: false }, title: { display: true, text: "Cumulative Return" }, ticks: { callback: (value) => `${value}%` } },
+          y: {
+            title: { display: true, text: "Price", color: "#A8B4D0" },
+            ticks: { color: "#7785A5" },
+            grid: { color: "rgba(129,149,182,0.2)" },
+          },
+          y1: {
+            position: "right",
+            grid: { drawOnChartArea: false },
+            title: { display: true, text: "Cumulative Return", color: "#A8B4D0" },
+            ticks: { callback: (value) => `${value}%`, color: "#7785A5" },
+          },
+          x: { ticks: { color: "#7785A5", maxTicksLimit: 8 }, grid: { display: false } },
         },
       },
     }));
