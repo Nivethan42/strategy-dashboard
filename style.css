@@ -92,7 +92,31 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
 
 .strategy-card-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.strategy-overview-block {
+  border: 1px solid #223454;
+  border-radius: var(--radius);
+  background: #0a1424;
+  padding: 14px;
+}
+.strategy-overview-head {
+  margin-bottom: 10px;
+}
+.strategy-overview-head h2 {
+  margin: 0;
+  font-family: "Fraunces", serif;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+}
+.strategy-overview-head p {
+  margin: 6px 0 0;
+  color: #7f8eac;
+  font-size: .88rem;
+}
+.strategy-overview-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 .strategy-card {
@@ -291,7 +315,7 @@ th, td { padding: 7px 8px; font-size: .83rem; border-bottom: 1px solid #eef2f7; 
 th { position: sticky; top: 0; background: #fff; z-index: 2; color: #4a5c8f; }
 
 @media (max-width: 1120px) {
-  .strategy-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .strategy-card-grid { grid-template-columns: 1fr; }
   .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .selector-head { grid-template-columns: 1fr; }
 }
@@ -312,23 +336,24 @@ th { position: sticky; top: 0; background: #fff; z-index: 2; color: #4a5c8f; }
 }
 
 @media (max-width: 600px) {
-  .strategy-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-  .strategy-card { padding: 12px; }
+  .strategy-card-grid { grid-template-columns: 1fr; gap: 12px; }
+  .strategy-overview-block { padding: 12px; }
+  .strategy-overview-head h2 { font-size: 1.2rem; }
+  .strategy-overview-cards { grid-template-columns: 1fr; gap: 10px; }
+  .strategy-card { padding: 13px; }
   .strategy-card h3 {
-    font-size: 1.35rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
+    font-size: 1.45rem;
+    white-space: normal;
   }
-  .number { font-size: 2.2rem; }
-  .days-line { margin-top: 12px; font-size: .95rem; }
-  .signal-badge { padding: 5px 9px; font-size: .74rem; margin-left: auto; }
+  .ticker-meta { font-size: .82rem; }
+  .number { font-size: 2.45rem; }
+  .days-line { margin-top: 12px; font-size: 1rem; }
+  .signal-badge { padding: 6px 10px; font-size: .78rem; margin-left: auto; }
   .signal-full { display: none; }
   .signal-short { display: inline; }
   .card-metrics { grid-template-columns: 1fr; gap: 10px; }
-  .card-metrics strong { font-size: 1.3rem; }
-  .indicator-line { font-size: .78rem; }
+  .card-metrics strong { font-size: 1.45rem; }
+  .indicator-line { font-size: .82rem; }
   .indicator-header { font-size: .74rem; }
   .strategy-pills, #range-toggle { width: 100%; }
   #range-toggle button { flex: 0 0 auto; }
