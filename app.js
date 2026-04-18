@@ -215,36 +215,147 @@ function indicatorProgress(indicator) {
   return Math.min(100, Math.max(10, nudged));
 }
 
+function stripOuterParens(value) {
+  const raw = String(value || "").trim();
+  if (!raw.startsWith("(") || !raw.endsWith(")")) return raw;
+  let depth = 0;
+  for (let i = 0; i < raw.length; i += 1) {
+    const char = raw[i];
+    if (char === "(") depth += 1;
+    if (char === ")") depth -= 1;
+    if (depth === 0 && i < raw.length - 1) return raw;
+  }
+  return raw.slice(1, -1).trim();
+}
+
+function splitTopLevel(value, operator) {
+  const raw = String(value || "");
+  const token = ` ${operator} `;
+  const chunks = [];
+  let start = 0;
+  let depth = 0;
+
+  for (let i = 0; i < raw.length; i += 1) {
+    const char = raw[i];
+    if (char === "(") depth += 1;
+    if (char === ")") depth = Math.max(0, depth - 1);
+    if (depth === 0 && raw.slice(i, i + token.length) === token) {
+      chunks.push(raw.slice(start, i).trim());
+      start = i + token.length;
+      i += token.length - 1;
+    }
+  }
+  chunks.push(raw.slice(start).trim());
+  return chunks.filter(Boolean);
+}
+
+function indicatorFromCondition(condition, indicatorMap) {
+  const keyMatch = String(condition || "").trim().match(/^([A-Za-z_][A-Za-z0-9_]*)/);
+  const indicator = keyMatch ? indicatorMap.get(keyMatch[1].toLowerCase()) : null;
+  if (indicator) return indicator;
+  return {
+    label: condition,
+    key: condition,
+    displayValue: "N/A",
+    rule: condition,
+    passed: false,
+    rawValue: null,
+  };
+}
+
+function buildBuyLogicGroups(strategy, indicators) {
+  const indicatorMap = new Map(indicators.map((ind) => [String(ind.key || "").toLowerCase(), ind]));
+  const buyRules = Array.isArray(strategy?.formula?.buy) ? strategy.formula.buy : [];
+  const expression = buyRules.find((line) => /\bAND\b|\bOR\b/.test(String(line || "")));
+
+  if (expression) {
+    const andGroups = splitTopLevel(expression, "AND");
+    return andGroups.map((group) => {
+      const stripped = stripOuterParens(group);
+      const useOr = splitTopLevel(stripped, "OR").length > 1;
+      const joiner = useOr ? "OR" : "AND";
+      const conditions = splitTopLevel(stripped, joiner);
+      return { joiner, indicators: conditions.map((condition) => indicatorFromCondition(condition, indicatorMap)) };
+    });
+  }
+
+  const checksLine = buyRules.find((line) => /^Checks:/i.test(String(line || "").trim()));
+  const volatilityFilter = indicatorMap.get("vr20_100");
+  if (checksLine) {
+    const checksText = String(checksLine).replace(/^Checks:\s*/i, "");
+    const checkIndicators = checksText.split(",").map((item) => indicatorFromCondition(item.trim(), indicatorMap));
+    const score = indicatorMap.get("score");
+    const groups = [{ joiner: "OR", title: "At least 3 checks pass", indicators: checkIndicators }];
+    if (score) groups.unshift({ joiner: "AND", title: "Score gate", indicators: [score] });
+    if (volatilityFilter) groups.push({ joiner: "AND", title: "Volatility filter", indicators: [volatilityFilter] });
+    return groups;
+  }
+
+  return [{ joiner: "AND", indicators }];
+}
+
+function renderLogicRow(indicator) {
+  const passClass = indicator.passed ? "pass" : "fail";
+  const progress = indicatorProgress(indicator);
+  const { operator, threshold } = parseIndicatorRule(indicator?.rule);
+  const rawValue = Number(indicator?.rawValue);
+  const fallbackValue = fmt(indicator.displayValue, "N/A");
+  const currentValue = Number.isFinite(rawValue) ? `${rawValue >= 0 ? "+" : ""}${rawValue.toFixed(3)}` : fallbackValue;
+  const thresholdValue = Number.isFinite(threshold) ? `${threshold >= 0 ? "+" : ""}${threshold.toFixed(3)}` : fmt(indicator?.rule, "N/A");
+  const comparator = operator || "·";
+  return `
+    <div class="indicator-row ${passClass}">
+      <div class="indicator-line">
+        <span class="indicator-name">${esc(indicator.label || indicator.key || "Indicator")}</span>
+        <span class="indicator-values"><strong>${esc(currentValue)}</strong> <em>${esc(comparator)} ${esc(thresholdValue)}</em></span>
+      </div>
+      <div class="indicator-track" role="presentation">
+        <span class="indicator-fill" style="width:${progress.toFixed(1)}%"></span>
+      </div>
+    </div>`;
+}
+
 function renderIndicatorSummary(strategy) {
   const indicators = Array.isArray(strategy?.indicators) ? strategy.indicators : [];
   if (!indicators.length) return '<div class="indicator-block mono"><div class="indicator-empty">Indicators unavailable.</div></div>';
 
   const passing = indicators.filter((x) => x.passed).length;
-  const rows = indicators.slice(0, 5).map((ind) => {
-    const passClass = ind.passed ? "pass" : "fail";
-    const progress = indicatorProgress(ind);
-    const currentValue = fmt(ind.displayValue, "N/A");
-    const thresholdValue = fmt(ind.rule ? ind.rule.replace(/^(<=|>=|<|>)\s*/, "") : null, "N/A");
-
-    return `
-      <div class="indicator-row ${passClass}">
-        <div class="indicator-line">
-          <span class="indicator-name">${esc(ind.label || ind.key || "Indicator")}</span>
-          <span class="indicator-values">${esc(currentValue)} / ${esc(thresholdValue)}</span>
+  const groups = buildBuyLogicGroups(strategy, indicators).map((group, idx) => {
+    const defaultTitle = group.joiner === "OR" ? "Any dip detector" : "All quality filters";
+    return { ...group, title: group.title || defaultTitle, index: idx };
+  });
+  const groupedRows = groups.map((group, groupIdx) => `
+      <div class="logic-group">
+        <div class="logic-group-head">
+          <span class="logic-group-title">${esc(group.title || "Buy rule group")}</span>
+          <span class="logic-group-meta"><strong>${group.indicators.filter((ind) => ind.passed).length}/${group.indicators.length}</strong> ${group.indicators.every((ind) => ind.passed) ? "PASS" : "CHECK"}</span>
         </div>
-        <div class="indicator-track" role="presentation">
-          <span class="indicator-fill" style="width:${progress.toFixed(1)}%"></span>
+        <div class="logic-group-body">
+          ${group.indicators.map((ind, rowIdx) => `
+            ${rowIdx ? `<div class="logic-joiner">${esc(group.joiner)}</div>` : ""}
+            ${renderLogicRow(ind)}
+          `).join("")}
         </div>
-      </div>`;
-  }).join("");
+        ${groupIdx < groups.length - 1 ? '<div class="logic-group-divider">AND</div>' : ""}
+      </div>
+    `).join("");
 
+  const buyPass = strategy?.signalIsBuy;
   return `
     <div class="indicator-block mono">
-      <div class="indicator-header">
-        <span>INDICATORS</span>
-        <strong>${passing} / ${indicators.length} passing</strong>
+      <div class="logic-signal-strip">
+        <div class="logic-signal-chip buy ${buyPass ? "is-on" : ""}">BUY <b>${buyPass ? "PASS" : "WAIT"}</b></div>
+        <div class="logic-signal-chip sell ${buyPass ? "" : "is-on"}">SELL <b>${buyPass ? "—" : "TRIGGERED"}</b></div>
       </div>
-      ${rows}
+      <div class="indicator-header">
+        <span>BUY SIGNAL LOGIC</span>
+        <strong>${passing} / ${indicators.length} checks passing</strong>
+      </div>
+      ${groupedRows}
+      <div class="logic-summary ${buyPass ? "active" : "inactive"}">
+        <span>BUY SIGNAL</span>
+        <strong>${buyPass ? "✓ ACTIVE — POSITION HELD" : "• INACTIVE — IN CASH"}</strong>
+      </div>
     </div>`;
 }
 function buildStrategyCards() {
