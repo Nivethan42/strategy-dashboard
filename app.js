@@ -195,6 +195,58 @@ function renderRefreshHealth() {
   badge.innerHTML = `<span class="dot"></span><span>${esc(formatRelativeAge(timestamp))}</span>`;
 }
 
+
+function parseIndicatorRule(rule) {
+  if (!rule) return { operator: null, threshold: null };
+  const match = String(rule).match(/(<=|>=|<|>)\s*(-?\d*\.?\d+)/);
+  if (!match) return { operator: null, threshold: null };
+  return { operator: match[1], threshold: Number(match[2]) };
+}
+
+function indicatorProgress(indicator) {
+  const raw = Number(indicator?.rawValue);
+  const { threshold } = parseIndicatorRule(indicator?.rule);
+  if (!Number.isFinite(raw) || !Number.isFinite(threshold)) return indicator?.passed ? 100 : 40;
+
+  const denom = Math.max(Math.abs(threshold), 1e-6);
+  const distance = Math.abs(raw - threshold);
+  const closeness = Math.max(0, 100 - (distance / denom) * 100);
+  const nudged = indicator?.passed ? Math.max(closeness, 72) : Math.min(closeness, 68);
+  return Math.min(100, Math.max(10, nudged));
+}
+
+function renderIndicatorSummary(strategy) {
+  const indicators = Array.isArray(strategy?.indicators) ? strategy.indicators : [];
+  if (!indicators.length) return '<div class="indicator-block mono"><div class="indicator-empty">Indicators unavailable.</div></div>';
+
+  const passing = indicators.filter((x) => x.passed).length;
+  const rows = indicators.slice(0, 5).map((ind) => {
+    const passClass = ind.passed ? "pass" : "fail";
+    const progress = indicatorProgress(ind);
+    const currentValue = fmt(ind.displayValue, "N/A");
+    const thresholdValue = fmt(ind.rule ? ind.rule.replace(/^(<=|>=|<|>)\s*/, "") : null, "N/A");
+
+    return `
+      <div class="indicator-row ${passClass}">
+        <div class="indicator-line">
+          <span class="indicator-name">${esc(ind.label || ind.key || "Indicator")}</span>
+          <span class="indicator-values">${esc(currentValue)} / ${esc(thresholdValue)}</span>
+        </div>
+        <div class="indicator-track" role="presentation">
+          <span class="indicator-fill" style="width:${progress.toFixed(1)}%"></span>
+        </div>
+      </div>`;
+  }).join("");
+
+  return `
+    <div class="indicator-block mono">
+      <div class="indicator-header">
+        <span>INDICATORS</span>
+        <strong>${passing} / ${indicators.length} passing</strong>
+      </div>
+      ${rows}
+    </div>`;
+}
 function buildStrategyCards() {
   const container = byId("strategy-card-grid");
   container.innerHTML = "";
@@ -225,6 +277,7 @@ function buildStrategyCards() {
         <div><span>CAGR</span><strong class="good">${esc(hasData ? strategy.backtest.cagr : "No data yet")}</strong></div>
         <div><span>MAX DD</span><strong class="bad">${esc(hasData ? strategy.backtest.maxDrawdown : "No data yet")}</strong></div>
       </div>
+      ${renderIndicatorSummary(hasData ? strategy : null)}
       <div class="last-change mono">Last change: ${esc(lastChange ? `${lastChange.date} · ${lastChange.signal}${formatCurrency(lastChange.price) ? ` @ ${formatCurrency(lastChange.price)}` : ""}` : hasData ? "No recent change" : "No data yet")}</div>`;
 
     card.addEventListener("click", () => {

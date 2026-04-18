@@ -106,6 +106,7 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
 .strategy-card:hover { border-color: #355990; transform: translateY(-1px); }
 .strategy-card.is-active { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(231,183,124,.55); }
 .strategy-card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+.strategy-card-head > div { min-width: 0; flex: 1 1 auto; }
 .strategy-card h3 { margin: 4px 0 0; font-family: "Fraunces", serif; font-size: 2rem; line-height: 1.1; }
 .ticker-meta, .mono, .last-change { font-family: "JetBrains Mono", monospace; }
 .ticker-meta { color: #697a9d; font-size: 1rem; letter-spacing: .06em; text-transform: uppercase; }
@@ -135,6 +136,53 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
 .card-metrics .good { color: var(--buy); }
 .card-metrics .bad { color: var(--cash); }
 .last-change { margin-top: 14px; padding-top: 12px; border-top: 1px solid #273650; color: #7d89a4; font-size: .95rem; }
+
+.indicator-block {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #253657;
+  display: grid;
+  gap: 8px;
+}
+.indicator-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  color: #6f7d9a;
+  font-size: .82rem;
+  letter-spacing: .08em;
+}
+.indicator-header strong {
+  color: #cfd8eb;
+  font-size: .92rem;
+  font-weight: 700;
+}
+.indicator-row { display: grid; gap: 4px; }
+.indicator-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: .86rem;
+}
+.indicator-name { color: #cfd8eb; }
+.indicator-values { color: #95a2bf; }
+.indicator-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(125, 145, 177, 0.28);
+  overflow: hidden;
+}
+.indicator-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #f08764;
+}
+.indicator-row.pass .indicator-fill { background: #87e86d; }
+.indicator-row.fail .indicator-fill { background: #f08764; }
+.indicator-empty { color: #73809c; font-size: .84rem; }
 
 .selector-head {
   display: grid;
@@ -275,11 +323,13 @@ th { position: sticky; top: 0; background: #fff; z-index: 2; color: #4a5c8f; }
   }
   .number { font-size: 2.2rem; }
   .days-line { margin-top: 12px; font-size: .95rem; }
-  .signal-badge { padding: 6px 10px; font-size: .8rem; }
+  .signal-badge { padding: 5px 9px; font-size: .74rem; margin-left: auto; }
   .signal-full { display: none; }
   .signal-short { display: inline; }
   .card-metrics { grid-template-columns: 1fr; gap: 10px; }
   .card-metrics strong { font-size: 1.3rem; }
+  .indicator-line { font-size: .78rem; }
+  .indicator-header { font-size: .74rem; }
   .strategy-pills, #range-toggle { width: 100%; }
   #range-toggle button { flex: 0 0 auto; }
 }
