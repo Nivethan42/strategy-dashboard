@@ -239,10 +239,7 @@ function renderRefreshHealth() {
 function renderLogicRow(indicator) {
   const passClass = indicator.passed ? "pass" : "fail";
   const currentValue = fmt(indicator.displayValue, "N/A").replace(/^TRUE$/i, "TRUE").replace(/^FALSE$/i, "FALSE");
-  const baseLabel = String(indicator.label || indicator.key || "Indicator").trim();
-  const rule = String(indicator.rule || "").trim();
-  const hasThresholdInLabel = /(<=|>=|<|>|=)\s*-?\d|TRUE|FALSE/i.test(baseLabel);
-  const formula = rule && !hasThresholdInLabel ? `${baseLabel} ${rule}` : baseLabel;
+  const formula = indicator.label || indicator.key || "Indicator";
   return `
     <div class="indicator-row ${passClass}">
       <div class="indicator-line">
