@@ -297,17 +297,13 @@ function buildBuyLogicGroups(strategy, indicators) {
 function renderLogicRow(indicator) {
   const passClass = indicator.passed ? "pass" : "fail";
   const progress = indicatorProgress(indicator);
-  const { operator, threshold } = parseIndicatorRule(indicator?.rule);
-  const rawValue = Number(indicator?.rawValue);
-  const fallbackValue = fmt(indicator.displayValue, "N/A");
-  const currentValue = Number.isFinite(rawValue) ? `${rawValue >= 0 ? "+" : ""}${rawValue.toFixed(3)}` : fallbackValue;
-  const thresholdValue = Number.isFinite(threshold) ? `${threshold >= 0 ? "+" : ""}${threshold.toFixed(3)}` : fmt(indicator?.rule, "N/A");
-  const comparator = operator || "·";
+  const currentValue = fmt(indicator.displayValue, "N/A");
+  const thresholdValue = fmt(indicator.rule ? indicator.rule.replace(/^(<=|>=|<|>)\s*/, "") : null, "N/A");
   return `
     <div class="indicator-row ${passClass}">
       <div class="indicator-line">
         <span class="indicator-name">${esc(indicator.label || indicator.key || "Indicator")}</span>
-        <span class="indicator-values"><strong>${esc(currentValue)}</strong> <em>${esc(comparator)} ${esc(thresholdValue)}</em></span>
+        <span class="indicator-values">${esc(currentValue)} / ${esc(thresholdValue)}</span>
       </div>
       <div class="indicator-track" role="presentation">
         <span class="indicator-fill" style="width:${progress.toFixed(1)}%"></span>
@@ -320,15 +316,12 @@ function renderIndicatorSummary(strategy) {
   if (!indicators.length) return '<div class="indicator-block mono"><div class="indicator-empty">Indicators unavailable.</div></div>';
 
   const passing = indicators.filter((x) => x.passed).length;
-  const groups = buildBuyLogicGroups(strategy, indicators).map((group, idx) => {
-    const defaultTitle = group.joiner === "OR" ? "Any dip detector" : "All quality filters";
-    return { ...group, title: group.title || defaultTitle, index: idx };
-  });
+  const groups = buildBuyLogicGroups(strategy, indicators);
   const groupedRows = groups.map((group, groupIdx) => `
       <div class="logic-group">
         <div class="logic-group-head">
-          <span class="logic-group-title">${esc(group.title || "Buy rule group")}</span>
-          <span class="logic-group-meta"><strong>${group.indicators.filter((ind) => ind.passed).length}/${group.indicators.length}</strong> ${group.indicators.every((ind) => ind.passed) ? "PASS" : "CHECK"}</span>
+          <span>${esc(group.title || "Buy rule group")}</span>
+          <strong>${esc(group.joiner)}</strong>
         </div>
         <div class="logic-group-body">
           ${group.indicators.map((ind, rowIdx) => `
@@ -349,13 +342,9 @@ function renderIndicatorSummary(strategy) {
       </div>
       <div class="indicator-header">
         <span>BUY SIGNAL LOGIC</span>
-        <strong>${passing} / ${indicators.length} checks passing</strong>
+        <strong>${passing} / ${indicators.length} passing</strong>
       </div>
       ${groupedRows}
-      <div class="logic-summary ${buyPass ? "active" : "inactive"}">
-        <span>BUY SIGNAL</span>
-        <strong>${buyPass ? "✓ ACTIVE — POSITION HELD" : "• INACTIVE — IN CASH"}</strong>
-      </div>
     </div>`;
 }
 function buildStrategyCards() {

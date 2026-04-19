@@ -210,34 +210,6 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
 .indicator-row.pass .indicator-fill { background: #87e86d; }
 .indicator-row.fail .indicator-fill { background: #f08764; }
 .indicator-empty { color: #73809c; font-size: .84rem; }
-.logic-signal-strip {
-  border: 1px solid #2a3854;
-  border-radius: 10px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  overflow: hidden;
-  background: #101929;
-}
-.logic-signal-chip {
-  padding: 8px 10px;
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  color: #8ea0c4;
-  letter-spacing: .08em;
-  font-size: .74rem;
-}
-.logic-signal-chip b {
-  border-radius: 4px;
-  padding: 1px 6px;
-  font-size: .72rem;
-  background: #223250;
-  color: #9ab0d9;
-}
-.logic-signal-chip.buy.is-on { background: rgba(14, 92, 58, 0.35); color: #62f1a6; }
-.logic-signal-chip.buy.is-on b { background: rgba(17, 143, 83, 0.35); color: #6bffb5; }
-.logic-signal-chip.sell.is-on { background: rgba(105, 37, 44, 0.35); color: #ff9ba1; }
-.logic-signal-chip.sell.is-on b { background: rgba(156, 46, 64, 0.35); color: #ffb0b5; }
 .logic-group {
   border: 1px solid #2a3854;
   border-radius: 10px;
@@ -255,9 +227,6 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
   text-transform: uppercase;
   margin-bottom: 8px;
 }
-.logic-group-title { color: #8fb8ff; }
-.logic-group-meta { color: #8ea0c4; font-size: .72rem; }
-.logic-group-meta strong { color: #71ffb1; margin-right: 4px; }
 .logic-group-head strong {
   color: #dce7ff;
   font-size: .8rem;
@@ -280,29 +249,6 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
   font-size: .74rem;
   letter-spacing: .08em;
 }
-.logic-summary {
-  margin-top: 2px;
-  border-radius: 10px;
-  border: 1px solid #2a3854;
-  padding: 10px 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: .82rem;
-  letter-spacing: .08em;
-}
-.logic-summary span { color: #8ea0c4; }
-.logic-summary strong { color: #9eb6df; }
-.logic-summary.active {
-  border-color: rgba(30, 196, 120, 0.45);
-  background: rgba(18, 90, 61, 0.25);
-}
-.logic-summary.active strong { color: #66ffb0; }
-.logic-summary.inactive {
-  border-color: rgba(168, 99, 107, 0.45);
-  background: rgba(88, 30, 38, 0.25);
-}
-.logic-summary.inactive strong { color: #ffb0b5; }
 
 .selector-head {
   display: grid;
