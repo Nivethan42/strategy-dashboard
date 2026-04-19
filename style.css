@@ -188,9 +188,12 @@ h1 em { font-style: italic; font-weight: 600; color: #c6ccdb; }
   justify-content: space-between;
   gap: 10px;
   font-size: .86rem;
+  align-items: baseline;
 }
 .indicator-name { color: #cfd8eb; }
 .indicator-values { color: #95a2bf; }
+.indicator-values strong { color: #d5e3ff; font-weight: 700; }
+.indicator-values em { color: #7f90b1; font-style: normal; margin-left: 4px; }
 .indicator-track {
   width: 100%;
   height: 6px;

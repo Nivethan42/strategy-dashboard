@@ -333,8 +333,13 @@ function renderIndicatorSummary(strategy) {
       </div>
     `).join("");
 
+  const buyPass = strategy?.signalIsBuy;
   return `
     <div class="indicator-block mono">
+      <div class="logic-signal-strip">
+        <div class="logic-signal-chip buy ${buyPass ? "is-on" : ""}">BUY <b>${buyPass ? "PASS" : "WAIT"}</b></div>
+        <div class="logic-signal-chip sell ${buyPass ? "" : "is-on"}">SELL <b>${buyPass ? "—" : "TRIGGERED"}</b></div>
+      </div>
       <div class="indicator-header">
         <span>BUY SIGNAL LOGIC</span>
         <strong>${passing} / ${indicators.length} passing</strong>
