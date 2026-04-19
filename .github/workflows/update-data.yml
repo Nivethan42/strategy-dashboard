@@ -2,6 +2,12 @@ name: Update strategy data
 
 on:
   workflow_dispatch:
+    inputs:
+      force_refresh:
+        description: "Bypass NYSE/time guard and run an immediate refresh"
+        required: false
+        type: boolean
+        default: false
   schedule:
     # 9:35am, 9:40am, and 9:45am America/New_York during EDT.
     - cron: "35,40,45 13 * * 1-5"
@@ -31,6 +37,7 @@ jobs:
         continue-on-error: true
         env:
           GITHUB_SHA: ${{ github.sha }}
+          FORCE_REFRESH: ${{ github.event_name == 'workflow_dispatch' && inputs.force_refresh && '1' || '' }}
         run: python scripts/fetch_and_update.py
 
       - name: Commit updated data files
