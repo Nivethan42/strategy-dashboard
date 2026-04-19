@@ -29,6 +29,17 @@ Backward-compatible files are still written:
 4. Script updates all JSON files and appends a refresh record to `refresh_log.json`.
 5. Action commits changed JSON files back to the repository.
 
+### Time guard and manual bypass
+- Scheduled refreshes are guarded to NYSE open days at **09:35, 09:40, and 09:45 America/New_York**.
+- Manual runs can bypass this guard by setting workflow input **`force_refresh = true`** (this sets `FORCE_REFRESH=1` for the script).
+- Without `force_refresh`, a manual run outside the guard window logs a `SKIP` entry in `data/refresh_log.json`.
+
+### Manual refresh now (GitHub UI)
+1. Open **Actions** → **Update strategy data**.
+2. Click **Run workflow**.
+3. Set **force_refresh** to **true** for an immediate run at any time.
+4. Click **Run workflow** to start.
+
 ## Update History page behavior
 - **Automated Refresh Log** uses `data/refresh_log.json`.
 - **Manual Site Changelog** uses `data/changelog.json`.
