@@ -248,6 +248,8 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
     sma150 = df["source_open"].shift(1).rolling(150).mean()
     sma200 = df["source_open"].shift(1).rolling(200).mean()
     df["sr150_200"] = sma150 / sma200
+    sma50 = df["source_open"].shift(1).rolling(50).mean()
+    df["sr50_150"] = sma50 / sma150
     sma63 = df["source_open"].shift(1).rolling(63).mean()
     sma126 = df["source_open"].shift(1).rolling(126).mean()
     df["sr63_126"] = sma63 / sma126
@@ -255,15 +257,16 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
     df["signal"] = (
         (
             (df["sslp7_3"] < -0.02)
-            | (df["eslp100_3"] < -0.005)
-            | (df["mom100"] > -0.02)
+            | (df["eslp100_3"] < -0.006)
+            | (df["mom100"] > -0.0225)
         )
-        & (df["sr150_200"] < 1.1)
-        & (df["sr63_126"] < 1.05)
-        & (df["mom180"] > -0.10)
+        & (df["sr150_200"] < 1.07)
+        & (df["sr63_126"] < 1.06)
+        & (df["mom180"] > -0.12)
+        & (df["sr50_150"] < 1.08)
     ).fillna(False).astype(int)
 
-    latest_idx = df.dropna(subset=["sslp7_3", "eslp100_3", "mom100", "sr150_200", "sr63_126", "mom180"]).index[-1]
+    latest_idx = df.dropna(subset=["sslp7_3", "eslp100_3", "mom100", "sr150_200", "sr63_126", "mom180", "sr50_150"]).index[-1]
     prev_idx = df.index[df.index.get_loc(latest_idx) - 1]
 
     latest_signal = int(df.loc[latest_idx, "signal"])
@@ -288,8 +291,8 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
             "label": "ESLP100_3",
             "displayValue": pct_str(float(df.loc[latest_idx, "eslp100_3"])),
             "rawValue": float(df.loc[latest_idx, "eslp100_3"]),
-            "rule": "< -0.005",
-            "passed": bool(df.loc[latest_idx, "eslp100_3"] < -0.005),
+            "rule": "< -0.006",
+            "passed": bool(df.loc[latest_idx, "eslp100_3"] < -0.006),
             "description": "EMA100 / EMA100 from 3 trading days earlier - 1.",
         },
         {
@@ -297,8 +300,8 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
             "label": "MOM100",
             "displayValue": pct_str(float(df.loc[latest_idx, "mom100"])),
             "rawValue": float(df.loc[latest_idx, "mom100"]),
-            "rule": "> -0.02",
-            "passed": bool(df.loc[latest_idx, "mom100"] > -0.02),
+            "rule": "> -0.0225",
+            "passed": bool(df.loc[latest_idx, "mom100"] > -0.0225),
             "description": "QQQ Open[t-1] / QQQ Open[t-101] - 1.",
         },
         {
@@ -306,8 +309,8 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
             "label": "SR150_200",
             "displayValue": num_str(float(df.loc[latest_idx, "sr150_200"])),
             "rawValue": float(df.loc[latest_idx, "sr150_200"]),
-            "rule": "< 1.1",
-            "passed": bool(df.loc[latest_idx, "sr150_200"] < 1.1),
+            "rule": "< 1.07",
+            "passed": bool(df.loc[latest_idx, "sr150_200"] < 1.07),
             "description": "150-day prior SMA / 200-day prior SMA.",
         },
         {
@@ -315,8 +318,8 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
             "label": "SR63_126",
             "displayValue": num_str(float(df.loc[latest_idx, "sr63_126"])),
             "rawValue": float(df.loc[latest_idx, "sr63_126"]),
-            "rule": "< 1.05",
-            "passed": bool(df.loc[latest_idx, "sr63_126"] < 1.05),
+            "rule": "< 1.06",
+            "passed": bool(df.loc[latest_idx, "sr63_126"] < 1.06),
             "description": "63-day prior SMA / 126-day prior SMA.",
         },
         {
@@ -324,9 +327,18 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
             "label": "MOM180",
             "displayValue": pct_str(float(df.loc[latest_idx, "mom180"])),
             "rawValue": float(df.loc[latest_idx, "mom180"]),
-            "rule": "> -0.10",
-            "passed": bool(df.loc[latest_idx, "mom180"] > -0.10),
+            "rule": "> -0.12",
+            "passed": bool(df.loc[latest_idx, "mom180"] > -0.12),
             "description": "QQQ Open[t-1] / QQQ Open[t-181] - 1.",
+        },
+        {
+            "key": "sr50_150",
+            "label": "SR50_150",
+            "displayValue": num_str(float(df.loc[latest_idx, "sr50_150"])),
+            "rawValue": float(df.loc[latest_idx, "sr50_150"]),
+            "rule": "< 1.08",
+            "passed": bool(df.loc[latest_idx, "sr50_150"] < 1.08),
+            "description": "50-day prior SMA / 150-day prior SMA.",
         },
     ]
 
@@ -348,6 +360,7 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
                 "sr150_200": round(float(row["sr150_200"]), 6) if pd.notna(row["sr150_200"]) else None,
                 "sr63_126": round(float(row["sr63_126"]), 6) if pd.notna(row["sr63_126"]) else None,
                 "mom180": round(float(row["mom180"]), 6) if pd.notna(row["mom180"]) else None,
+                "sr50_150": round(float(row["sr50_150"]), 6) if pd.notna(row["sr50_150"]) else None,
             }
         )
 
@@ -374,10 +387,10 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
         },
         "formula": {
             "buy": [
-                "(SSLP7_3 < -0.02 OR ESLP100_3 < -0.005 OR MOM100 > -0.02) AND SR150_200 < 1.1 AND SR63_126 < 1.05 AND MOM180 > -0.10",
+                "(SSLP7_3 < -0.02 OR ESLP100_3 < -0.006 OR MOM100 > -0.0225) AND SR150_200 < 1.07 AND SR63_126 < 1.06 AND MOM180 > -0.12 AND SR50_150 < 1.08",
             ],
             "sell": [
-                "Sell / go CASH when all trigger conditions fail (SSLP7_3 >= -0.02 AND ESLP100_3 >= -0.005 AND MOM100 <= -0.02), or SR150_200 >= 1.1, or SR63_126 >= 1.05, or MOM180 <= -0.10.",
+                "Sell / go CASH when all trigger conditions fail (SSLP7_3 >= -0.02 AND ESLP100_3 >= -0.006 AND MOM100 <= -0.0225), or SR150_200 >= 1.07, or SR63_126 >= 1.06, or MOM180 <= -0.12, or SR50_150 >= 1.08.",
             ],
             "definitions": [
                 "SMA7[t] = average of QQQ Opens from t-1..t-7",
@@ -392,12 +405,14 @@ def tqqq_strategy(qqq_open: pd.Series, tqqq_open: pd.Series) -> dict:
                 "SMA126[t] = average QQQ Opens from t-1..t-126",
                 "SR63_126[t] = SMA63[t] / SMA126[t]",
                 "MOM180[t] = (QQQ Open[t-1] / QQQ Open[t-181]) - 1",
+                "SMA50[t] = average QQQ Opens from t-1..t-50",
+                "SR50_150[t] = SMA50[t] / SMA150[t]",
             ],
         },
         "plainEnglish": [
-            "Stay invested when the medium trend is not too stretched and long-term momentum is above -10%.",
-            "At least one trigger must be supportive: 7-day slope softening, 100-day EMA slope softening, or 100-day momentum better than -2%.",
-            "Trend filters require SR150_200 < 1.1 and SR63_126 < 1.05.",
+            "Stay invested when the medium trend is not too stretched and long-term momentum is above -12%.",
+            "At least one trigger must be supportive: 7-day slope softening, 100-day EMA slope softening below -0.6%, or 100-day momentum better than -2.25%.",
+            "Trend filters require SR150_200 < 1.07, SR63_126 < 1.06, and SR50_150 < 1.08.",
             "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in TQQQ.",
         ],
         "indicators": indicators,
@@ -770,34 +785,39 @@ def reference_tqqq_payload() -> dict:
     payload["currentActionText"] = "Live feed unavailable; showing reference strategy definition."
     payload["formula"] = {
         "buy": [
-            "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
-            "Equivalent to screenshot rule where RV7 < 0.03 and RV7 < 0.035 both appear: stricter RV7 < 0.03 governs.",
+            "(SSLP7_3 < -0.02 OR ESLP100_3 < -0.006 OR MOM100 > -0.0225) AND SR150_200 < 1.07 AND SR63_126 < 1.06 AND MOM180 > -0.12 AND SR50_150 < 1.08",
         ],
         "sell": [
-            "Sell / go CASH when both trigger conditions fail (SSLP20_2 >= -0.008 AND MOM150 <= -0.01), or RV5 >= 0.03, or RV7 >= 0.03, or SR63_126 >= 1.05.",
+            "Sell / go CASH when all trigger conditions fail (SSLP7_3 >= -0.02 AND ESLP100_3 >= -0.006 AND MOM100 <= -0.0225), or SR150_200 >= 1.07, or SR63_126 >= 1.06, or MOM180 <= -0.12, or SR50_150 >= 1.08.",
         ],
         "definitions": [
-            "SMA20[t] = average of QQQ Opens from t-1..t-20",
-            "SSLP20_2[t] = (SMA20[t] / SMA20[t-2]) - 1",
-            "MOM150[t] = (QQQ Open[t-1] / QQQ Open[t-151]) - 1",
-            "RV5[t] = stdev of prior 5 open-to-open returns",
-            "RV7[t] = stdev of prior 7 open-to-open returns",
+            "SMA7[t] = average of QQQ Opens from t-1..t-7",
+            "SSLP7_3[t] = (SMA7[t] / SMA7[t-3]) - 1",
+            "EMA100[t] = 100-day EMA of QQQ Opens using data up to t-1",
+            "ESLP100_3[t] = (EMA100[t] / EMA100[t-3]) - 1",
+            "MOM100[t] = (QQQ Open[t-1] / QQQ Open[t-101]) - 1",
+            "SMA150[t] = average QQQ Opens from t-1..t-150",
+            "SMA200[t] = average QQQ Opens from t-1..t-200",
+            "SR150_200[t] = SMA150[t] / SMA200[t]",
             "SMA63[t] = average QQQ Opens from t-1..t-63",
             "SMA126[t] = average QQQ Opens from t-1..t-126",
             "SR63_126[t] = SMA63[t] / SMA126[t]",
+            "MOM180[t] = (QQQ Open[t-1] / QQQ Open[t-181]) - 1",
+            "SMA50[t] = average QQQ Opens from t-1..t-50",
+            "SR50_150[t] = SMA50[t] / SMA150[t]",
         ],
     }
     payload["plainEnglish"] = [
-        "Stay invested when either the 20-day slope has dropped enough over the last 2 days OR 150-day momentum remains better than -1%.",
-        "Short-term open-to-open volatility must stay low (RV5 and RV7 caps).",
-        "The 63-day trend must not be too stretched above the 126-day trend.",
+        "Stay invested when the medium trend is not too stretched and long-term momentum is above -12%.",
+        "At least one trigger must be supportive: 7-day slope softening, 100-day EMA slope softening below -0.6%, or 100-day momentum better than -2.25%.",
+        "Trend filters require SR150_200 < 1.07, SR63_126 < 1.06, and SR50_150 < 1.08.",
         "All indicators use prior data (t-1 and earlier), and trades are modeled open-to-open in TQQQ.",
     ]
     payload["backtest"] = {
-        "cagr": "59.31%",
-        "maxDrawdown": "-47.88%",
-        "tradeCount": 61,
-        "window": "2010-03-10 to 2025-08-20",
+        "cagr": "61.09%",
+        "maxDrawdown": "-49.64%",
+        "tradeCount": 131,
+        "window": "2010-02-11 to 2026-04-10",
     }
     return payload
 
