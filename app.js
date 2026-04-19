@@ -236,117 +236,15 @@ function renderRefreshHealth() {
 }
 
 
-function parseIndicatorRule(rule) {
-  if (!rule) return { operator: null, threshold: null };
-  const match = String(rule).match(/(<=|>=|<|>)\s*(-?\d*\.?\d+)/);
-  if (!match) return { operator: null, threshold: null };
-  return { operator: match[1], threshold: Number(match[2]) };
-}
-
-function indicatorProgress(indicator) {
-  const raw = Number(indicator?.rawValue);
-  const { threshold } = parseIndicatorRule(indicator?.rule);
-  if (!Number.isFinite(raw) || !Number.isFinite(threshold)) return indicator?.passed ? 100 : 40;
-
-  const denom = Math.max(Math.abs(threshold), 1e-6);
-  const distance = Math.abs(raw - threshold);
-  const closeness = Math.max(0, 100 - (distance / denom) * 100);
-  const nudged = indicator?.passed ? Math.max(closeness, 72) : Math.min(closeness, 68);
-  return Math.min(100, Math.max(10, nudged));
-}
-
-function stripOuterParens(value) {
-  const raw = String(value || "").trim();
-  if (!raw.startsWith("(") || !raw.endsWith(")")) return raw;
-  let depth = 0;
-  for (let i = 0; i < raw.length; i += 1) {
-    const char = raw[i];
-    if (char === "(") depth += 1;
-    if (char === ")") depth -= 1;
-    if (depth === 0 && i < raw.length - 1) return raw;
-  }
-  return raw.slice(1, -1).trim();
-}
-
-function splitTopLevel(value, operator) {
-  const raw = String(value || "");
-  const token = ` ${operator} `;
-  const chunks = [];
-  let start = 0;
-  let depth = 0;
-
-  for (let i = 0; i < raw.length; i += 1) {
-    const char = raw[i];
-    if (char === "(") depth += 1;
-    if (char === ")") depth = Math.max(0, depth - 1);
-    if (depth === 0 && raw.slice(i, i + token.length) === token) {
-      chunks.push(raw.slice(start, i).trim());
-      start = i + token.length;
-      i += token.length - 1;
-    }
-  }
-  chunks.push(raw.slice(start).trim());
-  return chunks.filter(Boolean);
-}
-
-function indicatorFromCondition(condition, indicatorMap) {
-  const keyMatch = String(condition || "").trim().match(/^([A-Za-z_][A-Za-z0-9_]*)/);
-  const indicator = keyMatch ? indicatorMap.get(keyMatch[1].toLowerCase()) : null;
-  if (indicator) return indicator;
-  return {
-    label: condition,
-    key: condition,
-    displayValue: "N/A",
-    rule: condition,
-    passed: false,
-    rawValue: null,
-  };
-}
-
-function buildBuyLogicGroups(strategy, indicators) {
-  const indicatorMap = new Map(indicators.map((ind) => [String(ind.key || "").toLowerCase(), ind]));
-  const buyRules = Array.isArray(strategy?.formula?.buy) ? strategy.formula.buy : [];
-  const expression = buyRules.find((line) => /\bAND\b|\bOR\b/.test(String(line || "")));
-
-  if (expression) {
-    const andGroups = splitTopLevel(expression, "AND");
-    return andGroups.map((group) => {
-      const stripped = stripOuterParens(group);
-      const useOr = splitTopLevel(stripped, "OR").length > 1;
-      const joiner = useOr ? "OR" : "AND";
-      const conditions = splitTopLevel(stripped, joiner);
-      return { joiner, indicators: conditions.map((condition) => indicatorFromCondition(condition, indicatorMap)) };
-    });
-  }
-
-  const checksLine = buyRules.find((line) => /^Checks:/i.test(String(line || "").trim()));
-  const volatilityFilter = indicatorMap.get("vr20_100");
-  if (checksLine) {
-    const checksText = String(checksLine).replace(/^Checks:\s*/i, "");
-    const checkIndicators = checksText.split(",").map((item) => indicatorFromCondition(item.trim(), indicatorMap));
-    const score = indicatorMap.get("score");
-    const groups = [{ joiner: "OR", title: "At least 3 checks pass", indicators: checkIndicators }];
-    if (score) groups.unshift({ joiner: "AND", title: "Score gate", indicators: [score] });
-    if (volatilityFilter) groups.push({ joiner: "AND", title: "Volatility filter", indicators: [volatilityFilter] });
-    return groups;
-  }
-
-  return [{ joiner: "AND", indicators }];
-}
-
 function renderLogicRow(indicator) {
   const passClass = indicator.passed ? "pass" : "fail";
-  const progress = indicatorProgress(indicator);
-  const currentValue = fmt(indicator.displayValue, "N/A");
-  const thresholdValue = fmt(indicator.rule ? indicator.rule.replace(/^(<=|>=|<|>)\s*/, "") : null, "N/A");
+  const currentValue = fmt(indicator.displayValue, "N/A").replace(/^TRUE$/i, "TRUE").replace(/^FALSE$/i, "FALSE");
+  const formula = indicator.label || indicator.key || "Indicator";
   return `
     <div class="indicator-row ${passClass}">
       <div class="indicator-line">
-        <span class="indicator-name">${esc(indicator.label || indicator.key || "Indicator")}</span>
-        <span class="indicator-values">${esc(currentValue)} / ${esc(thresholdValue)}</span>
-      </div>
-      <div class="indicator-track" role="presentation">
-        <span class="indicator-fill" style="width:${progress.toFixed(1)}%"></span>
+        <span class="indicator-name">${esc(formula)}</span>
+        <span class="indicator-values">${esc(currentValue)}</span>
       </div>
     </div>`;
 }
@@ -356,22 +254,7 @@ function renderIndicatorSummary(strategy) {
   if (!indicators.length) return '<div class="indicator-block mono"><div class="indicator-empty">Indicators unavailable.</div></div>';
 
   const passing = indicators.filter((x) => x.passed).length;
-  const groups = buildBuyLogicGroups(strategy, indicators);
-  const groupedRows = groups.map((group, groupIdx) => `
-      <div class="logic-group">
-        <div class="logic-group-head">
-          <span>${esc(group.title || "Buy rule group")}</span>
-          <strong>${esc(group.joiner)}</strong>
-        </div>
-        <div class="logic-group-body">
-          ${group.indicators.map((ind, rowIdx) => `
-            ${rowIdx ? `<div class="logic-joiner">${esc(group.joiner)}</div>` : ""}
-            ${renderLogicRow(ind)}
-          `).join("")}
-        </div>
-        ${groupIdx < groups.length - 1 ? '<div class="logic-group-divider">AND</div>' : ""}
-      </div>
-    `).join("");
+  const indicatorRows = indicators.map((ind) => renderLogicRow(ind)).join("");
 
   const buyPass = strategy?.signalIsBuy;
   return `
@@ -384,7 +267,15 @@ function renderIndicatorSummary(strategy) {
         <span>BUY SIGNAL LOGIC</span>
         <strong>${passing} / ${indicators.length} passing</strong>
       </div>
-      ${groupedRows}
+      <div class="logic-group">
+        <div class="logic-group-head">
+          <span>Formula checks</span>
+          <strong>Live values</strong>
+        </div>
+        <div class="logic-group-body">
+          ${indicatorRows}
+        </div>
+      </div>
     </div>`;
 }
 function buildStrategyCards() {
