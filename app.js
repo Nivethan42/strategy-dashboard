@@ -18,7 +18,47 @@ const STRATEGY_PROFILES = [
       window: "2010-02-11 to 2026-04-10",
     },
   },
-  { id: "tqqq_rrsp", base: "tqqq", displayName: "TQQQ-RRSP", cardTitle: "Dip Hunter", account: "RRSP" },
+  {
+    id: "tqqq_rrsp",
+    base: "tqqq",
+    displayName: "TQQQ-RRSP",
+    cardTitle: "Volatility Gate",
+    account: "RRSP",
+    subtitle: "QQQ signal source, prior-data only, trades execute at today's open.",
+    backtest: {
+      cagr: "70.55%",
+      maxDrawdown: "-43.82%",
+      tradeCount: 102,
+      window: "2010-02-11 to 2026-04-10",
+    },
+    formula: {
+      buy: [
+        "(SSLP7_3 < -0.02025 OR MOM150 > -0.01825) AND RV5 < 0.0310 AND RV7 < 0.0350 AND (SR50_150 < 1.081 OR ROC5 < 0.007)",
+      ],
+      sell: [
+        "Sell / go CASH when both trigger conditions fail (SSLP7_3 >= -0.02025 AND MOM150 <= -0.01825), or RV5 >= 0.0310, or RV7 >= 0.0350, or (SR50_150 >= 1.081 AND ROC5 >= 0.007).",
+      ],
+      definitions: [
+        "Open[t] = QQQ open on trading day t",
+        "SMA7[t] = average of QQQ opens from t-1 to t-7",
+        "SSLP7_3[t] = SMA7[t] / SMA7[t-3] - 1",
+        "MOM150[t] = QQQ Open[t-1] / QQQ Open[t-151] - 1",
+        "RV5[t] = stdev of daily QQQ open-to-open returns from t-1 to t-5",
+        "RV7[t] = stdev of daily QQQ open-to-open returns from t-1 to t-7",
+        "SMA50[t] = average of QQQ opens from t-1 to t-50",
+        "SMA150[t] = average of QQQ opens from t-1 to t-150",
+        "SR50_150[t] = SMA50[t] / SMA150[t]",
+        "ROC5[t] = QQQ Open[t-1] / QQQ Open[t-6] - 1",
+      ],
+    },
+    plainEnglish: [
+      "Stay invested when either a short-term reset is happening or the 150-day trend is still strong.",
+      "Only allow entries when recent volatility is controlled: RV5 < 0.031 and RV7 < 0.035.",
+      "Avoid overheated conditions unless recent price action is still orderly (SR50_150 < 1.081 or ROC5 < 0.007).",
+      "Signal exits when the trigger pair fails, volatility rises too high, or both SR50_150 and ROC5 are over the limits.",
+      "All signals use prior data (t-1 and earlier), with trades executed at the current day open.",
+    ],
+  },
   { id: "spxl_tfsa", base: "spxl", displayName: "SPXL-TFSA", cardTitle: "RV Filter", account: "TFSA" },
   { id: "spxl_rrsp", base: "spxl", displayName: "SPXL-RRSP", cardTitle: "MACD Cross", account: "RRSP" },
 ];
@@ -36,7 +76,7 @@ const state = {
 };
 
 const TEST_EXAMPLES = [
-  "(SSLP20_2 < -0.008 OR MOM150 > -0.01) AND RV5 < 0.03 AND RV7 < 0.03 AND SR63_126 < 1.05",
+  "(SSLP7_3 < -0.02025 OR MOM150 > -0.01825) AND RV5 < 0.0310 AND RV7 < 0.0350 AND (SR50_150 < 1.081 OR ROC5 < 0.007)",
   "MACDH20_50 > -2 AND OPEN/MAX126 > 0.85 AND SMA_RATIO_50_200 > 0.95 AND RV7 < 0.03 AND SMA_RATIO_63_126 < 1.05",
   "COUNT_TRUE(MOM90 > 0, MOM100 > 0, ABVMA100, SLP5_1 > 0, SLP20_1 > 0, SLP20_3 > 0) >= 3 AND VR20_100 < 1.4",
 ];
@@ -1081,6 +1121,8 @@ async function loadData() {
       displayName: profile.displayName,
       subtitle: profile.subtitle || base.subtitle,
       backtest: { ...base.backtest, ...(profile.backtest || {}) },
+      formula: profile.formula || base.formula,
+      plainEnglish: profile.plainEnglish || base.plainEnglish,
       hasData: true,
     };
     return [profile.id, merged];
