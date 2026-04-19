@@ -236,37 +236,10 @@ function renderRefreshHealth() {
 }
 
 
-function buildFormulaRuleLookup(strategy) {
-  const lookup = new Map();
-  const lines = [
-    ...(Array.isArray(strategy?.formula?.buy) ? strategy.formula.buy : []),
-    ...(Array.isArray(strategy?.formula?.sell) ? strategy.formula.sell : []),
-  ];
-  const text = lines.join(" ");
-  const comparatorRegex = /\b([A-Za-z_][A-Za-z0-9_\/]*)\s*(<=|>=|<|>|=)\s*(-?\d*\.?\d+|TRUE|FALSE)\b/gi;
-  let match = comparatorRegex.exec(text);
-  while (match) {
-    const [, key, op, value] = match;
-    const normalizedKey = key.toLowerCase().replaceAll("/", "_");
-    if (!lookup.has(normalizedKey)) lookup.set(normalizedKey, `${op} ${value}`);
-    match = comparatorRegex.exec(text);
-  }
-  return lookup;
-}
-
-function resolveIndicatorFormula(indicator, fallbackRules) {
-  const baseLabel = String(indicator?.label || indicator?.key || "Indicator").trim();
-  const inlineRule = String(indicator?.rule || "").trim();
-  const mappedRule = fallbackRules.get(String(indicator?.key || "").toLowerCase());
-  const rule = inlineRule || mappedRule || "";
-  const hasThresholdInLabel = /(<=|>=|<|>|=)\s*(-?\d|TRUE|FALSE)/i.test(baseLabel);
-  return rule && !hasThresholdInLabel ? `${baseLabel} ${rule}` : baseLabel;
-}
-
-function renderLogicRow(indicator, formulaRules) {
+function renderLogicRow(indicator) {
   const passClass = indicator.passed ? "pass" : "fail";
   const currentValue = fmt(indicator.displayValue, "N/A").replace(/^TRUE$/i, "TRUE").replace(/^FALSE$/i, "FALSE");
-  const formula = resolveIndicatorFormula(indicator, formulaRules);
+  const formula = indicator.label || indicator.key || "Indicator";
   return `
     <div class="indicator-row ${passClass}">
       <div class="indicator-line">
@@ -281,8 +254,7 @@ function renderIndicatorSummary(strategy) {
   if (!indicators.length) return '<div class="indicator-block mono"><div class="indicator-empty">Indicators unavailable.</div></div>';
 
   const passing = indicators.filter((x) => x.passed).length;
-  const formulaRules = buildFormulaRuleLookup(strategy);
-  const indicatorRows = indicators.map((ind) => renderLogicRow(ind, formulaRules)).join("");
+  const indicatorRows = indicators.map((ind) => renderLogicRow(ind)).join("");
 
   const buyPass = strategy?.signalIsBuy;
   return `
